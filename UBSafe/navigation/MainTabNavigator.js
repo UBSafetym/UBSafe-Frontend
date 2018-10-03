@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen';
 import SafetyKitScreen from '../screens/SafetyKitScreen';
+import { Icon } from 'react-native-elements';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
