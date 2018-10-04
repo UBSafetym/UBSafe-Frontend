@@ -19,7 +19,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.ubsafetym.ubsafe",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyARzORNXzXHaAImHGmQ_5i_OPsfDONnyW0"
+      }
+    },
+    "android": {
+      "package": "com.ubsafetym.ubsafe",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBAWE0w_CLUNt7y2ydT5Gp3f1fCdZSIv_Y" }   
+      }
     }
   }
 }
