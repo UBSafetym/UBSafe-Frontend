@@ -20,21 +20,10 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        /*<View style={styles.container}>
+        <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
-        </View>*/
-        <MapView
-        style={{
-          flex: 1
-        }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        }}
-        />
+        </View>
       );
     }
   }
