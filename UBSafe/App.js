@@ -4,9 +4,9 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { MapView } from "expo";
 import { createStore } from 'react-redux';
-import { virtualCompanionReducer } from './reducers/virtualSafeWalkReducer.js'
+import { appReducer } from './reducers/virtualSafeWalkReducer.js'
 
-const store = createStore(virtualCompanionReducer);
+const store = createStore(appReducer);
 
 export default class App extends React.Component {
   state = {
