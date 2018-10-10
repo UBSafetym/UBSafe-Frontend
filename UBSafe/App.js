@@ -3,10 +3,10 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { MapView } from "expo";
-import { createStore } from 'react-redux';
+import { createStore } from 'redux';
 import { appReducer } from './reducers/virtualSafeWalkReducer.js'
 
-const store = createStore(appReducer);
+//const store = createStore(appReducer);
 
 export default class App extends React.Component {
   state = {
@@ -25,21 +25,10 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        /*<View style={styles.container}>
+        <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
-        </View>*/
-        <MapView
-        style={{
-          flex: 1
-        }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        }}
-        />
+        </View>
       );
     }
   }
