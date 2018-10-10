@@ -3,11 +3,16 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { MapView } from "expo";
+import { createStore } from 'react-redux';
+import { appReducer } from './reducers/virtualSafeWalkReducer.js'
+
+const store = createStore(appReducer);
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
+
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
