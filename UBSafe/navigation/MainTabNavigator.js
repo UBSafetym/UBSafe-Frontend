@@ -5,8 +5,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
-import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen';
-import SafetyKitScreen from '../screens/SafetyKitScreen';
+import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
+import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import { Icon } from 'react-native-elements';
 
 const HomeStack = createStackNavigator({
