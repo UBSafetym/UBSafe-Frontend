@@ -27,6 +27,8 @@ export default class HomeScreen extends React.Component {
       latitude: 0.0,
       longitude: 0.0,
       error: null,
+      showUserLocation : true,
+      followsUserLocation : true
     };
   }
 
@@ -64,8 +66,8 @@ export default class HomeScreen extends React.Component {
           latitudeDelta: 0.00922,
           longitudeDelta: 0.00421
         }}
-        showsUserLocation = 'true'
-        followsUserLocation = 'true'
+        showsUserLocation= {this.state.showUserLocation}
+        followsUserLocation = {this.state.followsUserLocation}
         />
     );
   }
