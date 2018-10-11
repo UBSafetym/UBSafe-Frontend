@@ -25,7 +25,7 @@ export default class EmergencyResourcesScreen extends React.Component {
           title={ item.name }
           hideChevron={ true }
           leftIcon={ { name: 'call' } }
-          leftIconOnPress={this.callTU(item.number)}
+          leftIconOnPress={() => {this.callTU(item.number)}}
         />
       );
     }
