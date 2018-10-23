@@ -15,10 +15,13 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "expo": "^30.0.1",
+    "firebase": "^5.5.5",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
+    "react-native-fbsdk": "^0.8.0",
     "react-native-phone-call": "^1.0.9",
+    "react-native-select-multiple": "^1.2.0",
     "react-navigation": "^2.16.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",

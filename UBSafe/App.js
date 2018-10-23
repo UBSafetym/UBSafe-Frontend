@@ -1,18 +1,23 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Navigator } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
-import { MapView } from "expo";
 import { createStore } from 'redux';
 import { appReducer } from './reducers/virtualSafeWalkReducer.js'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import AppNavigator from './navigation/AppNavigator';
 
 //const store = createStore(appReducer);
 
+/*
+  LISTEN TO LocationUpdateTrigger in the DB for Users
+  When it's set to true, you have to update the record
+*/
+
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false,
+    isLoadingComplete: false
   };
-
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -24,7 +29,7 @@ export default class App extends React.Component {
         />
       );
     } else {
-      return (
+      return(
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
@@ -32,7 +37,7 @@ export default class App extends React.Component {
       );
     }
   }
-
+  
   _loadResourcesAsync = async () => {
     return Promise.all([
       Font.loadAsync({
@@ -60,5 +65,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
+  }
 });
