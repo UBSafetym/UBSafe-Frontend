@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
-import 'firebase/firestore';
+import 'firebase/database';
 import SelectMultiple from 'react-native-select-multiple'
 
 const genders = ['Male', 'Female', 'Other'];
@@ -17,6 +17,7 @@ export default class SignUp extends React.Component {
     gender: null,
     minimumAge: null,
     maximumAge: null,
+    preferredProximity: null,
     preferredGenders: []
   }
 
@@ -27,24 +28,21 @@ export default class SignUp extends React.Component {
   createUser(context) {
     db = this.props.navigation.getParam('db');
 
-    db.collection("users").doc(this.state.user_id).set({
+    db.ref().child('users').child(context.state.user_id).set({
       UserName: context.state.username,
       Age: parseInt(context.state.age, 10),
       Gender: context.state.gender,
       PrefAgeMin: parseInt(context.state.minimumAge, 10),
       PrefAgeMax: parseInt(context.state.maximumAge, 10),
+      PrefProximity: parseInt(context.state.preferredProximity, 10),
       FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
       MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
       OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
-    })
-    .then(function() {
-      context.props.navigation.navigate('Main');
-      console.log("Document successfully written!");
-    })
-    .catch(function(error) {
-      console.error("Error writing document: ", error);
+    }).then(function(data){
+      context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db})
     });
   }
+
   render(){
     return ( 
       <View>
@@ -72,6 +70,11 @@ export default class SignUp extends React.Component {
           <FormLabel>Maximum Companion Age</FormLabel>
           <FormInput placeholder="18-50..." 
             onChangeText={(maximumAge) => this.setState({ maximumAge })}         
+          />
+
+          <FormLabel>Preferred Proximity</FormLabel>
+          <FormInput placeholder="In Kilometres..." 
+            onChangeText={(preferredProximity) => this.setState({ preferredProximity })}         
           />
 
           <FormLabel>Preferred Genders</FormLabel>
