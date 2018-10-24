@@ -3,8 +3,6 @@ import { Platform, StatusBar, StyleSheet, View, Navigator } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import { createStore } from 'redux';
 import { appReducer } from './reducers/virtualSafeWalkReducer.js'
-import * as firebase from 'firebase';
-import 'firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 
 //const store = createStore(appReducer);

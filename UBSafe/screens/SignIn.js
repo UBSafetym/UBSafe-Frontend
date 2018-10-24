@@ -3,7 +3,8 @@ import { Platform, StatusBar, StyleSheet, View, Navigator } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
-import 'firebase/firestore';
+import 'firebase/database';
+import { AsyncStorage } from "react-native";
 
 const fbAppId = '259105561413030';
 
@@ -20,11 +21,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 authentication = firebase.auth();
 
-db = firebase.firestore();
-
-db.settings({
-  timestampsInSnapshots: true
-});
+db = firebase.database();
 
 // Listen for authentication state to change.
 authentication.onAuthStateChanged((user) => {
@@ -48,6 +45,14 @@ export default class SignIn extends React.Component {
     );
   }
 
+  _storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async facebookLogin(context) {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(fbAppId, {
         permissions: ['public_profile'],
@@ -62,18 +67,15 @@ export default class SignIn extends React.Component {
       authentication.signInAndRetrieveDataWithCredential(credential).catch((error) => {
         // Handle Errors here.
       });
-    
-      var docRef = db.collection('users').doc(authentication.currentUser.providerData[0].uid);
-
-      docRef.get().then(function(doc) {
-        if (doc.exists) {
-            context.props.navigation.navigate('Main', {authentication: authentication, db: db});
+      
+      db.ref('Users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data){
+        if (data.exists()) {
+          context._storeData('user', data);
+          context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db});
         }
         else {
           context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});
         }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
       });
     }
   }
