@@ -5,29 +5,9 @@ import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
-/*
-const recommendedNav = createStackNavigator({
-  VirtualSafeWalkScreen: {
-    screen: VirtualSafeWalkScreen,
-    navigationOptions: {
-      title: "Virtual Safewalk",
-      headerStyle
-    }
-  },
-  ShowRecommendedCompanions: {
-    screen: RecommendedCompanions,
-    navigationOptions: {
-      title: "Recommended Companions",
-      headerStyle
-    }
-  }
-});
-*/
+
 export default class VirtualSafeWalkScreen extends React.Component {
-  state={
-    // user_id: authentication.currentUser.providerData[0].uidPrefProximity,
-    // access_token: authentication.currentUser.uid,
-    // username: null,
+  state = {
     user_id: null,
     prefAgeMin: null,
     prefAgeMax: null,
@@ -49,6 +29,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
   onSelectionsChange = (preferredGenders) => {
     this.setState({ preferredGenders })
   }
+
   _storeData = async (key, value) => {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(value));
@@ -62,7 +43,8 @@ export default class VirtualSafeWalkScreen extends React.Component {
     {
       context.setState({prefProximity: -1});
     }
-    this._retrieveData().then(function(data){
+
+    this._retrieveData().then(function(data) {
       var user = data;
       var user_id = user.UserID;
       fetch('http://ubsafe.azurewebsites.net/api/users/'+user_id, {
@@ -80,10 +62,10 @@ export default class VirtualSafeWalkScreen extends React.Component {
           OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
         }),
       }).then( response => {
-        if(response.status === 200){
+        if(response.status === 200) {
           console.log("yay!");
         }
-        else{
+        else {
           console.log(response);
         }
       });
@@ -92,22 +74,18 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
   findCompanions(context) {
     this._retrieveData().then(function(data){
+
       var user = data;
       var user_id = user.UserID;
+
       fetch('http://ubsafe.azurewebsites.net/api/recommendations/'+user_id)
         .then((responseJson) => responseJson.json())
         .then( (response) => {
           console.log(response);
-          //if(response.status === 200) {
-            // Switch screens with response.json()
-            //if(response.json().length > 0)
             if(response.length > 0)
             {
               console.log(typeof response);
               context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
-              //context._storeData('companions', response);
-              //context.props.navigation.navigate('ShowRecommendedCompanions');
-
             }
             else 
             {
@@ -121,24 +99,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
                 { cancelable: false }
               )
             }
-          /*}
-          else if(response.status === 404) {
-            console.log("No Recommended Companions found");
-              Alert.alert(
-                'No Recommended Companions found',
-                'Please change your preferences',
-                [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
-                ],
-                { cancelable: false }
-              )
-          }
-          else {
-            console.log("Find companions request failed");
-          }*/
         });
       });
-    }
+  }
 
   render() {
     return (

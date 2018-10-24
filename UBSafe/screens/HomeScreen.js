@@ -84,7 +84,7 @@ export default class HomeScreen extends React.Component {
           longitudeDelta: 0.00421
         }}
         showsUserLocation= {this.state.showUserLocation}
-        />
+      />
     );
   }
 }

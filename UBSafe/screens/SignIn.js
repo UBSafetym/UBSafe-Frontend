@@ -30,7 +30,7 @@ authentication.onAuthStateChanged((user) => {
 });
 
 export default class SignIn extends React.Component {
-  render(){
+  render() {
     return ( 
       <View style={styles.loginButtonSection}>
         <Button
@@ -68,7 +68,7 @@ export default class SignIn extends React.Component {
         // Handle Errors here.
       });
       
-      db.ref('Users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data){
+      db.ref('Users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data) {
         if (data.exists()) {
           context._storeData('user', data);
           context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db});

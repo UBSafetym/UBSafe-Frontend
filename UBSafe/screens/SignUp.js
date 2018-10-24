@@ -9,7 +9,7 @@ const genders = ['Male', 'Female', 'Other'];
 export default class SignUp extends React.Component {
   authentication = this.props.navigation.getParam('authentication');
 
-  state={
+  state = {
     user_id: authentication.currentUser.providerData[0].uid,
     access_token: authentication.currentUser.uid,
     username: null,
@@ -48,7 +48,7 @@ export default class SignUp extends React.Component {
     });
   }
 
-  render(){
+  render() {
     return ( 
       <View>
         <Card>
