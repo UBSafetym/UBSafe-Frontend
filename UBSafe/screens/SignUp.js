@@ -29,12 +29,11 @@ export default class SignUp extends React.Component {
     db = this.props.navigation.getParam('db');
 
     db.ref().child('Users').child(context.state.user_id).set({
-      LastUpdate: null,
-      UserId: context.state.user_id,
+      UserID: context.state.user_id,
       UserName: context.state.username,
       Age: parseInt(context.state.age, 10),
       Gender: context.state.gender,
-      Location: {Lat: null, Lon: null},
+      Location: {Lat: null, Lon: null, LastUpdated: null},
       PrefAgeMin: parseInt(context.state.minimumAge, 10),
       PrefAgeMax: parseInt(context.state.maximumAge, 10),
       PrefProximity: parseInt(context.state.preferredProximity, 10),
@@ -42,7 +41,7 @@ export default class SignUp extends React.Component {
       MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
       OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
     }).then(function(data){
-      db.ref('Users/' + context.state.usre_id).once('value').then(function(data){
+      db.ref('Users/' + context.state.user_id).once('value').then(function(data){
         global.user = data;
         context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db})
       });

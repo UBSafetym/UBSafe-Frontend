@@ -1,11 +1,28 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Alert } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
-
+/*
+const recommendedNav = createStackNavigator({
+  VirtualSafeWalkScreen: {
+    screen: VirtualSafeWalkScreen,
+    navigationOptions: {
+      title: "Virtual Safewalk",
+      headerStyle
+    }
+  },
+  ShowRecommendedCompanions: {
+    screen: RecommendedCompanions,
+    navigationOptions: {
+      title: "Recommended Companions",
+      headerStyle
+    }
+  }
+});
+*/
 export default class VirtualSafeWalkScreen extends React.Component {
   state={
     // user_id: authentication.currentUser.providerData[0].uidPrefProximity,
@@ -32,6 +49,13 @@ export default class VirtualSafeWalkScreen extends React.Component {
   onSelectionsChange = (preferredGenders) => {
     this.setState({ preferredGenders })
   }
+  _storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   savePreferences(context) {
     if(context.state.prefProximity == null)
@@ -40,10 +64,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
     }
     this._retrieveData().then(function(data){
       var user = data;
-      var user_id = user.UserId;
-
+      var user_id = user.UserID;
       fetch('http://ubsafe.azurewebsites.net/api/users/'+user_id, {
-        method: 'POST',
+        method: 'PUT',
         headers:{
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -51,58 +74,71 @@ export default class VirtualSafeWalkScreen extends React.Component {
         body: JSON.stringify({
           PrefAgeMin: parseInt(context.state.prefAgeMin, 10),
           PrefAgeMax: parseInt(context.state.prefAgeMax, 10),
-          PrefProximity: parseInt(context.state.prefProximity, 10),
+          Proximity: -1,
           FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
           MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
           OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
         }),
+      }).then( response => {
+        if(response.status === 200){
+          console.log("yay!");
+        }
+        else{
+          console.log(response);
+        }
       });
     });
   }
 
-  findCompanions() {
+  findCompanions(context) {
     this._retrieveData().then(function(data){
       var user = data;
-      var user_id = user.UserId;
-    
-    fetch('http://ubsafe.azurewebsites.net/api/recommendations/'+user_id)
-      .then( response => {
-        if(response.status === 200) {
-          // Switch screens with response.json()
-          if(response.json().length > 0)
-          {
-            context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response.json()});
+      var user_id = user.UserID;
+      fetch('http://ubsafe.azurewebsites.net/api/recommendations/'+user_id)
+        .then((responseJson) => responseJson.json())
+        .then( (response) => {
+          console.log(response);
+          //if(response.status === 200) {
+            // Switch screens with response.json()
+            //if(response.json().length > 0)
+            if(response.length > 0)
+            {
+              console.log(typeof response);
+              context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
+              //context._storeData('companions', response);
+              //context.props.navigation.navigate('ShowRecommendedCompanions');
+
+            }
+            else 
+            {
+              console.log("No Recommended Companions returned");
+              Alert.alert(
+                'No Recommended Companions found',
+                'Please change your preferences',
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
+            }
+          /*}
+          else if(response.status === 404) {
+            console.log("No Recommended Companions found");
+              Alert.alert(
+                'No Recommended Companions found',
+                'Please change your preferences',
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
           }
-          else 
-          {
-            console.log("No Recommended Companions returned");
-            Alert.alert(
-              'No Recommended Companions found',
-              'Please change your preferences',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            )
-          }
-        }
-        else if(response.status === 400) {
-          console.log("No Recommended Companions found");
-            Alert.alert(
-              'No Recommended Companions found',
-              'Please change your preferences',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            )
-        }
-        else {
-          console.log("Find companions request failed");
-        }
+          else {
+            console.log("Find companions request failed");
+          }*/
+        });
       });
-    });
-  }
+    }
 
   render() {
     return (
@@ -138,7 +174,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
         <Button 
           backgroundColor="#005073"
           title="Find Virtual Companion"
-          onPress={()=> this.findCompanions()}
+          onPress={()=> this.findCompanions(this)}
         />
       </View>
     );

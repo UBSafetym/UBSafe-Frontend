@@ -1,14 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import {
-    ScrollView,
-    StyleSheet,
     FlatList
   } from 'react-native';
-  import { List, ListItem } from 'react-native-elements';
+import { List, ListItem } from 'react-native-elements';
+import { AsyncStorage } from "react-native";
 
-export default class ShowRecommendedCompanions extends React.Component { 
-  companions = this.props.navigation.getParam('companions');
+export default class RecommendedCompanions extends React.Component {
   state={
     // user_id: authentication.currentUser.providerData[0].uidPrefProximity,
     // access_token: authentication.currentUser.uid,
@@ -20,7 +18,18 @@ export default class ShowRecommendedCompanions extends React.Component {
     // preferredGenders: []
   }
 
+  // Currently, leftIconOnPress is firing immediately which it shouldn't be
+  renderItem = ({ item }) => {
+    return (
+      <ListItem 
+        title={ item.userName + ' ' + item.gender + ' ' + item.age }
+        hideChevron={ true }
+      />
+    );
+  }
+
   render() {
+    const companions = this.props.navigation.state.params.companions
     return (
         <List>
           <FlatList

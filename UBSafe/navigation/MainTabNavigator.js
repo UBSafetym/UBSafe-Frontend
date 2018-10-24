@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
 import SafetyKitScreen from '../screens/SafetyKitScreen.js';
+import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import { Icon } from 'react-native-elements';
 
 const HomeStack = createStackNavigator({
@@ -47,6 +48,12 @@ EmergencyResourcesStack.navigationOptions = {
 
 const VirtualSafewalkStack = createStackNavigator({
   VirtualSafewalk: VirtualSafeWalkScreen,
+  ShowRecommendedCompanions: {
+    screen: RecommendedCompanions,
+    navigationOptions: {
+      title: "Recommended Companions"
+    }
+  }
 });
 
 VirtualSafewalkStack.navigationOptions = {
