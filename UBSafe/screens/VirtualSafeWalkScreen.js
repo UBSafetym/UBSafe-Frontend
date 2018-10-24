@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
+import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
 
@@ -13,29 +14,57 @@ export default class VirtualSafeWalkScreen extends React.Component {
     user_id: null,
     prefAgeMin: null,
     prefAgeMax: null,
-    prefProximity: -1,
+    prefProximity: null,
     preferredGenders: []
+  }
+  
+  async _retrieveData() {
+    try {
+      var value = await AsyncStorage.getItem('user');
+      var valueJson = JSON.parse(value);
+      return valueJson;
+     } catch (error) {
+       console.log(error);
+       return null;
+     }
+  }
+
+  onSelectionsChange = (preferredGenders) => {
+    this.setState({ preferredGenders })
   }
 
   savePreferences(context) {
-    fetch('http://ubsafe.azurewebsites.net/api/users/'+user_id, {
-      method: 'POST',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        PrefAgeMin: parseInt(context.state.prefAgeMin, 10),
-        PrefAgeMax: parseInt(context.state.prefAgeMax, 10),
-        PrefProximity: parseInt(context.state.prefProximity, 10),
-        FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-        MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-        OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
-      }),
+    if(context.state.prefProximity == null)
+    {
+      context.setState({prefProximity: -1});
+    }
+    this._retrieveData().then(function(data){
+      var user = data;
+      var user_id = user.UserId;
+
+      fetch('http://ubsafe.azurewebsites.net/api/users/'+user_id, {
+        method: 'POST',
+        headers:{
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          PrefAgeMin: parseInt(context.state.prefAgeMin, 10),
+          PrefAgeMax: parseInt(context.state.prefAgeMax, 10),
+          PrefProximity: parseInt(context.state.prefProximity, 10),
+          FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+          MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+          OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+        }),
+      });
     });
   }
 
   findCompanions() {
+    this._retrieveData().then(function(data){
+      var user = data;
+      var user_id = user.UserId;
+    
     fetch('http://ubsafe.azurewebsites.net/api/recommendations/'+user_id)
       .then( response => {
         if(response.status === 200) {
@@ -57,10 +86,22 @@ export default class VirtualSafeWalkScreen extends React.Component {
             )
           }
         }
+        else if(response.status === 400) {
+          console.log("No Recommended Companions found");
+            Alert.alert(
+              'No Recommended Companions found',
+              'Please change your preferences',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: false }
+            )
+        }
         else {
           console.log("Find companions request failed");
         }
       });
+    });
   }
 
   render() {
@@ -77,7 +118,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
         />
 
         <FormLabel>Preferred Companion Proximity</FormLabel>
-        <FormInput placeholder="18-50..." 
+        <FormInput placeholder="" 
           onChangeText={(prefProximity) => this.setState({ prefProximity })}         
         />
 
