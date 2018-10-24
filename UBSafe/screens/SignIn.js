@@ -4,6 +4,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/database';
+import { AsyncStorage } from "react-native";
 
 const fbAppId = '259105561413030';
 
@@ -44,6 +45,14 @@ export default class SignIn extends React.Component {
     );
   }
 
+  _storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async facebookLogin(context) {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(fbAppId, {
         permissions: ['public_profile'],
@@ -59,9 +68,10 @@ export default class SignIn extends React.Component {
         // Handle Errors here.
       });
       
-      db.ref('users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data){
+      db.ref('Users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data){
         if (data.exists()) {
-          context.props.navigation.navigate('Main', {authentication: authentication, db: db});
+          context._storeData('user', data);
+          context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db});
         }
         else {
           context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});

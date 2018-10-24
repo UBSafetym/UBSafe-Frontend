@@ -12,7 +12,8 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 import { Icon } from 'react-native-elements';
-import { MapView } from 'expo'
+import { MapView } from 'expo';
+import { AsyncStorage } from "react-native";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -30,6 +31,8 @@ export default class HomeScreen extends React.Component {
       showUserLocation : true,
       followsUserLocation : true
     };
+
+    global.user = this.props.navigation.getParam('user');
   }
 
   // On simulators, this defaults to San Francisco for some reason
@@ -46,6 +49,20 @@ export default class HomeScreen extends React.Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
     );
+  }
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user');
+
+      if (value !== null) {
+        // We have data!!
+        return value;
+      }
+     } catch (error) {
+       console.log(error);
+       return null;
+     }
   }
 
   render() {
@@ -67,7 +84,6 @@ export default class HomeScreen extends React.Component {
           longitudeDelta: 0.00421
         }}
         showsUserLocation= {this.state.showUserLocation}
-        followsUserLocation = {this.state.followsUserLocation}
         />
     );
   }

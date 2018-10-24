@@ -32,8 +32,9 @@ export default class EmergencyResourcesScreen extends React.Component {
 
     render() {
       // We'll add more numbers to this list
+      // Campus security is currently Marshall's phone number
       const emergencyNumbers = [
-        { name: "Campus Security", number: { number: '6048222222', prompt: true } },
+        { name: "Campus Security", number: { number: '6045187702', prompt: true } },
         { name: "Poison Control", number: { number: '333333333', prompt: true } }
       ];
 
