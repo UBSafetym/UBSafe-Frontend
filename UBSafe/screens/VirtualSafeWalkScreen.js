@@ -122,14 +122,16 @@ export default class VirtualSafeWalkScreen extends React.Component {
         />
 
         <FormLabel>Preferred Genders</FormLabel>
-          <SelectMultiple
-            items={genders}
-            selectedItems={this.state.preferredGenders}
-            onSelectionsChange={this.onSelectionsChange}
-          />
+        <SelectMultiple
+          className="genders"
+          items={genders}
+          selectedItems={this.state.preferredGenders}
+          onSelectionsChange={this.onSelectionsChange}
+        />
 
         <Button
           style={styles.button}
+          className="savePrefButton"
           backgroundColor="#189ad3"
           title="Save Preferences"
           onPress={()=> this.savePreferences(this)}
@@ -139,6 +141,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
         <Button
           style={styles.button}
+          className="findCompanionsButton"
           backgroundColor="#005073"
           title="Find Virtual Companion"
           onPress={()=> this.findCompanions(this)}
