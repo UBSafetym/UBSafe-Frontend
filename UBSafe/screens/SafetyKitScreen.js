@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
 import {View} from 'react-native';
 
 export default class SafetyKitScreen extends React.Component {

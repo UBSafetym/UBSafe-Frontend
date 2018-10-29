@@ -1,6 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Navigator } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/database';
@@ -22,12 +21,6 @@ firebase.initializeApp(firebaseConfig);
 authentication = firebase.auth();
 
 db = firebase.database();
-
-// Listen for authentication state to change.
-authentication.onAuthStateChanged((user) => {
-  if (user != null) {
-  }
-});
 
 export default class SignIn extends React.Component {
   render() {

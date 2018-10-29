@@ -8,7 +8,6 @@ import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
 import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
-import { Icon } from 'react-native-elements';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
