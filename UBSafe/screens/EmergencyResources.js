@@ -1,15 +1,6 @@
 import React from "react";
 import call from "react-native-phone-call";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList
-} from 'react-native';
+import { FlatList } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
 export default class EmergencyResourcesScreen extends React.Component {

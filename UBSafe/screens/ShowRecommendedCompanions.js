@@ -1,8 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+//import { ScrollView, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import { AsyncStorage } from "react-native";
 
 export default class RecommendedCompanions extends React.Component {
   state = {  }
@@ -30,11 +29,3 @@ export default class RecommendedCompanions extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
-  },
-});

@@ -1,4 +1,3 @@
-import React from "react";
 import { Platform, StatusBar } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import SignUp from "../screens/SignUp.js";

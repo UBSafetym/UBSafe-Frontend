@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Alert } from 'react-native';
-import { Card, Button, FormLabel, FormInput } from 'react-native-elements';
+import { View, Alert } from 'react-native';
+import { Button, FormLabel, FormInput } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
@@ -143,11 +143,3 @@ export default class VirtualSafeWalkScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
-  },
-});
