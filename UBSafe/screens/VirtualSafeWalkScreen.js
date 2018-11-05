@@ -134,6 +134,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="savePrefButton"
           backgroundColor="#189ad3"
           title="Save Preferences"
+          disabled={!isEnabled}
           onPress={()=> this.savePreferences(this)}
           disabled={this.state.loading || !fieldsFilled}
           loading={this.state.prefLoad}
