@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
-import 'firebase/database';
+import 'firebase/firestore';
 import { AsyncStorage } from "react-native";
 
 const fbAppId = '259105561413030';
@@ -20,11 +20,14 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 authentication = firebase.auth();
 
-db = firebase.database();
+db = firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true
+});
 
 export default class SignIn extends React.Component {
   render() {
-    return ( 
+    return (
       <View style={styles.loginButtonSection}>
         <Button
           full
@@ -60,16 +63,18 @@ export default class SignIn extends React.Component {
       authentication.signInAndRetrieveDataWithCredential(credential).catch((error) => {
         // Handle Errors here.
       });
-      
-      db.ref('Users/' + authentication.currentUser.providerData[0].uid).once('value').then(function(data) {
-        if (data.exists()) {
-          context._storeData('user', data);
-          context.props.navigation.navigate('Main', {user: authentication.currentUser, db: db});
-        }
-        else {
-          context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});
-        }
-      });
+
+      var docRef = db.collection('users').doc(authentication.currentUser.providerData[0].uid);
+        docRef.get().then(function(doc){
+            if(doc.exists){
+                context.props.navigation.navigate('Main', {authentication: authentication, db: db});
+            }
+            else {
+              context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});
+            }
+        }).catch(function(error){
+            console.log("Error getting document:", error);
+        });
     }
   }
 }

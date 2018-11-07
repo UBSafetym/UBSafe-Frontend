@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
-import 'firebase/database';
+//import 'firebase/database';
+import 'firebase/firestore'
 import SelectMultiple from 'react-native-select-multiple'
 
 const genders = ['Male', 'Female', 'Other'];
@@ -28,18 +29,19 @@ export default class SignUp extends React.Component {
   createUser(context) {
     db = this.props.navigation.getParam('db');
 
-    db.ref().child('Users').child(context.state.user_id).set({
+    db.collection('users').doc(context.state.user_id).set({
       UserID: context.state.user_id,
       UserName: context.state.username,
       Age: parseInt(context.state.age, 10),
       Gender: context.state.gender,
-      Location: {Lat: null, Lon: null, LastUpdated: null},
-      PrefAgeMin: parseInt(context.state.minimumAge, 10),
-      PrefAgeMax: parseInt(context.state.maximumAge, 10),
-      PrefProximity: parseInt(context.state.preferredProximity, 10),
-      FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-      MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-      OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+        Preferences: {
+          AgeMin: parseInt(context.state.minimumAge, 10),
+          AgeMax: parseInt(context.state.maximumAge, 10),
+          Proximity: parseInt(context.state.preferredProximity, 10),
+          Female: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+          Male: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+          Other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+        }
     }).then(function(data){
       db.ref('Users/' + context.state.user_id).once('value').then(function(data){
         global.user = data;
@@ -49,37 +51,37 @@ export default class SignUp extends React.Component {
   }
 
   render() {
-    return ( 
+    return (
       <View>
         <Card>
           <FormLabel>Username</FormLabel>
-          <FormInput placeholder="Username..." 
+          <FormInput placeholder="Username..."
             onChangeText={(username) => this.setState({ username })}
           />
 
           <FormLabel>Age</FormLabel>
-          <FormInput placeholder="Age..." 
+          <FormInput placeholder="Age..."
             onChangeText={(age) => this.setState({ age })}
           />
 
           <FormLabel>Gender</FormLabel>
-          <FormInput placeholder="Gender..." 
-            onChangeText={(gender) => this.setState({ gender })}         
+          <FormInput placeholder="Gender..."
+            onChangeText={(gender) => this.setState({ gender })}
           />
 
           <FormLabel>Minimum Companion Age</FormLabel>
-          <FormInput placeholder="18-50..." 
-            onChangeText={(minimumAge) => this.setState({ minimumAge })}         
+          <FormInput placeholder="18-50..."
+            onChangeText={(minimumAge) => this.setState({ minimumAge })}
           />
 
           <FormLabel>Maximum Companion Age</FormLabel>
-          <FormInput placeholder="18-50..." 
-            onChangeText={(maximumAge) => this.setState({ maximumAge })}         
+          <FormInput placeholder="18-50..."
+            onChangeText={(maximumAge) => this.setState({ maximumAge })}
           />
 
           <FormLabel>Preferred Proximity</FormLabel>
-          <FormInput placeholder="In Kilometres..." 
-            onChangeText={(preferredProximity) => this.setState({ preferredProximity })}         
+          <FormInput placeholder="In Kilometres..."
+            onChangeText={(preferredProximity) => this.setState({ preferredProximity })}
           />
 
           <FormLabel>Preferred Genders</FormLabel>

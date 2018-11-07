@@ -4,6 +4,8 @@ import { AppLoading, Font, Icon } from 'expo';
 // import { createStore } from 'redux';
 // import { appReducer } from './reducers/virtualSafeWalkReducer.js'
 import AppNavigator from './navigation/AppNavigator';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 //const store = createStore(appReducer);
 
@@ -35,7 +37,7 @@ export default class App extends React.Component {
       );
     }
   }
-  
+
   _loadResourcesAsync = async () => {
     return Promise.all([
       Font.loadAsync({

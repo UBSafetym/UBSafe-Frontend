@@ -5,6 +5,8 @@ import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
+var api_base = "http://localhost:8080/";
+//var api_base = "http://ubsafe.azurewebsites.net/api/";
 
 export default class VirtualSafeWalkScreen extends React.Component {
   state = {
@@ -14,11 +16,12 @@ export default class VirtualSafeWalkScreen extends React.Component {
     prefProximity: null,
     preferredGenders: []
   }
-  
+
   async _retrieveData() {
     try {
       var value = await AsyncStorage.getItem('user');
       var valueJson = JSON.parse(value);
+        console.log(valueJson);
       return valueJson;
      } catch (error) {
        console.log(error);
@@ -46,20 +49,21 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
     this._retrieveData().then(function(data) {
       var user = data;
+      console.log(data);
       var user_id = user.UserID;
-      fetch('http://ubsafe.azurewebsites.net/api/users/'+user_id, {
+      fetch(api_base + 'users/' +user_id, {
         method: 'PUT',
         headers:{
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          PrefAgeMin: parseInt(context.state.prefAgeMin, 10),
-          PrefAgeMax: parseInt(context.state.prefAgeMax, 10),
-          Proximity: -1,
-          FemaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-          MaleCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-          OtherCompanionsOkay: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+          "Preferences.AgeMin": parseInt(context.state.prefAgeMin, 10),
+          "Preferences.AgeMax": parseInt(context.state.prefAgeMax, 10),
+          "Preferences.Proximity": -1,
+          "Preferences.Female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+          "Preferences.Male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+          "Preferences.Other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
         }),
       }).then( response => {
         if(response.status === 200) {
@@ -78,7 +82,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
       var user = data;
       var user_id = user.UserID;
 
-      fetch('http://ubsafe.azurewebsites.net/api/recommendations/'+user_id)
+      fetch(api_base + 'recommendations/' + user_id)
         .then((responseJson) => responseJson.json())
         .then( (response) => {
           console.log(response);
@@ -87,7 +91,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
               console.log(typeof response);
               context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
             }
-            else 
+            else
             {
               console.log("No Recommended Companions returned");
               Alert.alert(
@@ -107,18 +111,18 @@ export default class VirtualSafeWalkScreen extends React.Component {
     return (
       <View>
         <FormLabel>Minimum Companion Age</FormLabel>
-          <FormInput placeholder="18-50..." 
-            onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}         
+          <FormInput placeholder="18-50..."
+            onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}
           />
 
         <FormLabel>Maximum Companion Age</FormLabel>
-        <FormInput placeholder="18-50..." 
-          onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}         
+        <FormInput placeholder="18-50..."
+          onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}
         />
 
         <FormLabel>Preferred Companion Proximity</FormLabel>
-        <FormInput placeholder="" 
-          onChangeText={(prefProximity) => this.setState({ prefProximity })}         
+        <FormInput placeholder=""
+          onChangeText={(prefProximity) => this.setState({ prefProximity })}
         />
 
         <FormLabel>Preferred Genders</FormLabel>
@@ -128,13 +132,13 @@ export default class VirtualSafeWalkScreen extends React.Component {
             onSelectionsChange={this.onSelectionsChange}
           />
 
-        <Button 
+        <Button
           backgroundColor="#189ad3"
           title="Save Preferences"
           onPress={()=> this.savePreferences(this)}
         />
 
-        <Button 
+        <Button
           backgroundColor="#005073"
           title="Find Virtual Companion"
           onPress={()=> this.findCompanions(this)}
