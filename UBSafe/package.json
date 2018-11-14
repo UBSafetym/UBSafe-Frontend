@@ -24,6 +24,7 @@
     "firebase-admin": "^6.1.0",
     "geofirestore": "^2.2.3",
     "jest-cli": "^23.6.0",
+    "mock-async-storage": "^2.0.3",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",

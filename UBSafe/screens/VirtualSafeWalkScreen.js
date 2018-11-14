@@ -23,7 +23,6 @@ export default class VirtualSafeWalkScreen extends React.Component {
   onSelectionsChange = (preferredGenders) => {
     this.setState({ preferredGenders })
   }
-
   savePreferences(context) {
     context.setState({ loading: true, prefLoad: true });
     // GOTTA CHANGE THIS
