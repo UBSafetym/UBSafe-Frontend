@@ -5,8 +5,8 @@ import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
-var api_base = "http://localhost:8080/";
-//var api_base = "http://ubsafe.azurewebsites.net/api/";
+//var api_base = "http://localhost:8080/";
+var api_base = "http://ubsafe.azurewebsites.net/api/";
 
 export default class VirtualSafeWalkScreen extends React.Component {
   state = {

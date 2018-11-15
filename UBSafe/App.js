@@ -1,13 +1,7 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Font, Icon } from 'expo';
-// import { createStore } from 'redux';
-// import { appReducer } from './reducers/virtualSafeWalkReducer.js'
 import AppNavigator from './navigation/AppNavigator';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-
-//const store = createStore(appReducer);
 
 /*
   LISTEN TO LocationUpdateTrigger in the DB for Users
