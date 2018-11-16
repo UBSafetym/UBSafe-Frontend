@@ -1,8 +1,9 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { GeoPoint } from 'firebase/firestore';
-import { AsyncStorage } from 'react-native';
-
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import { Alert } from 'react-native';
+import store from '../store.js';
 const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 const api_base = "http://ubsafe.azurewebsites.net/api/";
@@ -17,18 +18,6 @@ export default class EnterDestinationScreen extends React.Component {
     error: null,
     showUserLocation : true,
     followsUserLocation : true
-  }
-
-  async _retrieveData(item) {
-    try {
-      var value = await AsyncStorage.getItem(item);
-      var valueJson = JSON.parse(value);
-      console.log(valueJson);
-      return valueJson;
-     } catch (error) {
-       console.log(error);
-       return null;
-     }
   }
 
   getCurrentLocation(){
@@ -46,42 +35,43 @@ export default class EnterDestinationScreen extends React.Component {
   }
 
   startVirtualSafewalkSession(lat, long) {
-    this._retrieveData('user').then(function(user){
-      var travellerID = user.UserID;
-      var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.UserID);
-      var travellerDest = new GeoPoint(lat, long);
-      var travellerLocation = new GeoPoint(lat, long);
-      getCurrentLocation();
-      var travellerSource = new GeoPoint(this.state.currentLat, this.state.currentLong);
-      /*
-      this._retrieve('db').then(function(db){
-        var db = db;
-        
-      });*/
-      fetch(api_base + 'companionsessions', {
-        method: 'POST',
-        headers:{
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "travellerID": travellerID,
-          "watcherIDs": watcherIDs,
-          "travellerDest": travellerDest,
-          "travellerSource": travellerSource,
-          "travellerLocation": travellerLocation
-        }),
-      }).then( response => {
-        if(response.status === 200) {
-          this.props.navigation.navigate("VirtualSafeWalkSessionScreen", {session: response.responseData});
-          console.log("yay!");
-        }
-        else {
-          console.log(response);
-        }
+    var user = store.user;
+    var travellerID = user.UserID;
+    var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.UserID);
+    var travellerDest = new firebase.firestore.GeoPoint(lat, long);
+    var travellerLocation = new firebase.firestore.GeoPoint(lat, long);
+    this.getCurrentLocation();
+    var travellerSource = new firebase.firestore.GeoPoint(this.state.currentLat, this.state.currentLong);
+
+    fetch(api_base + 'companionsessions', {
+      method: 'POST',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "travellerID": travellerID,
+        "watcherIDs": watcherIDs,
+        "travellerDest": travellerDest,
+        "travellerSource": travellerSource,
+        "travellerLocation": travellerLocation
+      }),
+    }).then( response => {
+      if(response.status === 200) {
+        this.props.navigation.navigate("VirtualSafeWalkSessionScreen", {session: response.responseData});
+        console.log("yay!");
+      }
+      else {
+        Alert.alert(
+          'Cannot start session',
+          'Heck',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+      }
     });
-    console.log(lat + " " + long);
-  });
 }
 
   render(){

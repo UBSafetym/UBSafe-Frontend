@@ -1,26 +1,26 @@
 import React from 'react';
 import { MapView } from 'expo';
-import { AsyncStorage } from "react-native";
+import { Firebase } from '../firebaseConfig.js';
+import store from '../store.js'
+db = Firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true
+});
+
+authentication = Firebase.auth();
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  // We'll add more to state later but for now we'll just add current location data
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      latitude: 0.0,
-      longitude: 0.0,
-      error: null,
-      showUserLocation : true,
-      followsUserLocation : true
-    };
-
-    global.user = this.props.navigation.getParam('user');
-  }
+  state = {
+    latitude: 0.0,
+    longitude: 0.0,
+    error: null,
+    showUserLocation : true,
+    followsUserLocation : true
+  };
 
   // On simulators, this defaults to San Francisco for some reason
   // so to properly test this, we'll have to download the app
@@ -36,20 +36,16 @@ export default class HomeScreen extends React.Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
     );
-  }
 
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('user');
-
-      if (value !== null) {
-        // We have data!!
-        return value;
-      }
-     } catch (error) {
-       console.log(error);
-       return null;
-     }
+    var deviceToken = store.deviceToken;
+      
+    db.collection('users').doc(authentication.currentUser.providerData[0].uid).update({ deviceToken: deviceToken }).then(function(data){
+      console.log("Oh heck ya bud");
+    })
+    .catch(function(error){
+      console.log("heck");
+      console.log(error);
+    })
   }
 
   render() {

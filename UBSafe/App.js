@@ -1,17 +1,47 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Font, Icon } from 'expo';
+import Expo, { AppLoading, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import store from './store.js';
 
 /*
   LISTEN TO LocationUpdateTrigger in the DB for Users
   When it's set to true, you have to update the record
 */
 
+async function getToken() {
+  // Remote notifications do not work in simulators, only on device
+  if (!Expo.Constants.isDevice) {
+    return;
+  }
+  let { status } = await Expo.Permissions.askAsync(
+    Expo.Permissions.NOTIFICATIONS,
+  );
+  if (status !== 'granted') {
+    return;
+  }
+  let value = await Expo.Notifications.getExpoPushTokenAsync();
+  store.deviceToken = value;
+}
+
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
   };
+
+  // Write case statement here for handling each of the types of push notifications
+  handleNotification = ({ origin, data }) => {
+    console.log(
+      `Push notification ${origin} with data: ${JSON.stringify(data)}`,
+    );
+  };
+
+  componentDidMount(){
+    getToken().then(function(){
+      this.listener = Expo.Notifications.addListener(this.handleNotification);
+    });
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

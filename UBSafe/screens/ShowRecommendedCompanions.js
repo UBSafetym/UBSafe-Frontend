@@ -21,7 +21,6 @@ export default class RecommendedCompanions extends React.Component {
       selectedCompanions.push(item);
       this.setState({ selectedCompanions: selectedCompanions });
     }
-    console.log(selectedCompanions);
   };
 
   enterLocation(){

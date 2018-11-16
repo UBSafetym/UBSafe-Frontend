@@ -1,15 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
-//import 'firebase/database';
 import 'firebase/firestore'
 import SelectMultiple from 'react-native-select-multiple'
-import { AsyncStorage } from "react-native";
+import store from '../store.js';
+import { Firebase } from '../firebaseConfig.js';
 
 const genders = ['Male', 'Female', 'Other'];
+const fbAppId = '259105561413030';
+
+db = Firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true
+});
+authentication = Firebase.auth();
 
 export default class SignUp extends React.Component {
-  authentication = this.props.navigation.getParam('authentication');
 
   state = {
     user_id: authentication.currentUser.providerData[0].uid,
@@ -27,16 +33,8 @@ export default class SignUp extends React.Component {
     this.setState({ preferredGenders })
   }
 
-  _storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   createUser(context) {
-    db = this.props.navigation.getParam('db');
+    // db = this.props.navigation.getParam('db');
 
     db.collection("users").doc(this.state.user_id).set({
       UserID: context.state.user_id,
@@ -67,10 +65,9 @@ export default class SignUp extends React.Component {
             Other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
           }
         }
-        context._storeData('user', user).then(function(){
-          context.props.navigation.navigate('Main');
-          console.log("Document successfully written!");
-        });
+        store.user = user;
+        context.props.navigation.navigate('Main');
+        console.log("Document successfully written!");
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);

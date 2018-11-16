@@ -3,27 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { AsyncStorage } from "react-native";
+import { Firebase } from '../firebaseConfig.js';
+import store from '../store.js';
 
 const fbAppId = '259105561413030';
 
-// Initialize Firebase
-var firebaseConfig = {
-  apiKey: "AIzaSyAmqSW01bK3HiI13OUk4zA6o4QQZot4eR8",
-  authDomain: "ubsafe-a816e.firebaseapp.com",
-  databaseURL: "https://ubsafe-a816e.firebaseio.com",
-  projectId: "ubsafe-a816e",
-  storageBucket: "ubsafe-a816e.appspot.com",
-  messagingSenderId: "160002718260"
-};
-
-firebase.initializeApp(firebaseConfig);
-authentication = firebase.auth();
-
-db = firebase.firestore();
+db = Firebase.firestore();
 db.settings({
     timestampsInSnapshots: true
 });
+authentication = Firebase.auth();
 
 export default class SignIn extends React.Component {
   render() {
@@ -39,14 +28,6 @@ export default class SignIn extends React.Component {
         />
       </View>
     );
-  }
-
-  _storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   async facebookLogin(context) {
@@ -67,16 +48,10 @@ export default class SignIn extends React.Component {
       var docRef = db.collection('users').doc(authentication.currentUser.providerData[0].uid);
         docRef.get().then(function(doc){
             if(doc.exists) {
-                var user = doc.data();
-                user.UserID = authentication.currentUser.providerData[0].uid;
-                console.log(user);
-                context._storeData('user', user).then(function(){
-                  console.log("Anus");
-                  console.log(doc.data());
-                  context._storeData('db', db).then(function(){
-                    context.props.navigation.navigate('Main', {authentication: authentication, db: db});
-                  })
-                })
+              var user = doc.data();
+              user.UserID = authentication.currentUser.providerData[0].uid;
+              store.user = user; // saves user in global store
+              context.props.navigation.navigate('Main', {authentication: authentication, db: db});
             }
             else {
               context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});

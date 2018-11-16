@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Alert, StyleSheet } from 'react-native';
 import { Button, FormLabel, FormInput } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
-import { AsyncStorage } from "react-native";
+import store from '../store.js';
 
 const genders = ['Male', 'Female', 'Other'];
 //var api_base = "http://localhost:8080/";
@@ -14,31 +14,12 @@ export default class VirtualSafeWalkScreen extends React.Component {
     prefAgeMin: null,
     prefAgeMax: null,
     prefProximity: null,
-    preferredGenders: []
-  }
-
-  async _retrieveData() {
-    try {
-      var value = await AsyncStorage.getItem('user');
-      var valueJson = JSON.parse(value);
-        console.log(valueJson);
-      return valueJson;
-     } catch (error) {
-       console.log(error);
-       return null;
-     }
+    preferredGenders: [],
+    loading: false
   }
 
   onSelectionsChange = (preferredGenders) => {
     this.setState({ preferredGenders })
-  }
-
-  _storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   savePreferences(context) {
@@ -48,65 +29,59 @@ export default class VirtualSafeWalkScreen extends React.Component {
       context.setState({prefProximity: -1});
     }
 
-    context._retrieveData().then(function(data) {
-      var user = data;
-      console.log(data);
-      var user_id = user.UserID;
-      fetch(api_base + 'users/' +user_id, {
-        method: 'PUT',
-        headers:{
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "Preferences.AgeMin": parseInt(context.state.prefAgeMin, 10),
-          "Preferences.AgeMax": parseInt(context.state.prefAgeMax, 10),
-          "Preferences.Proximity": -1,
-          "Preferences.Female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-          "Preferences.Male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-          "Preferences.Other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
-        }),
-      }).then( response => {
-        if(response.status === 200) {
-          console.log("yay!");
-        }
-        else {
-          console.log(response);
-        }
-      });
+    var user = store.user;
+    var user_id = user.UserID;
+
+    fetch(api_base + 'users/' +user_id, {
+      method: 'PUT',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "Preferences.AgeMin": parseInt(context.state.prefAgeMin, 10),
+        "Preferences.AgeMax": parseInt(context.state.prefAgeMax, 10),
+        "Preferences.Proximity": -1,
+        "Preferences.Female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+        "Preferences.Male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+        "Preferences.Other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
+      }),
+    }).then( response => {
+      if(response.status === 200) {
+        console.log("yay!");
+      }
+      else {
+        console.log(response);
+      }
     });
   }
 
   findCompanions(context) {
-    context._retrieveData().then(function(data){
-
-      var user = data;
+      var user = store.user;
       var user_id = user.UserID;
-
+      context.setState({ loading: true });
       fetch(api_base + 'recommendations/' + user_id)
         .then((responseJson) => responseJson.json())
         .then( (response) => {
-          console.log(response);
-            if(response.length > 0)
-            {
-              console.log(typeof response);
-              context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
-            }
-            else
-            {
-              console.log(user_id);
-              console.log("No Recommended Companions returned");
-              Alert.alert(
-                'No Recommended Companions found',
-                'Please change your preferences',
-                [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
-                ],
-                { cancelable: false }
-              )
-            }
+          context.setState({ loading: false });
+          if(response.length > 0)
+          {
+            console.log(typeof response);
+            context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
+          }
+          else
+          {
+            console.log("No Recommended Companions returned");
+            Alert.alert(
+              'No Recommended Companions found',
+              'Please change your preferences',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: false }
+            )
+          }
         });
-      });
   }
 
   render() {
@@ -146,6 +121,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           backgroundColor="#005073"
           title="Find Virtual Companion"
           onPress={()=> this.findCompanions(this)}
+          disabled={this.state.loading}
         />
       </View>
     );
