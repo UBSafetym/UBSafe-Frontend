@@ -66,9 +66,16 @@ export default class SignIn extends React.Component {
 
       var docRef = db.collection('users').doc(authentication.currentUser.providerData[0].uid);
         docRef.get().then(function(doc){
-            if(doc.exists){
-                context._storeData('user', doc).then(function(){
-                  context.props.navigation.navigate('Main', {authentication: authentication, db: db});
+            if(doc.exists) {
+                var user = doc.data();
+                user.UserID = authentication.currentUser.providerData[0].uid;
+                console.log(user);
+                context._storeData('user', user).then(function(){
+                  console.log("Anus");
+                  console.log(doc.data());
+                  context._storeData('db', db).then(function(){
+                    context.props.navigation.navigate('Main', {authentication: authentication, db: db});
+                  })
                 })
             }
             else {

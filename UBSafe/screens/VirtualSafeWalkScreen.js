@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import { Button, FormLabel, FormInput } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
 import { AsyncStorage } from "react-native";
 
 const genders = ['Male', 'Female', 'Other'];
 //var api_base = "http://localhost:8080/";
-var api_base = "http://ubsafe.azurewebsites.net/api/";
+const api_base = "http://ubsafe.azurewebsites.net/api/";
 
 export default class VirtualSafeWalkScreen extends React.Component {
   state = {
@@ -42,12 +42,13 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   savePreferences(context) {
+    // GOTTA CHANGE THIS
     if(context.state.prefProximity == null)
     {
       context.setState({prefProximity: -1});
     }
 
-    this._retrieveData().then(function(data) {
+    context._retrieveData().then(function(data) {
       var user = data;
       console.log(data);
       var user_id = user.UserID;
@@ -77,7 +78,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   findCompanions(context) {
-    this._retrieveData().then(function(data){
+    context._retrieveData().then(function(data){
 
       var user = data;
       var user_id = user.UserID;
@@ -93,6 +94,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
             }
             else
             {
+              console.log(user_id);
               console.log("No Recommended Companions returned");
               Alert.alert(
                 'No Recommended Companions found',
@@ -133,12 +135,14 @@ export default class VirtualSafeWalkScreen extends React.Component {
           />
 
         <Button
+          style={styles.button}
           backgroundColor="#189ad3"
           title="Save Preferences"
           onPress={()=> this.savePreferences(this)}
         />
 
         <Button
+          style={styles.button}
           backgroundColor="#005073"
           title="Find Virtual Companion"
           onPress={()=> this.findCompanions(this)}
@@ -147,3 +151,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 10
+  }
+});

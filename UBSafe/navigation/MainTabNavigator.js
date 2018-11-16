@@ -8,6 +8,8 @@ import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
 import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
+import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
+import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -50,7 +52,19 @@ const VirtualSafewalkStack = createStackNavigator({
   ShowRecommendedCompanions: {
     screen: RecommendedCompanions,
     navigationOptions: {
-      title: "Recommended Companions"
+      title: "Select Companions"
+    }
+  },
+  EnterDestinationScreen: {
+    screen: EnterDestinationScreen,
+    navigationOptions: {
+      title: "Enter Destination"
+    }
+  },
+  VirtualSafewalkSessionScreen: {
+    screen: VirtualSafewalkSessionScreen,
+    navigationOptions: {
+      title: "Virtual Safewalk"
     }
   }
 });
