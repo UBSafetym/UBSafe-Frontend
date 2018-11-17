@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapView } from 'expo';
 import { Firebase } from '../firebaseConfig.js';
+import { View, StyleSheet } from 'react-native';
 import store from '../store.js'
 db = Firebase.firestore();
 db.settings({
@@ -50,10 +51,9 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
+      <View style={{flex: 1, position: 'relative'}}>
       <MapView
-        style={{
-          flex: 1
-        }}
+        style={styles.mapContainer}
         initialRegion={{
           latitude: this.state.latitude,
           longitude: this.state.longitude,
@@ -68,6 +68,13 @@ export default class HomeScreen extends React.Component {
         }}
         showsUserLocation= {this.state.showUserLocation}
       />
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  mapContainer: {
+    ...StyleSheet.absoluteFillObject 
+  }
+});

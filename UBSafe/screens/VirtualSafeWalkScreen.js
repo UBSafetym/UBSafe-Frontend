@@ -51,6 +51,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
         console.log("yay!");
       }
       else {
+        console.log("Error saving preferences");
         console.log(response);
       }
     });
@@ -66,12 +67,10 @@ export default class VirtualSafeWalkScreen extends React.Component {
           context.setState({ loading: false });
           if(response.length > 0)
           {
-            console.log(typeof response);
             context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
           }
           else
           {
-            console.log("No Recommended Companions returned");
             Alert.alert(
               'No Recommended Companions found',
               'Please change your preferences',

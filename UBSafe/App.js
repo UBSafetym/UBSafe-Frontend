@@ -32,14 +32,41 @@ export default class App extends React.Component {
 
   // Write case statement here for handling each of the types of push notifications
   handleNotification = ({ origin, data }) => {
-    console.log(
-      `Push notification ${origin} with data: ${JSON.stringify(data)}`,
-    );
+    console.log("Notification received");
+    console.log(data);
+    var alert_type = store.codesToAlerts[data.alarmType];
+
+    switch(alert_type){
+
+      case('TERMINATED'):
+
+      case('REACHED_DESTINATION'):
+
+      case('MOVING_AWAY'):
+
+      case('ALARM_TRIGGERED'):
+
+      case('STAGNANT'):
+
+      case('CONNECTION_LOST'):
+
+      case('ALERT_NEARBY_USERS'):
+
+      case('INVITED_TO_SESSION'):
+        store.sessionID = data.sessionID;
+
+      case('JOINED_SESSION'):
+
+
+      default:
+
+    }
   };
 
   componentDidMount(){
+    let context = this;
     getToken().then(function(){
-      this.listener = Expo.Notifications.addListener(this.handleNotification);
+      context.listener = Expo.Notifications.addListener(context.handleNotification);
     });
   }
 

@@ -10,6 +10,7 @@ import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
+import RatingsScreen from '../screens/ratingsScreen.js';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -64,19 +65,36 @@ const VirtualSafewalkStack = createStackNavigator({
   VirtualSafewalkSessionScreen: {
     screen: VirtualSafewalkSessionScreen,
     navigationOptions: {
-      title: "Virtual Safewalk"
+      title: "Virtual Safewalk",
+      headerLeft: null,
+      tabBarVisible: false
+    }
+  },
+  RatingsScreen: {
+    screen: RatingsScreen,
+    navigationOptions: {
+      title: "Rate Your Safewalk",
+      headerLeft: null,
+      tabBarVisible: false
     }
   }
 });
 
-VirtualSafewalkStack.navigationOptions = {
-  tabBarLabel: 'Virtual Safewalk',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-walk${focused ? '' : '-outline'}` : 'md-walk'}
-    />
-  ),
+VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
+  var visible = (navigation.state.routes[navigation.state.index] === 'VirtualSafewalkSessionScreen') ||
+                (navigation.state.routes[navigation.state.index] === 'RatingsScreen');
+  let navigationOptions = {
+                          tabBarLabel: 'Virtual Safewalk', 
+                          tabBarIcon: ({ focused }) => (
+                            <TabBarIcon
+                              focused={focused}
+                              name={Platform.OS === 'ios' ? `ios-walk${focused ? '' : '-outline'}` : 'md-walk'}
+                            />
+                          ),
+                          tabBarVisible: visible
+                          }
+  
+  return navigationOptions
 };
 
 const SafetyKitStack = createStackNavigator({
