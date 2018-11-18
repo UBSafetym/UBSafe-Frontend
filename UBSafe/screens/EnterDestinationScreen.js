@@ -8,7 +8,7 @@ import store from '../store.js';
 const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 //const api_base = "http://ubsafe.azurewebsites.net/api/";
-const api_base = "https://polar-escarpment-56098.herokuapp.com/";
+// const api_base = "https://polar-escarpment-56098.herokuapp.com/";
 
 export default class EnterDestinationScreen extends React.Component {
 
@@ -38,14 +38,14 @@ export default class EnterDestinationScreen extends React.Component {
 
   startVirtualSafewalkSession(lat, long) {
     var user = store.user;
-    var travellerID = user.UserID;
-    var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.UserID);
+    var travellerID = user.userID;
+    var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.userID);
     var travellerDest = new firebase.firestore.GeoPoint(lat, long);
     var travellerLocation = new firebase.firestore.GeoPoint(lat, long);
     this.getCurrentLocation();
     var travellerSource = new firebase.firestore.GeoPoint(this.state.currentLat, this.state.currentLong);
-
-    fetch(api_base + 'companionsession', {
+    
+    fetch(store.api_base + 'companionsession', {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -60,6 +60,7 @@ export default class EnterDestinationScreen extends React.Component {
         "lastUpdated": 0
       }),
     }).then( response => {
+      console.log(response);
       if(response.status === 200) {
         response.json().then(responseJSON =>{
           this.props.navigation.navigate('VirtualSafewalkSessionScreen', { session: responseJSON.responseData });
@@ -79,7 +80,7 @@ export default class EnterDestinationScreen extends React.Component {
         )
       }
     });
-}
+  }
 
   render(){
     return (

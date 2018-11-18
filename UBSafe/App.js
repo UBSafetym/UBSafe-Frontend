@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Alert } from 'react-native';
 import Expo, { AppLoading, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import store from './store.js';
@@ -30,18 +30,36 @@ export default class App extends React.Component {
     isLoadingComplete: false
   };
 
+
   // Write case statement here for handling each of the types of push notifications
   handleNotification = ({ origin, data }) => {
     console.log("Notification received");
     console.log(data);
-    var alert_type = store.codesToAlerts[data.alarmType];
+    var alert_type = store.codesToAlerts[data.alertCode];
 
     switch(alert_type){
 
       case('TERMINATED'):
+        Alert.alert(
+          'Walking Session Ended',
+          'Thank you for being safe!',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+        break;
 
       case('REACHED_DESTINATION'):
-
+        Alert.alert(
+          'Traveller Has Reached Their Destination',
+          'Thank you for being safe!',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+        break;
       case('MOVING_AWAY'):
 
       case('ALARM_TRIGGERED'):
@@ -53,10 +71,11 @@ export default class App extends React.Component {
       case('ALERT_NEARBY_USERS'):
 
       case('INVITED_TO_SESSION'):
-        store.sessionID = data.sessionID;
-
+        console.log(data.id);
+        store.sessionID = data.id;
+        break;
+      
       case('JOINED_SESSION'):
-
 
       default:
 

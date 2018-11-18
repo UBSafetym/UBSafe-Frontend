@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { Button, Rating, Text  } from 'react-native-elements';
-import Firebase from '../firebaseConfig.js';
+import {Firebase} from '../firebaseConfig.js';
+import store from '../store.js';
 
 db = Firebase.firestore();
 db.settings({
@@ -17,7 +18,7 @@ export default class RatingsScreen extends React.Component{
   
   submitRating(){
     var rating = this.state.rating;
-    fetch(api_base + 'companionsession/' + this.props.navigation.getParam('sessionID') + '/rate', {
+    fetch(store.api_base + 'companionsession/rate/' + this.props.navigation.getParam('sessionID'), {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -68,6 +69,7 @@ export default class RatingsScreen extends React.Component{
           title="Submit Rating"
           onPress={()=> this.submitRating()}
           disabled={this.state.loading}
+          loading={this.state.loading}
         />
       </View>
     );

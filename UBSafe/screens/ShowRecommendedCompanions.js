@@ -5,7 +5,8 @@ import { List, ListItem, CheckBox, Button } from 'react-native-elements';
 
 export default class RecommendedCompanions extends React.Component {
   state = { 
-    selectedCompanions: []
+    selectedCompanions: [],
+    loading: false
   }
 
   toggleCompanion(item) {
@@ -24,6 +25,7 @@ export default class RecommendedCompanions extends React.Component {
   };
 
   enterLocation(){
+    this.setState({ loading: true });
     this.props.navigation.navigate('EnterDestinationScreen', {companions: this.state.selectedCompanions});
   };
 
@@ -32,6 +34,7 @@ export default class RecommendedCompanions extends React.Component {
     const checked = this.state.selectedCompanions.includes(item);
     return (
       <ListItem
+        key={item.userID}
         title={
           <CheckBox
             title={item.userName + ', ' + item.gender + ', ' + item.age}
@@ -53,7 +56,7 @@ export default class RecommendedCompanions extends React.Component {
               data={companions}
               renderItem={this.renderItem}
               extraData={this.state.selectedCompanions}
-              keyExtractor={item => item.userName}
+              keyExtractor={item => item.userID}
             />
           </List>
         </View>
@@ -63,6 +66,7 @@ export default class RecommendedCompanions extends React.Component {
             title="Start Safewalk"
             onPress={()=> this.enterLocation()}
             disabled={this.state.selectedCompanions.length <= 0 || this.state.selectedCompanions.length >= 4}
+            loading={this.state.loading}
           />
         </View>
       </View>

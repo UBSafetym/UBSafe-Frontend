@@ -1,8 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
+import * as firebase from 'firebase';
 import 'firebase/firestore'
 import SelectMultiple from 'react-native-select-multiple'
+import { GeoFirestore } from 'geofirestore';
 import store from '../store.js';
 import { Firebase } from '../firebaseConfig.js';
 
@@ -14,19 +16,21 @@ db.settings({
     timestampsInSnapshots: true
 });
 authentication = Firebase.auth();
+geoFirestore = new GeoFirestore(db.collection('user_locations'));
 
 export default class SignUp extends React.Component {
 
   state = {
-    user_id: authentication.currentUser.providerData[0].uid,
+    userID: authentication.currentUser.providerData[0].uid,
     access_token: authentication.currentUser.uid,
-    username: null,
+    userName: null,
     age: null,
     gender: null,
-    minimumAge: null,
-    maximumAge: null,
-    preferredProximity: null,
-    preferredGenders: []
+    prefAgeMin: null,
+    prefAgeMax: null,
+    prefProximity: null,
+    preferredGenders: [],
+    loading: false
   }
 
   onSelectionsChange = (preferredGenders) => {
@@ -35,39 +39,53 @@ export default class SignUp extends React.Component {
 
   createUser(context) {
     // db = this.props.navigation.getParam('db');
-
-    db.collection("users").doc(this.state.user_id).set({
-      UserID: context.state.user_id,
-      UserName: context.state.username,
-      Age: parseInt(context.state.age, 10),
-      Gender: context.state.gender,
-        Preferences: {
-          AgeMin: parseInt(context.state.minimumAge, 10),
-          AgeMax: parseInt(context.state.maximumAge, 10),
-          Proximity: parseInt(context.state.preferredProximity, 10),
-          Female: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-          Male: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-          Other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+    context.setState({ loading: true });
+    db.collection("users").doc(this.state.userID).set({
+      userID: context.state.userID,
+      userName: context.state.userName,
+      age: parseInt(context.state.age, 10),
+      gender: context.state.gender,
+        preferences: {
+          ageMin: parseInt(context.state.prefAgeMin, 10),
+          ageMax: parseInt(context.state.prefAgeMax, 10),
+          proximity: parseInt(context.state.prefProximity, 10),
+          female: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+          male: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+          other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
         }
       })
       .then(function() {
         var user = {
-          UserID: context.state.user_id,
-          UserName: context.state.username,
-          Age: parseInt(context.state.age, 10),
-          Gender: context.state.gender,
-          Preferences: {
-            AgeMin: parseInt(context.state.minimumAge, 10),
-            AgeMax: parseInt(context.state.maximumAge, 10),
-            Proximity: parseInt(context.state.preferredProximity, 10),
-            Female: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-            Male: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-            Other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
+          userID: context.state.userID,
+          userName: context.state.userName,
+          age: parseInt(context.state.age, 10),
+          gender: context.state.gender,
+          preferences: {
+            ageMin: parseInt(context.state.prefAgeMin, 10),
+            ageMax: parseInt(context.state.prefAgeMax, 10),
+            proximity: parseInt(context.state.prefProximity, 10),
+            female: context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+            male: context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+            other: context.state.preferredGenders.map(entry => entry.label).includes('Other')
           }
         }
         store.user = user;
-        context.props.navigation.navigate('Main');
-        console.log("Document successfully written!");
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
+              context.setState({ loading: false });
+              context.props.navigation.navigate('Main');
+              console.log("Document successfully written!");
+            }, (error) => {
+              console.log('Error: ' + error);
+            });
+          },
+          (error) => console.log(error),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -75,12 +93,17 @@ export default class SignUp extends React.Component {
   }
 
   render() {
+    const { prefAgeMin, prefAgeMax, prefProximity, preferredGenders } = this.state;
+    const fieldsFilled =(parseInt(prefAgeMin, 10) > 0 ) && 
+                        (parseInt(prefAgeMax, 10) > 0) &&
+                        (parseInt(prefAgeMax, 10) > parseInt(prefAgeMin, 10)) && 
+                        (parseInt(prefProximity, 10) > 0) &&
+                        (preferredGenders.length > 0);
     return (
-      <View>
-        <Card>
+      <ScrollView>
           <FormLabel>Username</FormLabel>
           <FormInput placeholder="Username..."
-            onChangeText={(username) => this.setState({ username })}
+            onChangeText={(userName) => this.setState({ userName })}
           />
 
           <FormLabel>Age</FormLabel>
@@ -95,17 +118,17 @@ export default class SignUp extends React.Component {
 
           <FormLabel>Minimum Companion Age</FormLabel>
           <FormInput placeholder="18-50..."
-            onChangeText={(minimumAge) => this.setState({ minimumAge })}
+            onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}
           />
 
           <FormLabel>Maximum Companion Age</FormLabel>
           <FormInput placeholder="18-50..."
-            onChangeText={(maximumAge) => this.setState({ maximumAge })}
+            onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}
           />
 
           <FormLabel>Preferred Proximity</FormLabel>
           <FormInput placeholder="In Kilometres..."
-            onChangeText={(preferredProximity) => this.setState({ preferredProximity })}
+            onChangeText={(prefProximity) => this.setState({ prefProximity })}
           />
 
           <FormLabel>Preferred Genders</FormLabel>
@@ -116,13 +139,14 @@ export default class SignUp extends React.Component {
           />
 
           <Button
-            buttonStyle={{ marginTop: 20 }}
+            buttonStyle={{ marginTop: 20, marginBottom: 20 }}
             backgroundColor="#03A9F4"
             title="SIGN UP"
             onPress={() => this.createUser(this)}
+            disabled={!fieldsFilled || this.state.loading}
+            loading={this.state.loading}
           />
-        </Card>
-      </View>
+      </ScrollView>
     );
   }
 }

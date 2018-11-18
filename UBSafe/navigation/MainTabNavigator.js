@@ -11,6 +11,7 @@ import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
 import RatingsScreen from '../screens/ratingsScreen.js';
+import store from '../store.js';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -48,6 +49,8 @@ EmergencyResourcesStack.navigationOptions = {
   ),
 };
 
+var VirtualSafeWalkInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'VirtualSafewalk' : 'VirtualSafewalkSessionScreen';
+
 const VirtualSafewalkStack = createStackNavigator({
   VirtualSafewalk: VirtualSafeWalkScreen,
   ShowRecommendedCompanions: {
@@ -78,11 +81,12 @@ const VirtualSafewalkStack = createStackNavigator({
       tabBarVisible: false
     }
   }
-});
+}, { initialRouteName: VirtualSafeWalkInitialRoute });
 
 VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
-  var visible = (navigation.state.routes[navigation.state.index] === 'VirtualSafewalkSessionScreen') ||
-                (navigation.state.routes[navigation.state.index] === 'RatingsScreen');
+  var visible = (navigation.state.routes[navigation.state.index].routeName === 'VirtualSafewalkSessionScreen') ||
+                (navigation.state.routes[navigation.state.index].routeName === 'RatingsScreen');
+
   let navigationOptions = {
                           tabBarLabel: 'Virtual Safewalk', 
                           tabBarIcon: ({ focused }) => (
@@ -91,7 +95,7 @@ VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
                               name={Platform.OS === 'ios' ? `ios-walk${focused ? '' : '-outline'}` : 'md-walk'}
                             />
                           ),
-                          tabBarVisible: visible
+                          tabBarVisible: !visible
                           }
   
   return navigationOptions
@@ -111,9 +115,12 @@ SafetyKitStack.navigationOptions = {
   ),
 };
 
-export default createBottomTabNavigator({
+var MainTabInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
+const MainTabNavigator = createBottomTabNavigator({
   HomeStack,
   EmergencyResourcesStack,
   VirtualSafewalkStack,
   SafetyKitStack,
-});
+}, { initialRouteName: MainTabInitialRoute });
+
+export default MainTabNavigator;

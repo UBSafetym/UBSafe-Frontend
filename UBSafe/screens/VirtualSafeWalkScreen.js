@@ -6,7 +6,7 @@ import store from '../store.js';
 
 const genders = ['Male', 'Female', 'Other'];
 //var api_base = "http://localhost:8080/";
-const api_base = "http://ubsafe.azurewebsites.net/api/";
+//const api_base = "http://ubsafe.azurewebsites.net/api/";
 
 export default class VirtualSafeWalkScreen extends React.Component {
   state = {
@@ -15,7 +15,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
     prefAgeMax: null,
     prefProximity: null,
     preferredGenders: [],
-    loading: false
+    loading: false,
+    prefLoad: false,
+    findSessionLoad: false
   }
 
   onSelectionsChange = (preferredGenders) => {
@@ -23,31 +25,41 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   savePreferences(context) {
+    context.setState({ loading: true, prefLoad: true });
     // GOTTA CHANGE THIS
     if(context.state.prefProximity == null)
     {
       context.setState({prefProximity: -1});
     }
 
-    var user = store.user;
-    var user_id = user.UserID;
+    var user = store.user;//
+    var user_id = user.userID;
 
-    fetch(api_base + 'users/' +user_id, {
+    fetch(store.api_base + 'users/' +user_id, {
       method: 'PUT',
       headers:{
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "Preferences.AgeMin": parseInt(context.state.prefAgeMin, 10),
-        "Preferences.AgeMax": parseInt(context.state.prefAgeMax, 10),
-        "Preferences.Proximity": -1,
-        "Preferences.Female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-        "Preferences.Male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-        "Preferences.Other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
+        "preferences.ageMin": parseInt(context.state.prefAgeMin, 10),
+        "preferences.ageMax": parseInt(context.state.prefAgeMax, 10),
+        "preferences.proximity": -1,
+        "preferences.female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+        "preferences.male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+        "preferences.other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
       }),
     }).then( response => {
+      context.setState({ loading: false, prefLoad: false });
       if(response.status === 200) {
+        Alert.alert(
+          'Preferences Updated',
+          '',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
         console.log("yay!");
       }
       else {
@@ -59,15 +71,16 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
   findCompanions(context) {
       var user = store.user;
-      var user_id = user.UserID;
-      context.setState({ loading: true });
-      fetch(api_base + 'recommendations/' + user_id)
+      var user_id = user.userID;
+      context.setState({ loading: true, findSessionLoad: true });
+      fetch(store.api_base + 'recommendations/' + user_id)
         .then((responseJson) => responseJson.json())
         .then( (response) => {
-          context.setState({ loading: false });
-          if(response.length > 0)
+          console.log(response);
+          context.setState({ loading: false, findSessionLoad: false });
+          if(response.responseData.length > 0)
           {
-            context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response })
+            context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response.responseData })
           }
           else
           {
@@ -84,6 +97,13 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   render() {
+    const { prefAgeMin, prefAgeMax, prefProximity, preferredGenders } = this.state;
+    const fieldsFilled =(parseInt(prefAgeMin, 10) > 0 ) && 
+                        (parseInt(prefAgeMax, 10) > 0) &&
+                        (parseInt(prefAgeMax, 10) > parseInt(prefAgeMin, 10)) && 
+                        (parseInt(prefProximity, 10) > 0) &&
+                        (preferredGenders.length > 0);
+
     return (
       <View>
         <FormLabel>Minimum Companion Age</FormLabel>
@@ -113,6 +133,8 @@ export default class VirtualSafeWalkScreen extends React.Component {
           backgroundColor="#189ad3"
           title="Save Preferences"
           onPress={()=> this.savePreferences(this)}
+          disabled={this.state.loading || !fieldsFilled}
+          loading={this.state.prefLoad}
         />
 
         <Button
@@ -121,6 +143,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           title="Find Virtual Companion"
           onPress={()=> this.findCompanions(this)}
           disabled={this.state.loading}
+          loading={this.state.findSessionLoad}
         />
       </View>
     );

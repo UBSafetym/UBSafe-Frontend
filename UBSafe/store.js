@@ -1,4 +1,6 @@
 const store = {
+  //const api_base = "http://ubsafe.azurewebsites.net/api/";
+  api_base: "https://polar-escarpment-56098.herokuapp.com/",
   alertsToCodes: {
     TERMINATED: 0,
     REACHED_DESTINATION: 1,

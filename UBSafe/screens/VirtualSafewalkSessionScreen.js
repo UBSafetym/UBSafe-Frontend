@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Alert } from 'react-native';
 import { MapView } from 'expo';
 import { Marker } from 'react-native-maps';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Button } from 'react-native-elements';
 import { GeoPoint } from 'firebase/firestore';
 import { Firebase } from '../firebaseConfig.js';
 import store from '../store.js';
@@ -13,7 +13,8 @@ db.settings({
 });
 authentication = Firebase.auth();
 
-const api_base = "http://ubsafe.azurewebsites.net/api/";
+// const api_base = "http://ubsafe.azurewebsites.net/api/";
+//const api_base = "https://polar-escarpment-56098.herokuapp.com/";
 const nice = 69; // nice
 export default class VirtualSafewalkSessionScreen extends React.Component {
   state = {
@@ -51,7 +52,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     return distanceFromDestination < 40;
   }
 
-  getSourcePosition(){
+  getSourcePosition() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -59,7 +60,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           sourceLong: position.coords.longitude,
           error: null,
         });
-        db.collection("companion_session").doc(this.props.navigation.getParam('session').id).update({
+        db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
           travellerSource: { 
                             _lat: position.coords.latitude, 
                             _long: position.coords.longitude
@@ -69,11 +70,61 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-    
   }
 
-  endSession(db){
-    fetch(api_base + 'alert', {
+  alertEndSession() {
+    Alert.alert(
+      'Are you sure you want to end your walking session?',
+      [
+        {text: 'End walking session', onPress: () => this.endSession()},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  alertCompanions() {
+    Alert.alert(
+      'Send alert to companions?',
+      [
+        {text: 'Send Alert', onPress: () => this.sendEmergencyAlert()},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  sendEmergencyAlert() {
+    fetch(store.api_base + 'alert', {
+      method: 'POST',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionID: this.props.navigation.getParam('session').id,
+        alertCode: store.alertsToCodes['ALARM_TRIGGERED']
+      }),
+    }).then( response => {
+      Alert.alert(
+        'Alert Sent',
+        [
+          {text: 'Close', onPress: () => console.log("ok pressed")},
+        ],
+        { cancelable: false }
+      )
+      // Maybe we gotta do different DB updating stuff?
+      db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
+        travellerLoc: new GeoPoint(this.state.travellerLong, this.state.travellerLong),
+      }).then(function() {
+        // Idk if we need a promise
+        this.props.navigation.navigate('RateSessionScreen', { companions: this.state.joinedWatchers, sessionID: this.state.sessionID });
+      });
+    });
+  }
+
+  // I'm going to make a different function for pressing the 'end session' button
+  // but it might be best to put it in here
+  endSession() {
+    fetch(store.api_base + 'alert', {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -124,7 +175,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           
           var reachedDestination = this.checkReachedDestination(travellerLat, travellerLong);
           if(reachedDestination) {
-            this.endSession(db);
+            this.endSession();
           }
           var changeInPositionInFeet = this.getMagnitude(travellerLat, travellerLong);
           if(changeInPositionInFeet > 20) {
@@ -149,11 +200,11 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     // wouldn't be navigating form the previous screen where this data is set
     else {
       var docRef = db.collection("companion_sessions").doc(store.sessionID);
-
+      var context = this;
       docRef.get().then(function(doc){
         if(doc.exists) {
           var data = doc.data();
-          this.setState({
+          context.setState({
             travellerLat: data.travellerLoc._lat,
             travellerLong: data.travellerLoc._long,
             destinationLat: data.travellerDest._lat,
@@ -171,11 +222,11 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         var active = doc.data().active;
         if(!active){
           // Push notification will be handled somewhere
-          this.props.navigation.navigate('Home'); // Idk if this is gonna work
+          context.props.navigation.navigate('Home'); // Idk if this is gonna work
         }
         var travellerLat = doc.data().travellerLoc._lat;
         var travellerLong = doc.data().travellerLoc._long;
-        this.setState({ travellerLat: travellerLat, 
+        context.setState({ travellerLat: travellerLat, 
                         travellerLong: travellerLong 
                       });
       });
@@ -185,7 +236,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   renderItem = ({ item }) => {
     return (
       <ListItem 
-        title={ item.userName + ' ' + item.gender + ' ' + item.age }
+        title={ item.userName + ', ' + item.gender + ', ' + item.age }
         hideChevron={ true } />
     );
   }
@@ -200,10 +251,41 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     // Should have 2 returns: 1 for the traveller and 1 for the companions
     // Traveller screen should just have the buttons for reaching out for help/ending the sesion
     // Companions should just have the map view of the traveller with source and dest
-    return(
-      <View style={{flex: 1, position: 'relative'}}>
-        <View style={styles.mapContainer}>
-          <MapView
+    // Global session ID will only be set if this user is a companion
+    if(!store.sessionID) {
+      return(
+        <View style={styles.rootContainer}>
+          <View style={styles.buttonsContainer}>
+            <Button
+              style={styles.button}
+              backgroundColor="#F31431"
+              title="Alert Companions"
+              onPress={()=> this.alertCompanions()}
+            />
+
+            <Button
+              style={styles.button}
+              backgroundColor="#005073"
+              title="End Virtual Companion Session"
+              onPress={()=> this.alertEndSession()}
+            />
+          </View>
+          <View style={styles.watchersContainer}>
+            <List>
+              <FlatList
+                data={this.state.joinedWatchers}
+                renderItem={this.renderItem}
+                extraData={this.state.joinedWatchers}
+                keyExtractor={item => item.userName}
+              />
+            </List>
+          </View>
+        </View>
+      );
+    }
+    else {
+      return(
+        <MapView
               style={styles.mapView}
               initialRegion={{
               latitude: this.state.travellerLat,
@@ -218,27 +300,19 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
               longitudeDelta: 0.00421
             }}
             showsUserLocation= {this.state.showUserLocation}
-          >
+        >
             <Marker key={1} title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />
             <Marker key={2} title={"Destination"} coordinate={{longitude: this.state.destinationLong, latitude: this.state.destinationLat}} />
           </MapView>
-        </View>
-        <View style={styles.watchersContainer}>
-          <List>
-            <FlatList
-              data={this.state.joinedWatchers}
-              renderItem={this.renderItem}
-              extraData={this.state.joinedWatchers}
-              keyExtractor={item => item.userName}
-            />
-          </List>
-        </View>
-      </View>
-    );
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1
+  },
   mapContainer: {
     flex: 7,
     position: 'relative'
@@ -248,5 +322,12 @@ const styles = StyleSheet.create({
   },
   watchersContainer: {
     flex: 3
+  },
+  buttonsContainer: {
+    flex: 7,
+    justifyContent: 'flex-end'
+  },
+  button: {
+    marginTop: 10
   }
 });
