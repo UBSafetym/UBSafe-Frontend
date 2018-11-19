@@ -22,13 +22,45 @@ export default class EnterDestinationScreen extends React.Component {
     followsUserLocation : true
   }
 
-  getCurrentLocation(){
+  getCurrentLocation(travellerID, watcherIDs, travellerDest){
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({
-          currentLat: position.coords.latitude,
-          currentLong: position.coords.longitude,
-          error: null,
+        var travellerSource = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
+        var travellerLocation = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
+        fetch(store.api_base + 'companionsession', {
+          method: 'POST',
+          headers:{
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "travellerID": travellerID,
+            "watcherIDs": watcherIDs,
+            "travellerDest": travellerDest,
+            "travellerSource": travellerSource,
+            "travellerLocation": travellerLocation,
+            "lastUpdated": 0
+          }),
+        }).then( response => {
+          console.log(response);
+          if(response.status === 200) {
+            response.json().then(responseJSON =>{
+              this.props.navigation.navigate('VirtualSafewalkSessionScreen', { session: responseJSON.responseData });
+              console.log("yay!");
+            });
+          }
+          else {
+            console.log("Error creating companion session");
+            console.log(response);
+            Alert.alert(
+              'Cannot start session',
+              'Heck',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: false }
+            )
+          }
         });
       },
       (error) => this.setState({ error: error.message }),
@@ -41,45 +73,7 @@ export default class EnterDestinationScreen extends React.Component {
     var travellerID = user.userID;
     var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.userID);
     var travellerDest = new firebase.firestore.GeoPoint(lat, long);
-    var travellerLocation = new firebase.firestore.GeoPoint(lat, long);
-    this.getCurrentLocation();
-    var travellerSource = new firebase.firestore.GeoPoint(this.state.currentLat, this.state.currentLong);
-    
-    fetch(store.api_base + 'companionsession', {
-      method: 'POST',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "travellerID": travellerID,
-        "watcherIDs": watcherIDs,
-        "travellerDest": travellerDest,
-        "travellerSource": travellerSource,
-        "travellerLocation": travellerLocation,
-        "lastUpdated": 0
-      }),
-    }).then( response => {
-      console.log(response);
-      if(response.status === 200) {
-        response.json().then(responseJSON =>{
-          this.props.navigation.navigate('VirtualSafewalkSessionScreen', { session: responseJSON.responseData });
-          console.log("yay!");
-        });
-      }
-      else {
-        console.log("Error creating companion session");
-        console.log(response);
-        Alert.alert(
-          'Cannot start session',
-          'Heck',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          { cancelable: false }
-        )
-      }
-    });
+    this.getCurrentLocation(travellerID, watcherIDs, travellerDest);
   }
 
   render(){

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Alert } from 'react-native';
 import { MapView } from 'expo';
-import { Marker } from 'react-native-maps';
+import { Marker, Circle } from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
 import { GeoPoint } from 'firebase/firestore';
 import { Firebase } from '../firebaseConfig.js';
@@ -18,6 +18,7 @@ authentication = Firebase.auth();
 const nice = 69; // nice
 export default class VirtualSafewalkSessionScreen extends React.Component {
   state = {
+    timer: null,
     sessionID: null,
     showUserLocation: true,
     travellerLat: 0.0,
@@ -27,7 +28,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     destinationLat: 0.0,
     destinationLong: 0.0,
     error: null,
-    joinedWatchers: [{userName: "cormac", gender: "male", age: "21"}],
+    joinedWatchers: [],
     active: true
   }
 
@@ -41,7 +42,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     return changeInPositionInFeet;
   }
 
-  updateUserLocation(db, travellerLat, travellerLong) {
+  updateUserLocation(travellerLat, travellerLong) {
     db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
       travellerLoc: new GeoPoint(travellerLat, travellerLong)
     })
@@ -73,6 +74,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   alertEndSession() {
+    clearInterval(this.state.timer);
     Alert.alert(
       'Are you sure you want to end your walking session?',
       [
@@ -80,6 +82,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       ],
       { cancelable: true }
     )
+    
   }
 
   alertCompanions() {
@@ -145,6 +148,27 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     });
   }
 
+  tick(){
+    navigator.geolocation.getCurrentPosition(
+      (location) => {
+        var travellerLat = location.coords.latitude;
+        var travellerLong = location.coords.longitude;
+        this.setState({ travellerLat: travellerLat, travellerLong: travellerLong });
+        
+        var reachedDestination = this.checkReachedDestination(travellerLat, travellerLong);
+        if(reachedDestination) {
+          this.endSession();
+        }
+        var changeInPositionInFeet = this.getMagnitude(travellerLat, travellerLong);
+        if(changeInPositionInFeet > 20) {
+          this.updateUserLocation(travellerLat, travellerLong);
+        }
+      },
+      (error) => console.log(error),
+      { enableHighAccuracy: true, timeout: 200000, maximumAge: 1, distanceFilter: 1 },
+    );
+  }
+
   // Might have to change this to componentWillMount()
   componentDidMount() {
     var user = store.user;
@@ -167,26 +191,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         destinationLong: session.data.travellerDest._long
       });
 
-      navigator.geolocation.watchPosition(
-        (location) => {
-          var travellerLat = location.coords.latitude;
-          var travellerLong = location.coords.longitude;
-          this.setState({ travellerLat: travellerLat, travellerLong: travellerLong });
-          
-          var reachedDestination = this.checkReachedDestination(travellerLat, travellerLong);
-          if(reachedDestination) {
-            this.endSession();
-          }
-          var changeInPositionInFeet = this.getMagnitude(travellerLat, travellerLong);
-          if(changeInPositionInFeet > 20) {
-            this.updateUserLocation(db, travellerLat, travellerLong);
-          }
-        }, 
-        (error) => {
-
-        },
-        { distanceFilter: 1, enableHighAccuracy: true }
-      );
+      let timer = setInterval(this.tick.bind(this), 500);
+      this.setState({timer});
 
       // If a new watcher has been added to the session, we want to know that so we can rate them afterwards
       var context = this;
@@ -211,6 +217,12 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             destinationLong: data.travellerDest._long,
             sourceLat: data.travellerSource._lat,
             sourceLong: data.travellerSource._long
+          });
+          var watchers = doc.data().joinedWatchers;
+          watchers.push(store.user);
+
+          docRef.update({
+            joinedWatchers: watchers
           });
         }
         else{
@@ -299,10 +311,20 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
               latitudeDelta: 0.00922,
               longitudeDelta: 0.00421
             }}
-            showsUserLocation= {this.state.showUserLocation}
-        >
+            zoomEnabled={false}
+            rotateEnabled={false}
+            scrollEnabled={false}
+            pitchEnabled={false}
+          >
             <Marker key={1} title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />
             <Marker key={2} title={"Destination"} coordinate={{longitude: this.state.destinationLong, latitude: this.state.destinationLat}} />
+            <Circle
+              radius={15}
+              center={{longitude: this.state.travellerLong, latitude: this.state.travellerLat}}
+              fillColor="#4885ed"
+              strokeWidth={4}
+              strokeColor="#FFFFFF"
+            />
           </MapView>
       );
     }

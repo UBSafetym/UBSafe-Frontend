@@ -18,7 +18,7 @@ export default class RatingsScreen extends React.Component{
   
   submitRating(){
     var rating = this.state.rating;
-    fetch(store.api_base + 'companionsession/rate/' + this.props.navigation.getParam('sessionID'), {
+    fetch(store.api_base + 'companionsession/' + this.props.navigation.getParam('sessionID') + '/rate', {
       method: 'POST',
       headers:{
         Accept: 'application/json',
