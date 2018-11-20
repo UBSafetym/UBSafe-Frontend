@@ -20,81 +20,6 @@ export default class VirtualSafeWalkScreen extends React.Component {
     findSessionLoad: false
   }
 
-  onSelectionsChange = (preferredGenders) => {
-    this.setState({ preferredGenders })
-  }
-  savePreferences(context) {
-    context.setState({ loading: true, prefLoad: true });
-    // GOTTA CHANGE THIS
-    if(context.state.prefProximity == null)
-    {
-      context.setState({prefProximity: -1});
-    }
-
-    var user = store.user;//
-    var user_id = user.userID;
-
-    fetch(store.api_base + 'users/' +user_id, {
-      method: 'PUT',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "preferences.ageMin": parseInt(context.state.prefAgeMin, 10),
-        "preferences.ageMax": parseInt(context.state.prefAgeMax, 10),
-        "preferences.proximity": parseInt(context.state.prefProximity, 10),
-        "preferences.female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
-        "preferences.male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
-        "preferences.other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
-      }),
-    }).then( response => {
-      context.setState({ loading: false, prefLoad: false });
-      if(response.status === 200) {
-        Alert.alert(
-          'Preferences Updated',
-          '',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          { cancelable: false }
-        )
-        console.log("yay!");
-      }
-      else {
-        console.log("Error saving preferences");
-        console.log(response);
-      }
-    });
-  }
-
-  findCompanions(context) {
-      var user = store.user;
-      var user_id = user.userID;
-      context.setState({ loading: true, findSessionLoad: true });
-      fetch(store.api_base + 'recommendations/' + user_id)
-        .then((responseJson) => responseJson.json())
-        .then( (response) => {
-          console.log(response);
-          context.setState({ loading: false, findSessionLoad: false });
-          if(response.responseData.length > 0)
-          {
-            context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response.responseData })
-          }
-          else
-          {
-            Alert.alert(
-              'No Recommended Companions found',
-              'Please change your preferences',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            )
-          }
-        });
-  }
-
   render() {
     const { prefAgeMin, prefAgeMax, prefProximity, preferredGenders } = this.state;
     const fieldsFilled =(parseInt(prefAgeMin, 10) > 0 ) && 
@@ -128,7 +53,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="genders"
           items={genders}
           selectedItems={this.state.preferredGenders}
-          onSelectionsChange={this.onSelectionsChange}
+          onSelectionsChange={this.props.onSelectionsChange}
         />
 
         <Button
@@ -137,7 +62,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           backgroundColor="#189ad3"
           title="Save Preferences"
           disabled={!fieldsFilled}
-          onPress={()=> this.savePreferences(this)}
+          onPress={()=> this.props.savePreferences}
           disabled={this.state.loading || !fieldsFilled}
           loading={this.state.prefLoad}
         />
@@ -147,7 +72,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="findCompanionsButton"
           backgroundColor="#005073"
           title="Find Virtual Companion"
-          onPress={()=> this.findCompanions(this)}
+          onPress={()=> this.props.findCompanions}
           disabled={this.state.loading}
           loading={this.state.findSessionLoad}
         />

@@ -71,16 +71,43 @@ const users = {
   }
 };
 
-export default function request(url) {
+const mock_suggestions = {
+  1: [
+    users[2], users[3], users[4], users[5]
+  ],
+  2: [
+    users[3]
+  ],
+  3: [
+    users[2], users[4], users[5]
+  ],
+  4: []
+}
+
+export const getCompanions =  function getCompanions(userID) {
   return new Promise((resolve, reject) => {
-    const userID = parseInt(url.substr('/users/'.length), 10);
     process.nextTick(
-      () =>
-        users[userID]
-          ? resolve(users[userID])
-          : reject({
-              error: 'User with ' + userID + ' not found.',
-            }),
+      () => 
+      users[userID] ? resolve(mock_suggestions[userID])
+        : reject({
+            error: 'Could not find companions',
+          }),
     );
   });
+}
+
+export const savePreferences = function savePreferences(userID) {
+  return new Promise((resolve, reject) => {
+    process.nextTick(
+      () => 
+      users[userID] ? resolve('200')
+        : reject({
+            error: 'Could not find user',
+          }),
+    );
+  });
+}
+
+export const onSelectionsChange = function onSelectionsChange(){
+
 }
