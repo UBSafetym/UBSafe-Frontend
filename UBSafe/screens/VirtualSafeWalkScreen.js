@@ -29,12 +29,12 @@ export default class VirtualSafeWalkScreen extends React.Component {
     // GOTTA CHANGE THIS
     if(context.state.prefProximity == null)
     {
-      context.setState({prefProximity: -1});
+      context.setState({prefProximity: 100});
     }
 
     var user = store.user;//
     var user_id = user.userID;
-
+    console.log(context.prefProximity);
     fetch(store.api_base + 'users/' +user_id, {
       method: 'PUT',
       headers:{
@@ -44,7 +44,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
       body: JSON.stringify({
         "preferences.ageMin": parseInt(context.state.prefAgeMin, 10),
         "preferences.ageMax": parseInt(context.state.prefAgeMax, 10),
-        "preferences.proximity": -1,
+        "preferences.proximity": parseInt(context.state.prefProximity, 10),
         "preferences.female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
         "preferences.male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
         "preferences.other": context.state.preferredGenders.map(entry => entry.label).includes('Other')

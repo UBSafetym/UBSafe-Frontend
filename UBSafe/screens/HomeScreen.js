@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
         });
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
+      { enableHighAccuracy: false, maximumAge: 1000 },
     );
 
     var deviceToken = store.deviceToken;

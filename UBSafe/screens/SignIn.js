@@ -80,7 +80,7 @@ export default class SignIn extends React.Component {
                   });
                 },
                 (error) => context.setState({ error: error.message, loading: false }),
-                { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+                { enableHighAccuracy: true, maximumAge: 1000 },
               );
             }
             else {

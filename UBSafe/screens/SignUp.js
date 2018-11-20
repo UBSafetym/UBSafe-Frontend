@@ -84,7 +84,7 @@ export default class SignUp extends React.Component {
             });
           },
           (error) => console.log(error),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+          { enableHighAccuracy: true, maximumAge: 1000 },
         );
       })
       .catch(function(error) {

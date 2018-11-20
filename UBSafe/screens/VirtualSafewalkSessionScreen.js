@@ -69,7 +69,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         });
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      { enableHighAccuracy: true, maximumAge: 1000 },
     );
   }
 
@@ -165,7 +165,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         }
       },
       (error) => console.log(error),
-      { enableHighAccuracy: true, timeout: 200000, maximumAge: 1, distanceFilter: 1 },
+      { enableHighAccuracy: true, maximumAge: 1, distanceFilter: 1 },
     );
   }
 
