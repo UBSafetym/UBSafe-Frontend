@@ -43,7 +43,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
       body: JSON.stringify({
         "preferences.ageMin": parseInt(context.state.prefAgeMin, 10),
         "preferences.ageMax": parseInt(context.state.prefAgeMax, 10),
-        "preferences.proximity": -1,
+        "preferences.proximity": parseInt(context.state.prefProximity, 10),
         "preferences.female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
         "preferences.male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
         "preferences.other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
@@ -108,16 +108,19 @@ export default class VirtualSafeWalkScreen extends React.Component {
         <FormLabel>Minimum Companion Age</FormLabel>
           <FormInput placeholder="18-50..."
             onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}
+            className="ageMin"
           />
 
         <FormLabel>Maximum Companion Age</FormLabel>
         <FormInput placeholder="18-50..."
           onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}
+          className="ageMax"
         />
 
         <FormLabel>Preferred Companion Proximity</FormLabel>
         <FormInput placeholder=""
           onChangeText={(prefProximity) => this.setState({ prefProximity })}
+          className="proximity"
         />
 
         <FormLabel>Preferred Genders</FormLabel>
@@ -133,7 +136,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="savePrefButton"
           backgroundColor="#189ad3"
           title="Save Preferences"
-          disabled={!isEnabled}
+          disabled={!fieldsFilled}
           onPress={()=> this.savePreferences(this)}
           disabled={this.state.loading || !fieldsFilled}
           loading={this.state.prefLoad}

@@ -3,17 +3,6 @@ import VirtualSafeWalkScreen from '../VirtualSafeWalkScreen.js'
 import { shallow } from 'enzyme';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
-import MockAsyncStorage from 'mock-async-storage'
-
-const mock = () => {
-  const mockImpl = new MockAsyncStorage()
-  jest.mock('AsyncStorage', () => mockImpl)
-}
-
-mock();
-
-import { AsyncStorage as storage } from 'react-native'
-// Can be used like 'await storage.setItem('key', 'value')'
 
 describe('VirtualSafeWalkScreen', () => {
   it('Renders properly', () => {
@@ -26,7 +15,7 @@ describe('VirtualSafeWalkScreen', () => {
   });
 
   describe('savePreferences', () =>{
-    if('')
+    //if('')
   });
 
   it('correctly updates the state parameters in the component', () => {
@@ -34,7 +23,6 @@ describe('VirtualSafeWalkScreen', () => {
 
     // Store user data for Cormac's account because we aren't testing signup/login
     // so we have to hardcode this
-    wrapper.instance()._storeData('user', {UserId: '10215891348511047'});
     
     // Check that the component's state is initally null for all fields
     expect(wrapper.state().user_id).toEqual(null);
