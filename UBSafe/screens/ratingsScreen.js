@@ -17,6 +17,7 @@ export default class RatingsScreen extends React.Component{
   }
   
   submitRating(){
+    var context = this;
     var rating = this.state.rating;
     fetch(store.api_base + 'companionsession/' + this.props.navigation.getParam('sessionID') + '/rate', {
       method: 'POST',
@@ -32,17 +33,19 @@ export default class RatingsScreen extends React.Component{
         db.collection("companion_sessions").doc(this.props.navigation.getParam('sessionID')).delete().then(function(){
           Alert.alert(
             'Thank you for getting home safely',
+            '',
             [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
+              {text: 'OK', onPress: () => context.props.navigation.navigate('VirtualSafewalk')},
             ],
             { cancelable: false }
           )
-          this.props.navigation.navigate('HomeScreen'); // WILL THIS WORK?
+           // WILL THIS WORK?
         })
       }
       else {
         Alert.alert(
           'Could not submit rating',
+          '',
           [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ],

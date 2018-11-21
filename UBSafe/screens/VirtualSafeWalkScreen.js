@@ -5,8 +5,6 @@ import SelectMultiple from 'react-native-select-multiple';
 import store from '../store.js';
 
 const genders = ['Male', 'Female', 'Other'];
-//var api_base = "http://localhost:8080/";
-//const api_base = "http://ubsafe.azurewebsites.net/api/";
 
 export default class VirtualSafeWalkScreen extends React.Component {
   state = {

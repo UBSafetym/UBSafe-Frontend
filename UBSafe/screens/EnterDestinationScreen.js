@@ -7,8 +7,6 @@ import store from '../store.js';
 
 const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
-//const api_base = "http://ubsafe.azurewebsites.net/api/";
-// const api_base = "https://polar-escarpment-56098.herokuapp.com/";
 
 export default class EnterDestinationScreen extends React.Component {
 
@@ -127,8 +125,6 @@ export default class EnterDestinationScreen extends React.Component {
           predefinedPlaces={[homePlace, workPlace]}
 
           debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-          //renderLeftButton={()  => <Image source={require('path/custom/left-icon')} />}
-          //renderRightButton={() => <Text>Custom text after the input</Text>}
         />
     );
   }

@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, Alert } from 'react-native';
 import { MapView } from 'expo';
 import { Marker, Circle } from 'react-native-maps';
 import { List, ListItem, Button } from 'react-native-elements';
-import { GeoPoint } from 'firebase/firestore';
+import * as firebase from 'firebase';
 import { Firebase } from '../firebaseConfig.js';
 import store from '../store.js';
 
@@ -13,9 +13,9 @@ db.settings({
 });
 authentication = Firebase.auth();
 
-// const api_base = "http://ubsafe.azurewebsites.net/api/";
-//const api_base = "https://polar-escarpment-56098.herokuapp.com/";
-const nice = 69; // nice
+const nice = 69.0; // nice
+const feetPerMile = 5280.0;
+const feetPerDegree = nice * feetPerMile; // nice
 export default class VirtualSafewalkSessionScreen extends React.Component {
   state = {
     timer: null,
@@ -27,30 +27,35 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     sourceLong: 0.0,
     destinationLat: 0.0,
     destinationLong: 0.0,
+    latitudeDelta: 0.00922,
+    longitudeDelta: 0.00421,
     error: null,
     joinedWatchers: [],
-    active: true
+    active: true,
+    unsubscribe: null
   }
 
   getMagnitude(curLat, curLong) {
-    const feetPerDegree = nice * 5280; // nice
+    //const feetPerDegree = nice * 5280.0; // nice
     var latSquared = Math.pow(Math.abs(this.state.travellerLat - curLat), 2);
     var longSquared = Math.pow(Math.abs(this.state.travellerLong - curLong), 2);
     var magnitude = Math.sqrt(latSquared + longSquared);
     var changeInPositionInFeet = magnitude * feetPerDegree;
 
+    this.setState({ travellerLat: curLat, travellerLong: curLong });
     return changeInPositionInFeet;
   }
 
   updateUserLocation(travellerLat, travellerLong) {
     db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
-      travellerLoc: new GeoPoint(travellerLat, travellerLong)
+      travellerLoc: new firebase.firestore.GeoPoint(travellerLat, travellerLong)
     })
   }
 
   checkReachedDestination() {
+    console.log("Check reached destination");
     var distanceFromDestination = this.getMagnitude(this.state.destinationLat, this.state.destinationLong);
-    return distanceFromDestination < 40;
+    return distanceFromDestination < 40.0;
   }
 
   getSourcePosition() {
@@ -74,20 +79,20 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   alertEndSession() {
-    clearInterval(this.state.timer);
     Alert.alert(
-      'Are you sure you want to end your walking session?',
+      'Are you sure you want to end your session?',
+      'You will not be able to return to this session',
       [
-        {text: 'End walking session', onPress: () => this.endSession()},
+        {text: 'OK', onPress: () => this.endSession()},
       ],
       { cancelable: true }
     )
-    
   }
 
   alertCompanions() {
     Alert.alert(
       'Send alert to companions?',
+      '',
       [
         {text: 'Send Alert', onPress: () => this.sendEmergencyAlert()},
       ],
@@ -96,7 +101,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   sendEmergencyAlert() {
-    fetch(store.api_base + 'alert', {
+    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -109,6 +114,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     }).then( response => {
       Alert.alert(
         'Alert Sent',
+        'Call 911 if you are in immediate danger',
         [
           {text: 'Close', onPress: () => console.log("ok pressed")},
         ],
@@ -116,7 +122,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       )
       // Maybe we gotta do different DB updating stuff?
       db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
-        travellerLoc: new GeoPoint(this.state.travellerLong, this.state.travellerLong),
+        travellerLoc: new firebase.firestore.GeoPoint(this.state.travellerLong, this.state.travellerLong),
       }).then(function() {
         // Idk if we need a promise
         this.props.navigation.navigate('RateSessionScreen', { companions: this.state.joinedWatchers, sessionID: this.state.sessionID });
@@ -127,7 +133,9 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   // I'm going to make a different function for pressing the 'end session' button
   // but it might be best to put it in here
   endSession() {
-    fetch(store.api_base + 'alert', {
+    clearInterval(this.state.timer);
+    var context = this;
+    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -137,30 +145,43 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         sessionID: this.props.navigation.getParam('session').id,
         alertCode: store.alertsToCodes['REACHED_DESTINATION']
       }),
-    }).then( response => {
-      db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
-        travellerLoc: new GeoPoint(this.state.travellerLong, this.state.travellerLong),
-        active: false // Maybe we shouldn't do this. Maybe this should be done when the rating is given
-      }).then(function(){
-        // Idk if we need a promise
-        this.props.navigation.navigate('RateSessionScreen', { companions: this.state.joinedWatchers, sessionID: this.state.sessionID });
-      });
+    }).then(response => {
+        console.log(response);
+        if(response.status === 200){
+          context.state.unsubscribe();
+          context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
+        }
+        else{
+          Alert.alert(
+            'h e c c',
+            '',
+            [
+              {text: 'Oof', onPress: () => console.log("oof")},
+            ],
+            { cancelable: false }
+          );
+        }
     });
   }
 
-  tick(){
+  checkUserPosition(){
     navigator.geolocation.getCurrentPosition(
       (location) => {
         var travellerLat = location.coords.latitude;
         var travellerLong = location.coords.longitude;
-        this.setState({ travellerLat: travellerLat, travellerLong: travellerLong });
         
+        // For now, we're not gonna have a notification for reaching their destination
+        // Maybe will handle this in changeInPosition instead
+        /*
         var reachedDestination = this.checkReachedDestination(travellerLat, travellerLong);
         if(reachedDestination) {
           this.endSession();
         }
-        var changeInPositionInFeet = this.getMagnitude(travellerLat, travellerLong);
-        if(changeInPositionInFeet > 20) {
+        */
+        console.log("checkUserPosition");
+        var changeInPositionInFeet = this.getMagnitude(location.coords.latitude, location.coords.longitude);
+        // We'll change this back to 20 once we're done with testing
+        if(changeInPositionInFeet > 5) {
           this.updateUserLocation(travellerLat, travellerLong);
         }
       },
@@ -169,20 +190,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     );
   }
 
-  // Might have to change this to componentWillMount()
   componentDidMount() {
-    var user = store.user;
     // If the current user is the traveller, set up a watchPosition that will update
     // the state's current traveller position when the traveller's position changes
-    // GOTTA HAVE A DIFFERENT CHECK CAUSE THIS WILL BE NULL IF THEY'RE A COMPANION JOINING FROM PUSH NOTIFICIATIONS
-
-    //if(user.userID == this.props.navigation.getParam('session').data.traveller.id) {
     if(!store.sessionID){
       var session = this.props.navigation.getParam('session');
-      // Set a watcher on the traveller's position
-      // When the position changes, the component's lat/long state will be changed
-      // and depending on how far they've moved, we'll update the db as well
       // REFACTOR IN THE FUTURE TO NOT BE SO SPAGHETTIFIED
+
+      // Set up to get original position of the user and their destination
       this.getSourcePosition();
       this.setState({
         travellerLat: session.data.travellerLoc._lat,
@@ -191,20 +206,23 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         destinationLong: session.data.travellerDest._long
       });
 
-      let timer = setInterval(this.tick.bind(this), 500);
+      // Set up the timer that will check user location every 2000 seconds
+      let timer = setInterval(this.checkUserPosition.bind(this), 2000);
       this.setState({timer});
 
       // If a new watcher has been added to the session, we want to know that so we can rate them afterwards
       var context = this;
-      db.collection("companion_sessions").doc(session.id).onSnapshot(function(doc) {
+      var unsubscribe = db.collection("companion_sessions").doc(session.id).onSnapshot(function(doc) {
         var joinedWatchers = doc.data().joinedWatchers;
         context.setState({ joinedWatchers: joinedWatchers, sessionID: session.id }); // Gotta change this to take in the session id when coming from push notification
       });
+      this.setState({ unsubscribe: unsubscribe });
     }
+
     // If the current user is a companion, set up a listener on the current session record in Firestore
-    // PROBABLY NEED TO CHANGE THE 'this.props.navigation.blahblah' here because a companion
-    // wouldn't be navigating form the previous screen where this data is set
     else {
+      // Get all the intial information about the session and add the
+      // current companion to joinedWatchers
       var docRef = db.collection("companion_sessions").doc(store.sessionID);
       var context = this;
       docRef.get().then(function(doc){
@@ -216,7 +234,9 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             destinationLat: data.travellerDest._lat,
             destinationLong: data.travellerDest._long,
             sourceLat: data.travellerSource._lat,
-            sourceLong: data.travellerSource._long
+            sourceLong: data.travellerSource._long,
+            latitudeDelta: Math.abs(data.travellerSource._lat - data.travellerDest._lat),
+            longitudeDelta: Math.abs(data.travellerSource._long - data.travellerDest._long)
           });
           var watchers = doc.data().joinedWatchers;
           watchers.push(store.user);
@@ -230,11 +250,13 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         }
       });
 
-      docRef.onSnapshot(function(doc) {
+      // Setup the listener on the session document
+      var unsubscribe = docRef.onSnapshot(function(doc) {
         var active = doc.data().active;
         if(!active){
           // Push notification will be handled somewhere
-          context.props.navigation.navigate('Home'); // Idk if this is gonna work
+          store.sessionID = null;
+          context.props.navigation.navigate('VirtualSafewalk'); // Idk if this is gonna work
         }
         var travellerLat = doc.data().travellerLoc._lat;
         var travellerLong = doc.data().travellerLoc._long;
@@ -242,7 +264,13 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
                         travellerLong: travellerLong 
                       });
       });
+      this.setState({ unsubscribe: unsubscribe });
     }
+  }
+
+  componentWillUnmount(){
+    this.state.unsubscribe();
+    clearInterval(this.state.timer);
   }
 
   renderItem = ({ item }) => {
@@ -260,10 +288,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   render() {
-    // Should have 2 returns: 1 for the traveller and 1 for the companions
-    // Traveller screen should just have the buttons for reaching out for help/ending the sesion
-    // Companions should just have the map view of the traveller with source and dest
-    // Global session ID will only be set if this user is a companion
     if(!store.sessionID) {
       return(
         <View style={styles.rootContainer}>
@@ -302,14 +326,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
               initialRegion={{
               latitude: this.state.travellerLat,
               longitude: this.state.travellerLong,
-              latitudeDelta: 0.00922,
-              longitudeDelta: 0.00421
+              latitudeDelta: this.state.latitudeDelta,
+              longitudeDelta: this.state.longitudeDelta
             }}
             region={{
               latitude: this.state.travellerLat,
               longitude: this.state.travellerLong,
-              latitudeDelta: 0.00922,
-              longitudeDelta: 0.00421
+              latitudeDelta: this.state.latitudeDelta,
+              longitudeDelta: this.state.longitudeDelta
             }}
             zoomEnabled={false}
             rotateEnabled={false}
