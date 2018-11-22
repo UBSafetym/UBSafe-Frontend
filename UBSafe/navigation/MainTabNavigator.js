@@ -12,6 +12,7 @@ import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
 import DestinationLoadingScreen from '../screens/DestinationLoadingScreen.js';
 import RatingsScreen from '../screens/ratingsScreen.js';
+import LogoutScreen from '../screens/LogoutScreen.js';
 import store from '../store.js';
 
 const HomeStack = createStackNavigator({
@@ -123,12 +124,27 @@ SafetyKitStack.navigationOptions = {
   ),
 };
 
+const LogoutStack = createStackNavigator({
+  Logout: LogoutScreen
+});
+
+LogoutStack.navigationOptions = {
+  tabBarLabel: 'Logout',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-log-out${focused ? '' : '-outline'}` : 'logout'}
+    />
+  ),
+};
+
 var MainTabInitialRoute = (store.session == null || store.session == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
 const MainTabNavigator = createBottomTabNavigator({
   HomeStack,
   EmergencyResourcesStack,
   VirtualSafewalkStack,
   SafetyKitStack,
+  LogoutStack
 }, { initialRouteName: MainTabInitialRoute });
 
 export default MainTabNavigator;

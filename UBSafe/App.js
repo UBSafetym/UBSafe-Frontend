@@ -31,7 +31,7 @@ export default class App extends React.Component {
     isLoadingComplete: false
   };
 
-  navigateToSafewalk(){
+  navigateToSafewalk() {
     this.navigator.dispatch(NavigationActions.navigate(
       { routeName: 'Main', action: NavigationActions.navigate(
         { routeName: 'VirtualSafewalkStack', action: NavigationActions.navigate(
