@@ -10,6 +10,7 @@ import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
+import DestinationLoadingScreen from '../screens/DestinationLoadingScreen.js';
 import RatingsScreen from '../screens/ratingsScreen.js';
 import store from '../store.js';
 
@@ -63,6 +64,13 @@ const VirtualSafewalkStack = createStackNavigator({
     screen: EnterDestinationScreen,
     navigationOptions: {
       title: "Enter Destination"
+    }
+  },
+  DestinationLoadingScreen: {
+    screen: DestinationLoadingScreen,
+    navigationOptions: {
+      headerLeft: null,
+      tabBarVisible: false
     }
   },
   VirtualSafewalkSessionScreen: {
