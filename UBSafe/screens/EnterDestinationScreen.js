@@ -43,6 +43,10 @@ export default class EnterDestinationScreen extends React.Component {
           console.log(response);
           if(response.status === 200) {
             response.json().then(responseJSON =>{
+              console.log("anus");
+              console.log(responseJSON.responseData);
+              store.session = responseJSON.responseData.data;
+              store.session.id = responseJSON.responseData.id;
               this.props.navigation.navigate('VirtualSafewalkSessionScreen', { session: responseJSON.responseData });
               console.log("yay!");
             });

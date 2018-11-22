@@ -49,7 +49,7 @@ EmergencyResourcesStack.navigationOptions = {
   ),
 };
 
-var VirtualSafeWalkInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'VirtualSafewalk' : 'VirtualSafewalkSessionScreen';
+var VirtualSafeWalkInitialRoute = (store.session == null || store.session == undefined) ? 'VirtualSafewalk' : 'VirtualSafewalkSessionScreen';
 
 const VirtualSafewalkStack = createStackNavigator({
   VirtualSafewalk: VirtualSafeWalkScreen,
@@ -115,7 +115,7 @@ SafetyKitStack.navigationOptions = {
   ),
 };
 
-var MainTabInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
+var MainTabInitialRoute = (store.session == null || store.session == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
 const MainTabNavigator = createBottomTabNavigator({
   HomeStack,
   EmergencyResourcesStack,

@@ -139,6 +139,9 @@ export default class SignUp extends React.Component {
           />
 
           <Button
+            full
+            rounded
+            primary
             buttonStyle={{ marginTop: 20, marginBottom: 20 }}
             backgroundColor="#03A9F4"
             title="SIGN UP"

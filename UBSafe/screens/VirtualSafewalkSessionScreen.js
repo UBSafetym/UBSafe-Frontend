@@ -16,6 +16,7 @@ authentication = Firebase.auth();
 const nice = 69.0; // nice
 const feetPerMile = 5280.0;
 const feetPerDegree = nice * feetPerMile; // nice
+const metersPerDegree = 110000;
 export default class VirtualSafewalkSessionScreen extends React.Component {
   state = {
     timer: null,
@@ -32,7 +33,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     error: null,
     joinedWatchers: [],
     active: true,
-    unsubscribe: null
+    unsubscribe: null,
+    loading: false
   }
 
   getMagnitude(curLat, curLong) {
@@ -122,10 +124,9 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       )
       // Maybe we gotta do different DB updating stuff?
       db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
-        travellerLoc: new firebase.firestore.GeoPoint(this.state.travellerLong, this.state.travellerLong),
+        travellerLoc: new firebase.firestore.GeoPoint(this.state.travellerLat, this.state.travellerLong),
       }).then(function() {
         // Idk if we need a promise
-        this.props.navigation.navigate('RateSessionScreen', { companions: this.state.joinedWatchers, sessionID: this.state.sessionID });
       });
     });
   }
@@ -133,7 +134,9 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   // I'm going to make a different function for pressing the 'end session' button
   // but it might be best to put it in here
   endSession() {
+    this.setState({ loading: true }); 
     clearInterval(this.state.timer);
+    this.state.unsubscribe();
     var context = this;
     fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
       method: 'POST',
@@ -148,8 +151,13 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     }).then(response => {
         console.log(response);
         if(response.status === 200){
-          context.state.unsubscribe();
-          context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
+          db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
+            active: false
+          }).then(function(){
+            context.setState({loading: false});
+            context.state.unsubscribe();
+            context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
+          })
         }
         else{
           Alert.alert(
@@ -193,10 +201,10 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   componentDidMount() {
     // If the current user is the traveller, set up a watchPosition that will update
     // the state's current traveller position when the traveller's position changes
-    if(!store.sessionID){
+    if(!store.session || store.session.traveller.id == store.user.userID){
       var session = this.props.navigation.getParam('session');
-      // REFACTOR IN THE FUTURE TO NOT BE SO SPAGHETTIFIED
-
+      console.log("helbo");
+      console.log(store.session);
       // Set up to get original position of the user and their destination
       this.getSourcePosition();
       this.setState({
@@ -223,24 +231,28 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     else {
       // Get all the intial information about the session and add the
       // current companion to joinedWatchers
-      var docRef = db.collection("companion_sessions").doc(store.sessionID);
+      var docRef = db.collection("companion_sessions").doc(store.session.id);
       var context = this;
+      
       docRef.get().then(function(doc){
         if(doc.exists) {
           var data = doc.data();
+          var latitudeDelta = Math.abs(data.travellerSource._lat - data.travellerDest._lat) * 2.0;
+          var longitudeDelta = Math.abs(data.travellerSource._long - data.travellerDest._long) * 2.0;
+          var radius = (latitudeDelta * longitudeDelta * metersPerDegree) / 200.0;
           context.setState({
-            travellerLat: data.travellerLoc._lat,
-            travellerLong: data.travellerLoc._long,
-            destinationLat: data.travellerDest._lat,
-            destinationLong: data.travellerDest._long,
-            sourceLat: data.travellerSource._lat,
-            sourceLong: data.travellerSource._long,
-            latitudeDelta: Math.abs(data.travellerSource._lat - data.travellerDest._lat),
-            longitudeDelta: Math.abs(data.travellerSource._long - data.travellerDest._long)
+            travellerLat: doc.data().travellerLoc._lat,
+            travellerLong: doc.data().travellerLoc._long,
+            destinationLat: doc.data().travellerDest._lat,
+            destinationLong: doc.data().travellerDest._long,
+            sourceLat: doc.data().travellerSource._lat,
+            sourceLong: doc.data().travellerSource._long,
+            latitudeDelta: latitudeDelta,
+            longitudeDelta: longitudeDelta,
+            radius: radius
           });
           var watchers = doc.data().joinedWatchers;
           watchers.push(store.user);
-
           docRef.update({
             joinedWatchers: watchers
           });
@@ -255,7 +267,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         var active = doc.data().active;
         if(!active){
           // Push notification will be handled somewhere
-          store.sessionID = null;
+          store.session = null;
+          context.state.unsubscribe();
           context.props.navigation.navigate('VirtualSafewalk'); // Idk if this is gonna work
         }
         var travellerLat = doc.data().travellerLoc._lat;
@@ -266,11 +279,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       });
       this.setState({ unsubscribe: unsubscribe });
     }
-  }
-
-  componentWillUnmount(){
-    this.state.unsubscribe();
-    clearInterval(this.state.timer);
   }
 
   renderItem = ({ item }) => {
@@ -288,22 +296,32 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   render() {
-    if(!store.sessionID) {
+    if(!store.session || store.session.traveller.id == store.user.userID) {
       return(
         <View style={styles.rootContainer}>
           <View style={styles.buttonsContainer}>
             <Button
+              full
+              rounded
+              primary
               style={styles.button}
               backgroundColor="#F31431"
               title="Alert Companions"
               onPress={()=> this.alertCompanions()}
+              loading={this.state.loading}
+              disabled={this.state.loading}
             />
 
             <Button
+              full
+              rounded
+              primary
               style={styles.button}
               backgroundColor="#005073"
               title="End Virtual Companion Session"
               onPress={()=> this.alertEndSession()}
+              loading={this.state.loading}
+              disabled={this.state.loading}
             />
           </View>
           <View style={styles.watchersContainer}>
@@ -324,14 +342,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         <MapView
               style={styles.mapView}
               initialRegion={{
-              latitude: this.state.travellerLat,
-              longitude: this.state.travellerLong,
+              latitude: (this.state.travellerLat + this.state.destinationLat)/2.0,
+              longitude: (this.state.travellerLong + this.state.destinationLong)/2.0,
               latitudeDelta: this.state.latitudeDelta,
               longitudeDelta: this.state.longitudeDelta
             }}
             region={{
-              latitude: this.state.travellerLat,
-              longitude: this.state.travellerLong,
+              latitude: (this.state.travellerLat + this.state.destinationLat)/2.0,
+              longitude: (this.state.travellerLong + this.state.destinationLong)/2.0,
               latitudeDelta: this.state.latitudeDelta,
               longitudeDelta: this.state.longitudeDelta
             }}
@@ -346,7 +364,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
               radius={15}
               center={{longitude: this.state.travellerLong, latitude: this.state.travellerLat}}
               fillColor="#4885ed"
-              strokeWidth={4}
               strokeColor="#FFFFFF"
             />
           </MapView>

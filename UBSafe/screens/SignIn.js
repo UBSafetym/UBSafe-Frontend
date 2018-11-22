@@ -69,10 +69,10 @@ export default class SignIn extends React.Component {
                   var longitude = position.coords.longitude;
                   geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
                     context.setState({ loading: false });
-                    if(store.sessionID) {
+                    if(store.session) {
                       context.props.navigation.navigate('Main', {}, NavigationActions.navigate({routeName: 'VirtualSafewalkStack', action: NavigationActions.navigate({routeName: 'VirtualSafewalkSessionScreen'})}));
                     }
-                    else{
+                    else {
                       context.props.navigation.navigate('Main');
                     }
                   }, (error) => {
