@@ -38,23 +38,22 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   getMagnitude(curLat, curLong) {
-    //const feetPerDegree = nice * 5280.0; // nice
     var latSquared = Math.pow(Math.abs(this.state.travellerLat - curLat), 2);
     var longSquared = Math.pow(Math.abs(this.state.travellerLong - curLong), 2);
     var magnitude = Math.sqrt(latSquared + longSquared);
     var changeInPositionInFeet = magnitude * feetPerDegree;
 
-    this.setState({ travellerLat: curLat, travellerLong: curLong });
     return changeInPositionInFeet;
   }
 
   updateUserLocation(travellerLat, travellerLong) {
+    this.setState({ travellerLat: travellerLat, travellerLong: travellerLong });
     db.collection("companion_sessions").doc(this.props.navigation.getParam('session').id).update({
       travellerLoc: new firebase.firestore.GeoPoint(travellerLat, travellerLong)
     })
   }
 
-  checkReachedDestination() {
+  checkreachedDestination() {
     console.log("Check reached destination");
     var distanceFromDestination = this.getMagnitude(this.state.destinationLat, this.state.destinationLong);
     return distanceFromDestination < 40.0;
@@ -100,6 +99,20 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       ],
       { cancelable: true }
     )
+  }
+
+  sendReachedDestinationAlert(){
+    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
+      method: 'POST',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionID: this.props.navigation.getParam('session').id,
+        alertCode: store.alertsToCodes['REACHED_DESTINATION']
+      }),
+    });
   }
 
   sendEmergencyAlert() {
@@ -172,7 +185,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     });
   }
 
-  checkUserPosition(){
+  checkUserPosition() {
     navigator.geolocation.getCurrentPosition(
       (location) => {
         var travellerLat = location.coords.latitude;
@@ -180,18 +193,19 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         
         // For now, we're not gonna have a notification for reaching their destination
         // Maybe will handle this in changeInPosition instead
-        /*
-        var reachedDestination = this.checkReachedDestination(travellerLat, travellerLong);
-        if(reachedDestination) {
-          this.endSession();
-        }
-        */
+        
         console.log("checkUserPosition");
         var changeInPositionInFeet = this.getMagnitude(location.coords.latitude, location.coords.longitude);
         // We'll change this back to 20 once we're done with testing
         if(changeInPositionInFeet > 5) {
           this.updateUserLocation(travellerLat, travellerLong);
         }
+
+        var reachedDestination = this.checkreachedDestination();
+        if(reachedDestination) {
+          this.sendReachedDestinationAlert();
+        }
+        
       },
       (error) => console.log(error),
       { enableHighAccuracy: true, maximumAge: 1, distanceFilter: 1 },
