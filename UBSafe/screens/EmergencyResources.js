@@ -66,8 +66,8 @@ export default class EmergencyResourcesScreen extends React.Component {
       // We'll add more numbers to this list
       // Campus security is currently Marshall's phone number
     const emergencyNumbers = [
-      { name: "Campus Security", number: { number: '7783200245', prompt: true } },
-      { name: "911 Emergency", number: { number: '7783200245', prompt: true } }
+      { name: "911 Emergency", number: { number: '7783200245', prompt: true } },
+      { name: "Campus Security", number: { number: '7783200245', prompt: true } }      
     ];
 
     return (
@@ -80,7 +80,7 @@ export default class EmergencyResourcesScreen extends React.Component {
           backgroundColor="#005073"
           icon={{name: 'call', type: 'material-icons'}}
           title='Call 911' 
-          onPress={()=> this.callTU(store.emergencyNumbers['EMERGENCY'])}
+          onPress={()=> this.callTU(emergencyNumbers[0].number)}
           />
        
         <Button
@@ -91,7 +91,7 @@ export default class EmergencyResourcesScreen extends React.Component {
           backgroundColor="#005073"
           icon={{name: 'security', type: 'material-icons'}}
           title='Campus Security' 
-          onPress={()=> this.callTU(store.emergencyNumbers['CAMPUS_SECURITY'])}
+          onPress={()=> this.callTU(emergencyNumbers[1].number)}
           />
     
         <Button
