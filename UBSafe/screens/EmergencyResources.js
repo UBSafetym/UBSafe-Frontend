@@ -1,18 +1,21 @@
 import React from "react";
 import call from "react-native-phone-call";
-import { FlatList, View, Alert, StyleSheet, Text} from 'react-native';
-import { List, ListItem, Button, Icon, TouchableOpacity } from 'react-native-elements';
+import { View, Alert, StyleSheet} from 'react-native';
+import { ListItem, Button } from 'react-native-elements';
 import store from '../store.js';
 
 export default class EmergencyResourcesScreen extends React.Component {
+  state = {
+    loading: false
+  }
   callTU = (receiver) => {
     call(receiver).catch(console.error);
   };
 
-  alertUsers(context) {
+  alertUsers() {
     var user = store.user;
     var user_id = user.userID;
-
+    this.setState({ loading: true });
     fetch(store.api_base + 'alert/', {
       method: 'POST',
       headers:{
@@ -24,6 +27,7 @@ export default class EmergencyResourcesScreen extends React.Component {
         "alertCode": store.alertsToCodes['ALERT_NEARBY_USERS']
       }),
     }).then( response => {
+      this.setState({ loading: false })
       if(response.status === 200) {
         Alert.alert(
           'Alerts sent!',
@@ -103,6 +107,8 @@ export default class EmergencyResourcesScreen extends React.Component {
           icon={{name: 'announcement', type: 'material-icons'}}
           title='Alert Nearby Users' 
           onPress={()=> this.alertUsers()}
+          loading={this.state.loading}
+          disabled={this.state.loading}
           />
         </View>   
     );
