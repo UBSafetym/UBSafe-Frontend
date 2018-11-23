@@ -6,7 +6,6 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
-import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
@@ -110,19 +109,6 @@ VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
   return navigationOptions
 };
 
-const SafetyKitStack = createStackNavigator({
-  SafetyKit: SafetyKitScreen,
-});
-
-SafetyKitStack.navigationOptions = {
-  tabBarLabel: 'Safety Kit',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-medkit${focused ? '' : '-outline'}` : 'md-medkit'}
-    />
-  ),
-};
 
 const LogoutStack = createStackNavigator({
   Logout: LogoutScreen
@@ -143,7 +129,6 @@ const MainTabNavigator = createBottomTabNavigator({
   HomeStack,
   EmergencyResourcesStack,
   VirtualSafewalkStack,
-  SafetyKitStack,
   LogoutStack
 }, { initialRouteName: MainTabInitialRoute });
 
