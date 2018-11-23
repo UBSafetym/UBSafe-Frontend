@@ -20,6 +20,8 @@ export default class HomeScreen extends React.Component {
   state = {
     latitude: 0.0,
     longitude: 0.0,
+    latitudeDelta: 0.00922,
+    longitudeDelta: 0.00421,
     error: null,
     showUserLocation : true,
     followsUserLocation : true,
@@ -32,6 +34,14 @@ export default class HomeScreen extends React.Component {
         this.setState({ showMarkers: !this.state.showMarkers });
         console.log(this.state.showMarkers);
     };
+
+    showRegion(region){
+      this.setState({ latitude: region.latitude,
+                      longitude: region.longitude,
+                      latitudeDelta: region.latitudeDelta,
+                      longitudeDelta: region.longitudeDelta
+                    });
+    }
 
 
   // On simulators, this defaults to San Francisco for some reason
@@ -61,6 +71,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    var key = 0;
     return (
       <View style={styles.parentView}>
       <MapView
@@ -68,19 +79,21 @@ export default class HomeScreen extends React.Component {
         initialRegion={{
           latitude: this.state.latitude,
           longitude: this.state.longitude,
-          latitudeDelta: 0.00922,
-          longitudeDelta: 0.00421
+          latitudeDelta: this.state.latitudeDelta,
+          longitudeDelta: this.state.longitudeDelta
         }}
         region={{
           latitude: this.state.latitude,
           longitude: this.state.longitude,
-          latitudeDelta: 0.00922,
-          longitudeDelta: 0.00421
+          latitudeDelta: this.state.latitudeDelta,
+          longitudeDelta: this.state.longitudeDelta
         }}
         showsUserLocation= {this.state.showUserLocation}
+        onRegionChangeComplete={(region) => this.showRegion(region)}
       >
         {this.state.showMarkers && this.state.markers.map(marker => (
             <MapView.Marker
+            key={key++}
             coordinate = {{
                     latitude: marker.geometry.coordinates[1],
                     longitude: marker.geometry.coordinates[0]
