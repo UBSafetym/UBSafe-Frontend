@@ -2,7 +2,9 @@ import React from 'react';
 import { MapView } from 'expo';
 import { Firebase } from '../firebaseConfig.js';
 import { View, StyleSheet } from 'react-native';
-import store from '../store.js'
+import store from '../store.js';
+import { Button } from 'react-native-elements';
+import BluePhones from '../mapMarkers/bluePhoneLocations.json';
 db = Firebase.firestore();
 db.settings({
     timestampsInSnapshots: true
@@ -20,8 +22,17 @@ export default class HomeScreen extends React.Component {
     longitude: 0.0,
     error: null,
     showUserLocation : true,
-    followsUserLocation : true
+    followsUserLocation : true,
+    markers : BluePhones.features,
+    showMarkers : true
   };
+
+  // Toggles blue phone map markers
+    toggleBluePhones(){
+        this.setState({ showMarkers: !this.state.showMarkers });
+        console.log(this.state.showMarkers);
+    };
+
 
   // On simulators, this defaults to San Francisco for some reason
   // so to properly test this, we'll have to download the app
@@ -39,7 +50,7 @@ export default class HomeScreen extends React.Component {
     );
 
     var deviceToken = store.deviceToken;
-      
+
     db.collection('users').doc(authentication.currentUser.providerData[0].uid).update({ deviceToken: deviceToken }).then(function(data){
       console.log("Oh heck ya bud");
     })
@@ -51,7 +62,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, position: 'relative'}}>
+      <View style={styles.parentView}>
       <MapView
         style={styles.mapContainer}
         initialRegion={{
@@ -67,14 +78,48 @@ export default class HomeScreen extends React.Component {
           longitudeDelta: 0.00421
         }}
         showsUserLocation= {this.state.showUserLocation}
-      />
+      >
+        {this.state.showMarkers && this.state.markers.map(marker => (
+            <MapView.Marker
+            coordinate = {{
+                    latitude: marker.geometry.coordinates[1],
+                    longitude: marker.geometry.coordinates[0]
+                }}
+            title = {marker.properties.Name}
+            pinColor = 'aqua'
+            />
+        ))}
+        </MapView>
+        <Button
+            style={styles.bluePhoneButton}
+            full
+            rounded
+            backgroundColor="blue"
+            onPress={() => this.toggleBluePhones()}
+            title={this.state.showMarkers ? "Hide Blue Phones" : "Show Blue Phones"}
+        >
+        </Button>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+    parentView : {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        alignItems: 'center'
+    },
   mapContainer: {
-    ...StyleSheet.absoluteFillObject 
-  }
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -1
+  },
+    bluePhoneButton: {
+        position: 'relative',
+        width: 200,
+        bottom: -550,
+        zIndex: 100,
+    }
+
 });

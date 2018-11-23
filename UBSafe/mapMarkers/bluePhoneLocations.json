@@ -1,0 +1,443 @@
+BluePhones = {
+    "type": "FeatureCollection",
+    "name": "merged",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": [{
+            "type": "Feature",
+            "properties": {
+                "Name": "Westbrook Mall & Thunderbird Boulevard ",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/VR4Pj2O_fqq2KjxdAzfSUiJq3aGCsFRmmEB2cmtCWfFlkMKtd9CnuwU3qcRZeGLygf_TRszTfGoUXlsZHd9NAuarSQh6yJz08J2ZWUgY\" height=\"200\" width=\"auto\" \/><br><br>#32<br>Nearest Landmarks: Thunderbird Parkade, Thunderbird Stadium",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/VR4Pj2O_fqq2KjxdAzfSUiJq3aGCsFRmmEB2cmtCWfFlkMKtd9CnuwU3qcRZeGLygf_TRszTfGoUXlsZHd9NAuarSQh6yJz08J2ZWUgY"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2418072, 49.2616995]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Thunderbird Boulevard & East Mall",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/SkB7Ufff4xekQYToHh5dH4J0tNbIYM4S0WG7kYInDO5lu0fzL1rCqeqFcCa18-Yj4AvgzEiiY9sgpdylyNaRJmASbur-llqxqztGy2FR\" height=\"200\" width=\"auto\" \/><br><br>#31<br>Nearest Landmark: Tennis Centre",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/SkB7Ufff4xekQYToHh5dH4J0tNbIYM4S0WG7kYInDO5lu0fzL1rCqeqFcCa18-Yj4AvgzEiiY9sgpdylyNaRJmASbur-llqxqztGy2FR"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.245573, 49.260096]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & Thunderbird Boulevard",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/JXKtA1M1K9kpI13Jh9ve6mD7WP7W_ALUiLK-mOS20dB1G3f1iVMyENjV2sXKaXujQ5C3kOdrF1TgNuZ3bWdl24AffFxILXO2KZCzjwOk\" height=\"200\" width=\"auto\" \/><br><br>#30<br>Nearest Landmark: Totem Park Student Residence",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/JXKtA1M1K9kpI13Jh9ve6mD7WP7W_ALUiLK-mOS20dB1G3f1iVMyENjV2sXKaXujQ5C3kOdrF1TgNuZ3bWdl24AffFxILXO2KZCzjwOk"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2506692, 49.2584646]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Rear Lane of Frank Forward",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/28j3TxoX48TJhkWSD4xcPwpKGZl09LYgAXkEI8uTQeSDaZLqtHPGhs2QbyS7oWxeuWl5Rg-ZglwK6rXE-y_dcal7WfLiKTW_21vX3Xgh\" height=\"200\" width=\"auto\" \/><br><br>#19<br>Nearest Landmark: Frank Forward",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/28j3TxoX48TJhkWSD4xcPwpKGZl09LYgAXkEI8uTQeSDaZLqtHPGhs2QbyS7oWxeuWl5Rg-ZglwK6rXE-y_dcal7WfLiKTW_21vX3Xgh"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2512808, 49.2613914]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Stores Road at EOS",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/ftUHeUmS7ZrygPRC9avSJw3vTDGB3oCM84LRjMNhFZM7LNP4gMHAu1BPLfjH06jw0-J8ZYyw8Fuc6YQEo_Jd9Ez9JFJstUOEm2R8OKtZ\" height=\"200\" width=\"auto\" \/><br><br>#12 <br>Nearest Landmark: Earth and Ocean Sciences Building - South",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/ftUHeUmS7ZrygPRC9avSJw3vTDGB3oCM84LRjMNhFZM7LNP4gMHAu1BPLfjH06jw0-J8ZYyw8Fuc6YQEo_Jd9Ez9JFJstUOEm2R8OKtZ"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2520533, 49.2621476]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Lower Mall & Pedestrian Path at West Parkade",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/i80NERbj09lmtw5Q0xc_UF05kMrm1a283LZ3bT9XDcxroG3s_vLL2eud93FvjomkJz8-DO7iXKLmpHbQeVsZfQEOxCOld7h_sXoLbCvY\" height=\"200\" width=\"auto\" \/><br><br>#27<br>Nearest Landmarks: West Parkade, Marine Drive Residence ",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/i80NERbj09lmtw5Q0xc_UF05kMrm1a283LZ3bT9XDcxroG3s_vLL2eud93FvjomkJz8-DO7iXKLmpHbQeVsZfQEOxCOld7h_sXoLbCvY"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2551432, 49.2621196]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "East Mall & Applied Science Lane",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/Y2xE62YAUFzI2-R2BvkmvpNauESFRegibWS3l7CIFonQ2MBzVW5IMKxiBt0euvb3skcPcZGvAj5RcGVpKiuaxGxD_oWwRpblQ846SS19\" height=\"200\" width=\"auto\" \/><br><br>#35<br>Nearest Landmark: Civil and Mechanical Engineering Building",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/Y2xE62YAUFzI2-R2BvkmvpNauESFRegibWS3l7CIFonQ2MBzVW5IMKxiBt0euvb3skcPcZGvAj5RcGVpKiuaxGxD_oWwRpblQ846SS19"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.24862, 49.2630718]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Health Sciences Plaza",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/SJDLqjHT7KAKLkrpRwsmI6GCj1_mNl0ldZiEDkMNCaUbu13rEIQRHWJYRyVuijcYkMOGZ_LRE48A21akFfU8oRiOJeurvdFjzNGqhvQG\" height=\"200\" width=\"auto\" \/><br><br>#9<br>Nearest Landmark: Woodward Library",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/SJDLqjHT7KAKLkrpRwsmI6GCj1_mNl0ldZiEDkMNCaUbu13rEIQRHWJYRyVuijcYkMOGZ_LRE48A21akFfU8oRiOJeurvdFjzNGqhvQG"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2474828, 49.2651302]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Crescent Road at Buchanan D",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/lBMZKAcIMaqyA1DbV71t_hdgk_rd3vPAccB8IRQsD3OZQMP9-PDanFS427jyrlZKkGWdEuqiJZuZdMFO3WLYn4RfEtOLbGCgB8CxftMs\" height=\"200\" width=\"auto\" \/><br><br>#22<br>Nearest Landmarks: Buchanan D, Chan Centre",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/lBMZKAcIMaqyA1DbV71t_hdgk_rd3vPAccB8IRQsD3OZQMP9-PDanFS427jyrlZKkGWdEuqiJZuZdMFO3WLYn4RfEtOLbGCgB8CxftMs"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2544994, 49.2693447]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Memorial Road & Fraser River Parkade",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/UvIzrWPkPb0l1GRUDY3yOQWpaLrGjcO3s-vBuSVxRIO3QZUon2R2xBHH5_xjrNrvhWfsO_niaMc2guL_1Tg3E73ODdo-baqHPKtepedL\" height=\"200\" width=\"auto\" \/><br><br>#23<br>Nearest Landmarks: Fraser River Parkade, Asian Centre",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/UvIzrWPkPb0l1GRUDY3yOQWpaLrGjcO3s-vBuSVxRIO3QZUon2R2xBHH5_xjrNrvhWfsO_niaMc2guL_1Tg3E73ODdo-baqHPKtepedL"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2578254, 49.2667264]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Lower Mall & Memorial Road",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/_TlrQTEaSHR0X03z4bwwKMRulaLe1GcBkXRSXDkX4fc6UDFU7ku349PG-HD8Da8Hm01dYuw08L680SioF2tIvVUk8i8JB7tuTN0At39z\" height=\"200\" width=\"auto\" \/><br><br>#24<br>Nearest Landmarks: Fraser River Parkade, Nitobe Memorial Garden",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/_TlrQTEaSHR0X03z4bwwKMRulaLe1GcBkXRSXDkX4fc6UDFU7ku349PG-HD8Da8Hm01dYuw08L680SioF2tIvVUk8i8JB7tuTN0At39z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2587481, 49.2661103]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Northwest Marine Drive",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/e3stfAQsDTglDPbviVzevvXYWiox2YwM7d1MZxr5LqJ0sCog4FQDU5gQHhuBvmgLutM7bn3Hwrd9loGlGOlQLlo5n96fHBQeurre25G3\" height=\"200\" width=\"auto\" \/><br><br>#1<br>Nearest Landmarks: Anthropology & Sociology Building, Museum of Anthropology",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/e3stfAQsDTglDPbviVzevvXYWiox2YwM7d1MZxr5LqJ0sCog4FQDU5gQHhuBvmgLutM7bn3Hwrd9loGlGOlQLlo5n96fHBQeurre25G3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.256967067717994, 49.269568727332903]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & Crescent Road",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/bwxBtoYQFBj1EYQST0BxRFG25zeI1EJGyWjMWRY7ietC0xdirNfp4-tiEBQw_DJYOUrTLYrKS2eWdv3EqnI1tJf2Ms1slv-6ptyMYlGp\" height=\"200\" width=\"auto\" \/><br><br>#2<br>Nearest Landmarks: International House, Museum of Anthropology",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/bwxBtoYQFBj1EYQST0BxRFG25zeI1EJGyWjMWRY7ietC0xdirNfp4-tiEBQw_DJYOUrTLYrKS2eWdv3EqnI1tJf2Ms1slv-6ptyMYlGp"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2584906, 49.2679306]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Crescent Road",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/U3cYbPcJfGd3Xa3jaA-OtMTZT4P04p-Vnq81C33H74ijUpN-xnNn5xFUqFyvwZDfoaU9oDrYKjrwlfP5vCE4UTdbo6gpvPK_mxLyEgeG\" height=\"200\" width=\"auto\" \/><br><br>#3<br>Nearest Landmarks: Flag Pole Plaza, Rose Garden",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/U3cYbPcJfGd3Xa3jaA-OtMTZT4P04p-Vnq81C33H74ijUpN-xnNn5xFUqFyvwZDfoaU9oDrYKjrwlfP5vCE4UTdbo6gpvPK_mxLyEgeG"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2563877, 49.2688827]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Memorial Road",
+                "description": "#4<br>Nearest Landmarks: Buchanan A, Wyman Plaza"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.254821300507004, 49.267594525400398]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "East Mall & Memorial Road",
+                "description": "#15<br>Nearest Landmarks: Brock Hall, Buchanan Tower"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.25282573699999, 49.268336610570302]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Student Union Plaza",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/hvMeKTgx5P7GyLlLA_y0_zLJnTfJLR4CRQHMkqXgsgUflYnTiEYB03UnvqB0VJAm7aNOIWblvzrOwkLxwZqamjLooUhx7UnffIgRL_vZ\" height=\"200\" width=\"auto\" \/><br><br>#8<br>Nearest Landmarks: Hillel House, Brock Hall, North Parkade",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/hvMeKTgx5P7GyLlLA_y0_zLJnTfJLR4CRQHMkqXgsgUflYnTiEYB03UnvqB0VJAm7aNOIWblvzrOwkLxwZqamjLooUhx7UnffIgRL_vZ"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.250765800476003, 49.268364613565701]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "East Mall & Agricultural Road",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/O673Rz2ueREmt0tG__Fsak1klVZQmpVbqcvEn69E3OtsGsu9upwstDS0FrLxXZj-qQPDFaBewrxuCC-FiZQzGUmKXMCfGTQ1fNt8E3oz\" height=\"200\" width=\"auto\" \/><br><br>#7<br>Nearest Landmarks: Hennings Building, Irving K. Barber Learning Centre",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/O673Rz2ueREmt0tG__Fsak1klVZQmpVbqcvEn69E3OtsGsu9upwstDS0FrLxXZj-qQPDFaBewrxuCC-FiZQzGUmKXMCfGTQ1fNt8E3oz"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2518387, 49.2669784]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Agricultural Road",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/KR-yJNzXvkcW5IazTx7EQktatdd_xhy0hgHBMPXT6_vNjripRy7M-Z0cS5XOK7QXObcFUiMZf5-aI2J7SeiiNBfNaWxOOOputQxAEdS3\" height=\"200\" width=\"auto\" \/><br><br>#21<br>Nearest Landmark: Chemistry Building",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/KR-yJNzXvkcW5IazTx7EQktatdd_xhy0hgHBMPXT6_vNjripRy7M-Z0cS5XOK7QXObcFUiMZf5-aI2J7SeiiNBfNaWxOOOputQxAEdS3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2536411, 49.2663064]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & Agricultural Road",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/2TlwEFhJAKTAA2tzrlp7-I28pEfMYJW1USRpdO-6_MO-UHF8bsjhSdQ78cPw2N3fd1v7jNElFtBpcDRjI0LAYuL1cZuDmquz6kLsPmwZ\" height=\"200\" width=\"auto\" \/><br><br>#6<br>Nearest Landmarks: First Nations Longhouse, Geography Building",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/2TlwEFhJAKTAA2tzrlp7-I28pEfMYJW1USRpdO-6_MO-UHF8bsjhSdQ78cPw2N3fd1v7jNElFtBpcDRjI0LAYuL1cZuDmquz6kLsPmwZ"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2563019, 49.2653962]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Lower Mall & Pedestrian Path",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/zJSduK1B5z3Ikf06UdwAEzsVAveMV9edZ5aylFZ2A3xyRkPJacilllkJYC6RDqmcysbKizdKFGx65dV1xXxN2w8HM52Hli-Rn3oGWSwJ\" height=\"200\" width=\"auto\" \/><br><br>#5<br>Nearest Landmarks: Ponderosa F, Place Vanier Residence",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/zJSduK1B5z3Ikf06UdwAEzsVAveMV9edZ5aylFZ2A3xyRkPJacilllkJYC6RDqmcysbKizdKFGx65dV1xXxN2w8HM52Hli-Rn3oGWSwJ"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.257288932799995, 49.264752095935101]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Lower Mall & University Boulevard",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/9pbX9uhuCJjBac0q-iyuusR6nAFbjrO0ByBcXNAuLzxp0ISp4ybrjvjGRTgB-ql0oll1-4J32Y_i-PvIha0I5wKAtcSZ1H3SqpSDfpNo\" height=\"200\" width=\"auto\" \/><br><br>#25<br>Nearest Landmarks: St. Johns College, Place Vanier Residence",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/9pbX9uhuCJjBac0q-iyuusR6nAFbjrO0ByBcXNAuLzxp0ISp4ybrjvjGRTgB-ql0oll1-4J32Y_i-PvIha0I5wKAtcSZ1H3SqpSDfpNo"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.256194591522004, 49.263463847379199]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & University Boulevard",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/x50veajVX365fxnRGl77fuSV2PmRQMFLC4z_9rmbqqK_tY3iTR03h1baXCLCVcB9MRrSUIhpXsMntERExCQL-Tlzk0z2v4R6_iWQC7FS\" height=\"200\" width=\"auto\" \/><br><br>#26<br>Nearest Landmark: Jack Bell Building",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/x50veajVX365fxnRGl77fuSV2PmRQMFLC4z_9rmbqqK_tY3iTR03h1baXCLCVcB9MRrSUIhpXsMntERExCQL-Tlzk0z2v4R6_iWQC7FS"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2547355, 49.264472]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Irving K. Barber Learning Centre - 1st Floor",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/Ut1IoWaBDg2mB2zbzs5Do79RXXwIeYkNw_EDQZ31t89d28NGYiRDaLoguZfzDfg0xn0Tvvv4TZ3PfIQl3_Z_VwMGkSevnzQzgLZNrWQE\" height=\"200\" width=\"auto\" \/><br><br>Nearest Landmark: Inside Irving K. Barber Learning Centre, 1st Floor, Front Staircase",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/Ut1IoWaBDg2mB2zbzs5Do79RXXwIeYkNw_EDQZ31t89d28NGYiRDaLoguZfzDfg0xn0Tvvv4TZ3PfIQl3_Z_VwMGkSevnzQzgLZNrWQE"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.253405094146999, 49.267524516789301]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "East Mall & University Boulevard",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/d1w9kmM0bA9UgH7HEiLSnnQ6KlCLyx-MaeVVRT18g2__b6SsaLNftDty4kUDO8gQGOMtaFqGitjhuRMj03Z2Ls4L9h8poV0C5CvBexir\" height=\"200\" width=\"auto\" \/><br><br>#20 <br>Nearest Landmark: Abdul Ladha",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/d1w9kmM0bA9UgH7HEiLSnnQ6KlCLyx-MaeVVRT18g2__b6SsaLNftDty4kUDO8gQGOMtaFqGitjhuRMj03Z2Ls4L9h8poV0C5CvBexir"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.250637054443004, 49.2657322625235]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & University Boulevard",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/flHSqR0A363dJF4QevaRR25rWAvvWEJvJk2l7Cfvl6UwCnks3Ro8ppo1ab45e7padmsqOtvFnXyu5tcth6lXKvmr-OFDQzz7KEFZW-yX\" height=\"200\" width=\"auto\" \/><br><br>#10<br>Nearest Landmark: Biological Sciences Building",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/flHSqR0A363dJF4QevaRR25rWAvvWEJvJk2l7Cfvl6UwCnks3Ro8ppo1ab45e7padmsqOtvFnXyu5tcth6lXKvmr-OFDQzz7KEFZW-yX"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2524395, 49.2648361]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Stores Road",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/of26DRZpMrNc5ykHC2_hmHwPfA3jWoh0b7E9g1tKnTzf0_om_EFL2MtRMsrdRt5qFCdUCiEfYRtKogqvDAIjgq-UnsRtbpIg5gAqBi2B\" height=\"200\" width=\"auto\" \/><br><br>#11 <br>Nearest Landmarks: Earth Sciences Building, Beaty Biodiversity Museum, Engineering Cairn",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/of26DRZpMrNc5ykHC2_hmHwPfA3jWoh0b7E9g1tKnTzf0_om_EFL2MtRMsrdRt5qFCdUCiEfYRtKogqvDAIjgq-UnsRtbpIg5gAqBi2B"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.251431, 49.2630158]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & Stores Road",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/MOHc6YzUnEfOqUvVOF0554Li3yY0RSdvS0baDvQCiTN3yfMrCvkCI7pEvpJDwZjQVidUM-wzazkrz8RZeXzNfL6_GllzFTefuqlyA7PV\" height=\"200\" width=\"auto\" \/><br><br>#29<br>Nearest Landmarks: CIRS Building, University Services Building",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/MOHc6YzUnEfOqUvVOF0554Li3yY0RSdvS0baDvQCiTN3yfMrCvkCI7pEvpJDwZjQVidUM-wzazkrz8RZeXzNfL6_GllzFTefuqlyA7PV"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.253319263457996, 49.262105548890801]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Lower Mall & Agronomy Road",
+                "description": "<img src=\"https:\/\/lh6.googleusercontent.com\/proxy\/EvdnVGfrLO7vXY-dnS-PANp__OsFfG8fvD_LR_2xWJIigHo5Tca7DumSifZjR6ZGbuPXHxbF0wqQRVIKz3VS3aHfatd0jadpyEh5k0YU\" height=\"200\" width=\"auto\" \/><br><br>#28<br>Nearest Landmark: Bioenergy Research & Demonstration Facility",
+                "gx_media_links": "https:\/\/lh6.googleusercontent.com\/proxy\/EvdnVGfrLO7vXY-dnS-PANp__OsFfG8fvD_LR_2xWJIigHo5Tca7DumSifZjR6ZGbuPXHxbF0wqQRVIKz3VS3aHfatd0jadpyEh5k0YU"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.253641128539996, 49.260285090223597]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "West Mall & Ritsumeikan",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/fbJkXpAVGqXqjvMgwdoWwG8WiV2BLJ6UlyK73zvL0SjiTWpXo-L0Zp7Q9qkMlfcNZIUSCmwgCD_S26TnU3-RPGtCJzLivTBjdCEZv3vC\" height=\"200\" width=\"auto\" \/><br><br>#13<br>Nearest Landmark: Ritsumeikan Student Residence ",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/fbJkXpAVGqXqjvMgwdoWwG8WiV2BLJ6UlyK73zvL0SjiTWpXo-L0Zp7Q9qkMlfcNZIUSCmwgCD_S26TnU3-RPGtCJzLivTBjdCEZv3vC"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.252225, 49.2603411]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Agronomy Road",
+                "description": "<img src=\"https:\/\/lh4.googleusercontent.com\/proxy\/JDmehiHLAaxkI5fnvr7u51_wPxx41iYiXDDlhSfwpLTak94xKLwJaTdeWIm0bM-NWEsZW-RcrQsmqgpQI3NuXvcHeytD4tAc8jfK-QJq\" height=\"200\" width=\"auto\" \/><br><br>#14 <br>Nearest Landmarks: Forest Sciences Centre, Landscape Architecture Annex",
+                "gx_media_links": "https:\/\/lh4.googleusercontent.com\/proxy\/JDmehiHLAaxkI5fnvr7u51_wPxx41iYiXDDlhSfwpLTak94xKLwJaTdeWIm0bM-NWEsZW-RcrQsmqgpQI3NuXvcHeytD4tAc8jfK-QJq"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2491565, 49.2607192]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Health Sciences Mall & Agronomy Road",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/pGC1hD7CfHA_hwYGcxwz94gUNcNJefzXNV_XzPc_g2JUtsCIbLv8--MANijT2gQDSpgwtGbWIk4N6Gm4MiLElZgzAKi7c6WclWIF9LnZ\" height=\"200\" width=\"auto\" \/><br><br>#18<br>Nearest Landmark: Life Sciences Building",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/pGC1hD7CfHA_hwYGcxwz94gUNcNJefzXNV_XzPc_g2JUtsCIbLv8--MANijT2gQDSpgwtGbWIk4N6Gm4MiLElZgzAKi7c6WclWIF9LnZ"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.245658874512003, 49.262035532491502]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Health Sciences Mall & Hospital Lane",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/0v3WOKrTwejIeqZzKd6neSqAzQ8fHWCadW3WyQZ9axzUpBn7SWAoBrNP1PkDUHaiScaUKRZp3U_2HcTxejWDMxy-qxwJBn7-D3MCXV4a\" height=\"200\" width=\"auto\" \/><br><br>#34<br>Nearest Landmarks: UBC Hospital, School of Population & Public Health",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/0v3WOKrTwejIeqZzKd6neSqAzQ8fHWCadW3WyQZ9axzUpBn7SWAoBrNP1PkDUHaiScaUKRZp3U_2HcTxejWDMxy-qxwJBn7-D3MCXV4a"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2479334, 49.264248]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Thunderbird Boulevard",
+                "description": "<img src=\"https:\/\/lh5.googleusercontent.com\/proxy\/1QfiY4v_NWTdTrRGMYEw1dd0YW8qkcyBRkERxCsXaKDLGAbwsh0x0yBgQQsi3_6r72NGZr31p2cTKibvjlgF4KRXtB-X6b6QuZkvJ4Jl\" height=\"200\" width=\"auto\" \/><br><br>#16<br>Nearest Landmark: Old Barn Community Centre",
+                "gx_media_links": "https:\/\/lh5.googleusercontent.com\/proxy\/1QfiY4v_NWTdTrRGMYEw1dd0YW8qkcyBRkERxCsXaKDLGAbwsh0x0yBgQQsi3_6r72NGZr31p2cTKibvjlgF4KRXtB-X6b6QuZkvJ4Jl"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.248040676117, 49.259290811366597]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "Main Mall & Eagles Drive",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/bMu8qkzUEtoexoibXe_XsUT32RAX9Lp-bP2voR8Un5PCBD14RnlOBTEJlxKzBAh5tKifwkvdtucue-mrfVg7d3aMDJDXGdYC-YVPeKnu\" height=\"200\" width=\"auto\" \/><br><br>#17<br>Nearest Landmark: Rhododendron Wood",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/bMu8qkzUEtoexoibXe_XsUT32RAX9Lp-bP2voR8Un5PCBD14RnlOBTEJlxKzBAh5tKifwkvdtucue-mrfVg7d3aMDJDXGdYC-YVPeKnu"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2467103, 49.2575613]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "Name": "East Mall & Agronomy Road",
+                "description": "<img src=\"https:\/\/lh3.googleusercontent.com\/proxy\/7ULpNRm2KRVGDvQXcfGiw0g2wox5OcDrZcWtqmFrEfM-Vh-DQcbN_-UdorhXwwbJD-JLKNybLLEPJFPbsstUW4jfjS8412y9HTwIQaoH\" height=\"200\" width=\"auto\" \/><br><br>#33<br>Nearest Landmark: Starbucks",
+                "gx_media_links": "https:\/\/lh3.googleusercontent.com\/proxy\/7ULpNRm2KRVGDvQXcfGiw0g2wox5OcDrZcWtqmFrEfM-Vh-DQcbN_-UdorhXwwbJD-JLKNybLLEPJFPbsstUW4jfjS8412y9HTwIQaoH"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-123.2470322, 49.2611253]
+            }
+        }
+    ]
+}
+
+export default BluePhones
