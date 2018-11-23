@@ -62,10 +62,13 @@ export default class RecommendedCompanions extends React.Component {
         </View>
         <View style={styles.startSesssionContainer}>
           <Button
+            full
+            rounded
+            primary
             backgroundColor="#005073"
             title="Start Safewalk"
             onPress={()=> this.enterLocation()}
-            disabled={this.state.selectedCompanions.length <= 0 || this.state.selectedCompanions.length >= 4}
+            disabled={this.state.selectedCompanions.length <= 0 || this.state.selectedCompanions.length > 4}
             loading={this.state.loading}
           />
         </View>

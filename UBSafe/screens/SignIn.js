@@ -64,38 +64,38 @@ export default class SignIn extends React.Component {
         // Handle Errors here.
       });
 
-      if(authentication.currentUser){
+      if(authentication.currentUser) {
         context.setState({ loading: true });
         var docRef = db.collection('users').doc(authentication.currentUser.providerData[0].uid);
         docRef.get().then(function(doc){
-            if(doc.exists) {
-              var user = doc.data();
-              user.userID = authentication.currentUser.providerData[0].uid;
-              store.user = user; // saves user in global store
+          if(doc.exists) {
+            var user = doc.data();
+            user.userID = authentication.currentUser.providerData[0].uid;
+            store.user = user; // saves user in global store
 
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  var latitude = position.coords.latitude;
-                  var longitude = position.coords.longitude;
-                  geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
-                    context.setState({ loading: false });
-                    if(store.sessionID) {
-                      context.props.navigation.navigate('Main', {}, NavigationActions.navigate({routeName: 'VirtualSafewalkStack', action: NavigationActions.navigate({routeName: 'VirtualSafewalkSessionScreen'})}));
-                    }
-                    else{
-                      context.props.navigation.navigate('Main');
-                    }
-                  }, (error) => {
-                    console.log('Error: ' + error);
-                  });
-                },
-                (error) => context.setState({ error: error.message, loading: false }),
-                { enableHighAccuracy: true, maximumAge: 1000 },
-              );
-            }
-            else {
-              context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});
-            }
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
+                  context.setState({ loading: false });
+                  if(store.session) {
+                    context.props.navigation.navigate('Main', {}, NavigationActions.navigate({routeName: 'VirtualSafewalkStack', action: NavigationActions.navigate({routeName: 'VirtualSafewalkSessionScreen'})}));
+                  }
+                  else {
+                    context.props.navigation.navigate('Main');
+                  }
+                }, (error) => {
+                  console.log('Error: ' + error);
+                });
+              },
+              (error) => context.setState({ error: error.message, loading: false }),
+              { enableHighAccuracy: true, maximumAge: 1000 },
+            );
+          }
+          else {
+            context.props.navigation.navigate('SignUp', {authentication: authentication, db: db});
+          }
         }).catch(function(error){
             console.log("Error getting document:", error);
         });

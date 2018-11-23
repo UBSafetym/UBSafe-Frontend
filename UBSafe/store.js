@@ -22,6 +22,10 @@ const store = {
     6: 'ALERT_NEARBY_USERS',
     7: 'INVITED_TO_SESSION',
     8: 'JOINED_SESSION'
+  },
+  emergencyNumbers: {
+    EMERGENCY: '7783200245',
+    CAMPUS_SECURITY: '7783200245'
   }
 };
 export default store;

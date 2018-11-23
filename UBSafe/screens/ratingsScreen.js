@@ -30,17 +30,17 @@ export default class RatingsScreen extends React.Component{
       }),
     }).then( response => {
       if(response.status === 200){
-        db.collection("companion_sessions").doc(this.props.navigation.getParam('sessionID')).delete().then(function(){
-          Alert.alert(
-            'Thank you for getting home safely',
-            '',
-            [
-              {text: 'OK', onPress: () => context.props.navigation.navigate('VirtualSafewalk')},
-            ],
-            { cancelable: false }
-          )
-           // WILL THIS WORK?
-        })
+        //db.collection("companion_sessions").doc(this.props.navigation.getParam('sessionID')).delete().then(function(){
+        Alert.alert(
+          'Thank you for getting home safely',
+          '',
+          [
+            {text: 'OK', onPress: () => context.props.navigation.navigate('VirtualSafewalk')},
+          ],
+          { cancelable: false }
+        )
+          // WILL THIS WORK?
+        //})
       }
       else {
         Alert.alert(
@@ -67,6 +67,9 @@ export default class RatingsScreen extends React.Component{
           imageSize={40}
         />
         <Button
+          full
+          rounded
+          primary
           style={styles.button}
           backgroundColor="#005073"
           title="Submit Rating"

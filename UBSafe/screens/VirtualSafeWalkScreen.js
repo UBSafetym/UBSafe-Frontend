@@ -19,6 +19,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   onSelectionsChange = (preferredGenders) => {
+    console.log(preferredGenders);
     this.setState({ preferredGenders })
   }
 
@@ -94,6 +95,20 @@ export default class VirtualSafeWalkScreen extends React.Component {
         });
   }
 
+  componentWillMount(){
+    var preferredGenders = [];
+    if(store.user.preferences.male) preferredGenders.push({label: "Male", value: "Male"});
+    if(store.user.preferences.female) preferredGenders.push({label: "Female", value: "Female"});
+    if(store.user.preferences.other) preferredGenders.push({label: "Other", value: "Other"});
+
+    this.setState({ 
+                    prefAgeMin: (store.user.preferences.ageMin).toString(),
+                    prefAgeMax:  store.user.preferences.ageMax.toString(),
+                    prefProximity: store.user.preferences.proximity.toString(),
+                    preferredGenders: preferredGenders
+                  });
+  }
+
   render() {
     const { prefAgeMin, prefAgeMax, prefProximity, preferredGenders } = this.state;
     const fieldsFilled =(parseInt(prefAgeMin, 10) > 0 ) && 
@@ -106,16 +121,19 @@ export default class VirtualSafeWalkScreen extends React.Component {
       <View>
         <FormLabel>Minimum Companion Age</FormLabel>
           <FormInput placeholder="18-50..."
+            defaultValue={this.state.prefAgeMin}
             onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}
           />
 
         <FormLabel>Maximum Companion Age</FormLabel>
         <FormInput placeholder="18-50..."
+          defaultValue={this.state.prefAgeMax}
           onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}
         />
 
         <FormLabel>Preferred Companion Proximity</FormLabel>
         <FormInput placeholder=""
+          defaultValue={this.state.prefProximity}
           onChangeText={(prefProximity) => this.setState({ prefProximity })}
         />
 
@@ -127,6 +145,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
           />
 
         <Button
+          full
+          rounded
+          primary
           style={styles.button}
           backgroundColor="#189ad3"
           title="Save Preferences"
@@ -136,6 +157,9 @@ export default class VirtualSafeWalkScreen extends React.Component {
         />
 
         <Button
+          full
+          rounded
+          primary
           style={styles.button}
           backgroundColor="#005073"
           title="Find Virtual Companion"

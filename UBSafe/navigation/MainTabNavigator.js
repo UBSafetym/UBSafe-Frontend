@@ -6,11 +6,12 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import EmergencyResourcesScreen from '../screens/EmergencyResources.js';
 import VirtualSafeWalkScreen from '../screens/VirtualSafeWalkScreen.js';
-import SafetyKitScreen from '../screens/SafetyKitScreen.js';
 import RecommendedCompanions from '../screens/ShowRecommendedCompanions.js'
 import EnterDestinationScreen from '../screens/EnterDestinationScreen.js';
 import VirtualSafewalkSessionScreen from '../screens/VirtualSafewalkSessionScreen.js';
+import DestinationLoadingScreen from '../screens/DestinationLoadingScreen.js';
 import RatingsScreen from '../screens/ratingsScreen.js';
+import LogoutScreen from '../screens/LogoutScreen.js';
 import store from '../store.js';
 
 const HomeStack = createStackNavigator({
@@ -49,7 +50,7 @@ EmergencyResourcesStack.navigationOptions = {
   ),
 };
 
-var VirtualSafeWalkInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'VirtualSafewalk' : 'VirtualSafewalkSessionScreen';
+var VirtualSafeWalkInitialRoute = (store.session == null || store.session == undefined) ? 'VirtualSafewalk' : 'VirtualSafewalkSessionScreen';
 
 const VirtualSafewalkStack = createStackNavigator({
   VirtualSafewalk: VirtualSafeWalkScreen,
@@ -63,6 +64,13 @@ const VirtualSafewalkStack = createStackNavigator({
     screen: EnterDestinationScreen,
     navigationOptions: {
       title: "Enter Destination"
+    }
+  },
+  DestinationLoadingScreen: {
+    screen: DestinationLoadingScreen,
+    navigationOptions: {
+      headerLeft: null,
+      tabBarVisible: false
     }
   },
   VirtualSafewalkSessionScreen: {
@@ -101,26 +109,27 @@ VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
   return navigationOptions
 };
 
-const SafetyKitStack = createStackNavigator({
-  SafetyKit: SafetyKitScreen,
+
+const LogoutStack = createStackNavigator({
+  Logout: LogoutScreen
 });
 
-SafetyKitStack.navigationOptions = {
-  tabBarLabel: 'Safety Kit',
+LogoutStack.navigationOptions = {
+  tabBarLabel: 'Logout',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-medkit${focused ? '' : '-outline'}` : 'md-medkit'}
+      name={Platform.OS === 'ios' ? `ios-log-out${focused ? '' : '-outline'}` : 'logout'}
     />
   ),
 };
 
-var MainTabInitialRoute = (store.sessionID == null || store.sessionID == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
+var MainTabInitialRoute = (store.session == null || store.session == undefined) ? 'HomeStack' : 'VirtualSafewalkStack';
 const MainTabNavigator = createBottomTabNavigator({
   HomeStack,
   EmergencyResourcesStack,
   VirtualSafewalkStack,
-  SafetyKitStack,
+  LogoutStack
 }, { initialRouteName: MainTabInitialRoute });
 
 export default MainTabNavigator;
