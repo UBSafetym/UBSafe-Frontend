@@ -36,7 +36,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     joinedWatchers: [],
     active: true,
     unsubscribe: null,
-    loading: false
+    loading: false,
+    radius: 15
   }
 
   getMagnitude(curLat, curLong) {
@@ -294,7 +295,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       // current companion to joinedWatchers
       var docRef = db.collection("companion_sessions").doc(store.session.id);
       var context = this;
-      
       docRef.get().then(function(doc){
         if(doc.exists) {
           var data = doc.data();
@@ -302,16 +302,17 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           var longitudeDelta = Math.abs(data.travellerSource._long - data.travellerDest._long) * 2.0;
           var radius = (latitudeDelta * longitudeDelta * metersPerDegree) / 200.0;
           context.setState({
-            regionLat: data.travellerLoc._lat,
-            regionLong: data.travellerLoc._long,
+            regionLat: (data.travellerSource._lat + data.travellerDest._lat)/2.0,
+            regionLong: (data.travellerSource._long + data.travellerDest._long)/2.0,
             travellerLat: data.travellerLoc._lat,
             travellerLong: data.travellerLoc._long,
             destinationLat: data.travellerDest._lat,
             destinationLong: data.travellerDest._long,
             sourceLat: data.travellerSource._lat,
             sourceLong: data.travellerSource._long,
-            latitudeDelta: Math.abs(data.travellerSource._lat - data.travellerDest._lat),
-            longitudeDelta: Math.abs(data.travellerSource._long - data.travellerDest._long)
+            latitudeDelta: latitudeDelta,
+            longitudeDelta: longitudeDelta,
+            radius: Math.sqrt(radius)
           });
           var watchers = doc.data().joinedWatchers;
           watchers.push(store.user);
@@ -358,10 +359,12 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   updateRegion(region) {
+    var newRadius = Math.sqrt(region.latitude * region.longitude * metersPerDegree / 200.0);
     this.setState({ regionLat: region.latitude,
                     regionLong: region.longitude,
                     latitudeDelta: region.latitudeDelta,
-                    longitudeDelta: region.longitudeDelta
+                    longitudeDelta: region.longitudeDelta,
+                    radius: newRadius
     });
   }
 
@@ -429,7 +432,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             <Marker key={1} title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />
             <Marker key={2} title={"Destination"} coordinate={{longitude: this.state.destinationLong, latitude: this.state.destinationLat}} />
             <Circle
-              radius={15}
+              radius={this.state.radius}
               center={{longitude: this.state.travellerLong, latitude: this.state.travellerLat}}
               fillColor="#4885ed"
               strokeColor="#FFFFFF"
