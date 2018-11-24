@@ -22,6 +22,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     timer: null,
     sessionID: null,
     showUserLocation: true,
+    regionLat: 0.0,
+    regionLong: 0.0,
     travellerLat: 0.0,
     travellerLong: 0.0,
     sourceLat: 0.0,
@@ -53,10 +55,17 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     })
   }
 
-  checkreachedDestination() {
-    console.log("Check reached destination");
+  checkReachedOrNearDestination() {
+    console.log("Check near or reached destination");
     var distanceFromDestination = this.getMagnitude(this.state.destinationLat, this.state.destinationLong);
-    return distanceFromDestination < 40.0;
+    if(distanceFromDestination < 40.0){
+      return "reached";
+    }
+    else if(distanceFromDestination < 200.0){
+      return "near";
+    }
+
+    return "neither";
   }
 
   getSourcePosition() {
@@ -185,6 +194,34 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     });
   }
 
+  alertReachedDestination() {
+    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
+      method: 'POST',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionID: this.props.navigation.getParam('session').id,
+        alertCode: store.alertsToCodes['REACHED_DESTINATION']
+      }),
+    });
+  }
+
+  alertNearDestination() {
+    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
+      method: 'POST',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionID: this.props.navigation.getParam('session').id,
+        alertCode: store.alertsToCodes['NEAR_DESTINATION']
+      }),
+    });
+  }
+
   checkUserPosition() {
     navigator.geolocation.getCurrentPosition(
       (location) => {
@@ -193,6 +230,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         
         // For now, we're not gonna have a notification for reaching their destination
         // Maybe will handle this in changeInPosition instead
+        
+        var status = this.checkReachedOrNearDestination(travellerLat, travellerLong);
+        if(status === "reached") {
+          this.alertReachedDestination();
+        }
+        else if(status === "near") {
+          this.alertNearDestination();
+        }
         
         console.log("checkUserPosition");
         var changeInPositionInFeet = this.getMagnitude(location.coords.latitude, location.coords.longitude);
@@ -222,6 +267,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       // Set up to get original position of the user and their destination
       this.getSourcePosition();
       this.setState({
+        regionLat: session.data.travellerLoc._lat,
+        regionLong: session.data.travellerLoc._long,
         travellerLat: session.data.travellerLoc._lat,
         travellerLong: session.data.travellerLoc._long,
         destinationLat: session.data.travellerDest._lat,
@@ -255,15 +302,16 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           var longitudeDelta = Math.abs(data.travellerSource._long - data.travellerDest._long) * 2.0;
           var radius = (latitudeDelta * longitudeDelta * metersPerDegree) / 200.0;
           context.setState({
-            travellerLat: doc.data().travellerLoc._lat,
-            travellerLong: doc.data().travellerLoc._long,
-            destinationLat: doc.data().travellerDest._lat,
-            destinationLong: doc.data().travellerDest._long,
-            sourceLat: doc.data().travellerSource._lat,
-            sourceLong: doc.data().travellerSource._long,
-            latitudeDelta: latitudeDelta,
-            longitudeDelta: longitudeDelta,
-            radius: radius
+            regionLat: data.travellerLoc._lat,
+            regionLong: data.travellerLoc._long,
+            travellerLat: data.travellerLoc._lat,
+            travellerLong: data.travellerLoc._long,
+            destinationLat: data.travellerDest._lat,
+            destinationLong: data.travellerDest._long,
+            sourceLat: data.travellerSource._lat,
+            sourceLong: data.travellerSource._long,
+            latitudeDelta: Math.abs(data.travellerSource._lat - data.travellerDest._lat),
+            longitudeDelta: Math.abs(data.travellerSource._long - data.travellerDest._long)
           });
           var watchers = doc.data().joinedWatchers;
           watchers.push(store.user);
@@ -307,6 +355,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     return this.props.places.map((place, i) => (
       <Marker key={i} title={place.name} coordinate={place.coords} />
     ))
+  }
+
+  updateRegion(region) {
+    this.setState({ regionLat: region.latitude,
+                    regionLong: region.longitude,
+                    latitudeDelta: region.latitudeDelta,
+                    longitudeDelta: region.longitudeDelta
+    });
   }
 
   render() {
@@ -356,20 +412,18 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         <MapView
               style={styles.mapView}
               initialRegion={{
-              latitude: (this.state.travellerLat + this.state.destinationLat)/2.0,
-              longitude: (this.state.travellerLong + this.state.destinationLong)/2.0,
+              latitude: this.state.regionLat,
+              longitude: this.state.regionLong,
               latitudeDelta: this.state.latitudeDelta,
               longitudeDelta: this.state.longitudeDelta
             }}
             region={{
-              latitude: (this.state.travellerLat + this.state.destinationLat)/2.0,
-              longitude: (this.state.travellerLong + this.state.destinationLong)/2.0,
+              latitude: this.state.regionLat,
+              longitude: this.state.regionLong,
               latitudeDelta: this.state.latitudeDelta,
               longitudeDelta: this.state.longitudeDelta
             }}
-            zoomEnabled={false}
-            rotateEnabled={false}
-            scrollEnabled={false}
+            onRegionChangeComplete={(region) => this.updateRegion(region)}
             pitchEnabled={false}
           >
             <Marker key={1} title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />

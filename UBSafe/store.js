@@ -10,7 +10,8 @@ const store = {
     CONNECTION_LOST: 5,
     ALERT_NEARBY_USERS: 6,
     INVITED_TO_SESSION: 7,
-    JOINED_SESSION: 8
+    JOINED_SESSION: 8,
+    NEAR_DESTINATION: 9
   },
   codesToAlerts: {
     0: 'TERMINATED',
@@ -21,7 +22,8 @@ const store = {
     5: 'CONNECTION_LOST',
     6: 'ALERT_NEARBY_USERS',
     7: 'INVITED_TO_SESSION',
-    8: 'JOINED_SESSION'
+    8: 'JOINED_SESSION',
+    9: 'NEAR_DESTINATION'
   },
   emergencyNumbers: {
     EMERGENCY: '7783200245',
