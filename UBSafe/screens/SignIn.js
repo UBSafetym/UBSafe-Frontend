@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -23,18 +23,28 @@ export default class SignIn extends React.Component {
     error: null
   }
   render() {
-    return (
-      <View style={styles.loginButtonSection}>
-        <Button
-          loading={this.state.loading}
-          disabled={this.state.loading}
-          full
-          rounded
-          primary
-          backgroundColor="#3B5998"
-          title='Login with Facebook'
-          onPress = {() => this.facebookLogin(this)}
+    return (   
+      <View style={styles.container}>
+        <Image 
+          style={styles.backgroundImage} 
+          source={require('../assets/images/backgroundgif3.gif')}
         />
+        <View style={styles.loginButtonSection}>
+          <Image
+            style={styles.logo}
+            source={require('../assets/images/UBSafe_logo.png')}
+          />
+          <Button
+            loading={this.state.loading}
+            disabled={this.state.loading}
+            full
+            rounded
+            primary
+            backgroundColor="#3B5998"
+            title='Login with Facebook'
+            onPress = {() => this.facebookLogin(this)}
+          />
+        </View>
       </View>
     );
   }
@@ -99,9 +109,23 @@ export default class SignIn extends React.Component {
 
 const styles = StyleSheet.create({
   loginButtonSection: {
+    position: 'absolute',
     width: '100%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+ },
+ logo: {
+    position: 'absolute',
+    width: 300,
+    height: 126,
+    top: 130,
+ },
+ container: {
+     flex: 1,
+ },
+ backgroundImage: {
+     flex: 1,
+     resizeMode: 'cover',
  }
 });
