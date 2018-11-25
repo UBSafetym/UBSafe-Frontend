@@ -12,7 +12,7 @@ export default createStackNavigator({
     screen: SignIn,
     navigationOptions: {
       title: "Sign In",
-      headerStyle
+      header: null
     }
   },
   SignUp: {

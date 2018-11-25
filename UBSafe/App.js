@@ -72,6 +72,7 @@ export default class App extends React.Component {
         )
         break;
       case('MOVING_AWAY'):
+        break;
 
       case('ALARM_TRIGGERED'):
         Alert.alert(
@@ -104,7 +105,6 @@ export default class App extends React.Component {
       // if null, set session
       // otherwise navigate correctly somehow
       case('INVITED_TO_SESSION'):
-        console.log("wtf");
         store.session = data.data;
         store.session.id = data.id;
         if(store.user) {
@@ -113,6 +113,7 @@ export default class App extends React.Component {
             'Join ' + data.data.traveller.name + '\'s session?',
             [
               {text: 'OK', onPress: () => this.navigateToSafewalk()},
+              {text: 'Cancel', onPress: () => console.log("Cancel pressed")}
             ],
             { cancelable: true }
           )

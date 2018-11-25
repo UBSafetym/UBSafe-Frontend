@@ -33,7 +33,6 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
     var user = store.user;//
     var user_id = user.userID;
-    console.log(context.prefProximity);
     fetch(store.api_base + 'users/' +user_id, {
       method: 'PUT',
       headers:{

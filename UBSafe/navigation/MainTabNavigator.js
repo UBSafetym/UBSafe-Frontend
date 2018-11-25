@@ -78,7 +78,8 @@ const VirtualSafewalkStack = createStackNavigator({
     navigationOptions: {
       title: "Virtual Safewalk",
       headerLeft: null,
-      tabBarVisible: false
+      tabBarVisible: false,
+      gesturesEnabled: false
     }
   },
   RatingsScreen: {
@@ -86,7 +87,8 @@ const VirtualSafewalkStack = createStackNavigator({
     navigationOptions: {
       title: "Rate Your Safewalk",
       headerLeft: null,
-      tabBarVisible: false
+      tabBarVisible: false,
+      gesturesEnabled: false
     }
   }
 }, { initialRouteName: VirtualSafeWalkInitialRoute });
