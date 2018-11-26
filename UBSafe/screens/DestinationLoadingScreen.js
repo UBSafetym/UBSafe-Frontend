@@ -3,9 +3,7 @@ import store from '../store.js';
 import { Alert, View, StyleSheet, ActivityIndicator } from 'react-native';
 
 export default class DestinationLoadingScreen extends React.Component {
-
   componentDidMount() {
-    console.log("mounted");
     fetch(store.api_base + 'companionsession', {
       method: 'POST',
       headers:{
@@ -21,15 +19,14 @@ export default class DestinationLoadingScreen extends React.Component {
         "lastUpdated": 0
       }),
     }).then( response => {
-      console.log(response);
       if(response.status === 200) {
-        response.json().then(responseJSON =>{
-          console.log("anus");
+        response.json().then(responseJSON => {
+          console.log("Session successfully created")
           console.log(responseJSON.responseData);
           store.session = responseJSON.responseData.data;
           store.session.id = responseJSON.responseData.id;
+          this.setState({ loading: false });
           this.props.navigation.navigate('VirtualSafewalkSessionScreen', { session: responseJSON.responseData });
-          console.log("yay!");
         });
       }
       else {
@@ -39,7 +36,7 @@ export default class DestinationLoadingScreen extends React.Component {
           'Cannot start session',
           'Heck',
           [
-            {text: 'OK', onPress: () => this.props.navigation.navigate('EnterDestinationScreen')},
+            {text: 'OK', onPress: () => console.log("Heck")},
           ],
           { cancelable: false }
         )
@@ -50,7 +47,10 @@ export default class DestinationLoadingScreen extends React.Component {
   render(){
     return(
       <View style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator 
+          size="large" 
+          color="#0000ff"
+        />
       </View>
     );
   }

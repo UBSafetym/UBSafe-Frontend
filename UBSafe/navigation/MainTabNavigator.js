@@ -13,6 +13,7 @@ import DestinationLoadingScreen from '../screens/DestinationLoadingScreen.js';
 import RatingsScreen from '../screens/ratingsScreen.js';
 import LogoutScreen from '../screens/LogoutScreen.js';
 import store from '../store.js';
+import ConfirmDestinationScreen from '../screens/ConfirmDestinationScreen.js';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -66,6 +67,12 @@ const VirtualSafewalkStack = createStackNavigator({
       title: "Enter Destination"
     }
   },
+  ConfirmDestinationScreen: {
+    screen: ConfirmDestinationScreen,
+    navigationOptions: {
+      title: "Confirm Destination"
+    }
+  }, 
   DestinationLoadingScreen: {
     screen: DestinationLoadingScreen,
     navigationOptions: {

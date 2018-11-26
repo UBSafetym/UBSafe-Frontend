@@ -19,7 +19,6 @@ export default class VirtualSafeWalkScreen extends React.Component {
   }
 
   onSelectionsChange = (preferredGenders) => {
-    console.log(preferredGenders);
     this.setState({ preferredGenders })
   }
 
@@ -74,7 +73,6 @@ export default class VirtualSafeWalkScreen extends React.Component {
       fetch(store.api_base + 'recommendations/' + user_id)
         .then((responseJson) => responseJson.json())
         .then( (response) => {
-          console.log(response);
           context.setState({ loading: false, findSessionLoad: false });
           if(response.responseData.length > 0)
           {

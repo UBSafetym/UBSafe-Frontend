@@ -11,7 +11,6 @@ export default class LogoutScreen extends React.Component {
   logout(){
     store.user = null;
     store.session = null;
-    console.log("heyo");
     this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().dangerouslyGetParent().navigate('Auth');
   }
 

@@ -10,21 +10,9 @@ export default class EnterDestinationScreen extends React.Component {
   }
 
   startVirtualSafewalkSession(destLat, destLong) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var travellerSource = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
-        var travellerLocation = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
-        var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.userID);
-        var travellerDest = new firebase.firestore.GeoPoint(destLat, destLong);
-        this.props.navigation.navigate('DestinationLoadingScreen', { watcherIDs: watcherIDs, 
-                                                                     travellerDest: travellerDest,
-                                                                     travellerSource: travellerSource,
-                                                                     travellerLocation: travellerLocation});
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, maximumAge: 1000 },
-    );
-    // this.getCurrentLocation(travellerID, watcherIDs, travellerDest);
+    var watcherIDs = this.props.navigation.state.params.companions.map(companion => companion.userID);
+    var travellerDest = new firebase.firestore.GeoPoint(destLat, destLong);
+    this.props.navigation.navigate('ConfirmDestinationScreen', { watcherIDs: watcherIDs, travellerDest: travellerDest });
   }
 
   render(){

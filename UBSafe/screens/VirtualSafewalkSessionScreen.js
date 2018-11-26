@@ -244,8 +244,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     // the state's current traveller position when the traveller's position changes
     if(!store.session || store.session.traveller.id == store.user.userID){
       var session = this.props.navigation.getParam('session');
-      console.log("helbo");
-      console.log(store.session);
+
       // Set up to get original position of the user and their destination
       this.getSourcePosition();
       this.setState({
@@ -292,7 +291,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           var longitudeDelta = Math.abs(data.travellerSource._long - data.travellerDest._long) * 2.0;
           // var radius = Math.sqrt(latitudeDelta * longitudeDelta * Math.pow(metersPerDegree, 2) / (200.0 * 3.14));
           var radius = Math.sqrt(latitudeDelta*longitudeDelta/200.0);
-          console.log(radius);
           context.setState({
             regionLat: (data.travellerSource._lat + data.travellerDest._lat)/2.0,
             regionLong: (data.travellerSource._long + data.travellerDest._long)/2.0,
@@ -306,8 +304,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             longitudeDelta: longitudeDelta,
             radius: radius
           });
-          console.log("heyo");
-          console.log(data.travellerLoc._lat);
           var watchers = doc.data().joinedWatchers;
           watchers.push(store.user);
           docRef.update({
@@ -355,7 +351,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   updateRegion(region) {
     // var newRadius = Math.sqrt(region.latitudeDelta * region.longitudeDelta * Math.pow(metersPerDegree, 2) / (200.0 * 3.14));
     var newRadius = Math.sqrt(region.latitudeDelta*region.longitudeDelta/(3.14*200.0)) * (metersPerDegree/3.0);
-    console.log(newRadius);
     this.setState({ regionLat: region.latitude,
                     regionLong: region.longitude,
                     latitudeDelta: region.latitudeDelta,

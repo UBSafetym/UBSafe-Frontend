@@ -75,7 +75,7 @@ export default class EmergencyResourcesScreen extends React.Component {
     ];
 
     return (
-        <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
         <Button
           style={styles.button}
           large
