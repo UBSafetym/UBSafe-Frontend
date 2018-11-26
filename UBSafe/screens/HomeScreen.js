@@ -100,6 +100,7 @@ export default class HomeScreen extends React.Component {
                 }}
             title = {marker.properties.Name}
             pinColor = 'aqua'
+	    image = {require('../mapMarkers/bluePhoneIcon.png')} 
             />
         ))}
         </MapView>
