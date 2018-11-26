@@ -27,7 +27,7 @@ export default class SignIn extends React.Component {
       <View style={styles.container}>
         <Image 
           style={styles.backgroundImage} 
-          source={require('../assets/images/backgroundgif3.gif')}
+          source={require('../assets/images/background2.gif')}
         />
         <View style={styles.loginButtonSection}>
           <Image
