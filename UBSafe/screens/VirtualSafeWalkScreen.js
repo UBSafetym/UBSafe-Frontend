@@ -94,13 +94,13 @@ export default class VirtualSafeWalkScreen extends React.Component {
 
   componentWillMount(){
     var preferredGenders = [];
-    if(store.user.preferences.male) preferredGenders.push({label: "Male", value: "Male"});
-    if(store.user.preferences.female) preferredGenders.push({label: "Female", value: "Female"});
-    if(store.user.preferences.other) preferredGenders.push({label: "Other", value: "Other"});
+    // if(store.user.preferences.male) preferredGenders.push({label: "Male", value: "Male"});
+    // if(store.user.preferences.female) preferredGenders.push({label: "Female", value: "Female"});
+    // if(store.user.preferences.other) preferredGenders.push({label: "Other", value: "Other"});
 
     this.setState({ 
-                    prefAgeMin: (store.user.preferences.ageMin).toString(),
-                    prefAgeMax:  store.user.preferences.ageMax.toString(),
+                    // prefAgeMin: (store.user.preferences.ageMin).toString(),
+                    // prefAgeMax:  store.user.preferences.ageMax.toString(),
                     prefProximity: store.user.preferences.proximity.toString(),
                     preferredGenders: preferredGenders
                   });
@@ -142,7 +142,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="genders"
           items={genders}
           selectedItems={this.state.preferredGenders}
-          onSelectionsChange={this.props.onSelectionsChange}
+          onSelectionsChange={this.onSelectionsChange}
         />
 
         <Button
@@ -154,7 +154,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           backgroundColor="#189ad3"
           title="Save Preferences"
           disabled={!fieldsFilled}
-          onPress={()=> this.props.savePreferences}
+          onPress={()=> this.props.savePreferences(this)}
           disabled={this.state.loading || !fieldsFilled}
           loading={this.state.prefLoad}
         />
@@ -167,7 +167,7 @@ export default class VirtualSafeWalkScreen extends React.Component {
           className="findCompanionsButton"
           backgroundColor="#005073"
           title="Find Virtual Companion"
-          onPress={()=> this.props.findCompanions}
+          onPress={()=> this.props.findCompanions(this)}
           disabled={this.state.loading}
           loading={this.state.findSessionLoad}
         />
