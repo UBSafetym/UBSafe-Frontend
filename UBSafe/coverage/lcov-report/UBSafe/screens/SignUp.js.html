@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for UBSafe/screens/SignUp.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">UBSafe/screens</a> SignUp.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.22% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>6/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.22% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>6/37</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { ScrollView } from 'react-native';
+import { Card, Button, FormLabel, FormInput } from "react-native-elements";
+import * as firebase from 'firebase';
+import 'firebase/firestore'
+import SelectMultiple from 'react-native-select-multiple'
+import { GeoFirestore } from 'geofirestore';
+import store from '../store.js';
+import { Firebase } from '../firebaseConfig.js';
+&nbsp;
+const genders = ['Male', 'Female', 'Other'];
+const fbAppId = '259105561413030';
+&nbsp;
+db = Firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true
+});
+authentication = Firebase.auth();
+geoFirestore = new GeoFirestore(db.collection('user_locations'));
+&nbsp;
+export default class SignUp extends React.Component {
+&nbsp;
+  state = {
+    userID: authentication.currentUser.providerData[0].uid,
+    access_token: authentication.currentUser.uid,
+    userName: null,
+    age: null,
+    gender: null,
+    prefAgeMin: null,
+    prefAgeMax: null,
+    prefProximity: null,
+    preferredGenders: [],
+    loading: false
+  }
+&nbsp;
+  onSelectionsChange = <span class="fstat-no" title="function not covered" >(p</span>referredGenders) =&gt; {
+<span class="cstat-no" title="statement not covered" >    this.setState({ preferredGenders })</span>
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  cr</span>eateUser(context) {
+    // db = this.props.navigation.getParam('db');
+<span class="cstat-no" title="statement not covered" >    context.setState({ loading: true });</span>
+<span class="cstat-no" title="statement not covered" >    db.collection("users").doc(this.state.userID).set({</span>
+      userID: context.state.userID,
+      userName: context.state.userName,
+      age: parseInt(context.state.age, 10),
+      gender: context.state.gender,
+        preferences: {
+          ageMin: parseInt(context.state.prefAgeMin, 10),
+          ageMax: parseInt(context.state.prefAgeMax, 10),
+          proximity: parseInt(context.state.prefProximity, 10),
+          female: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Female'),
+          male: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Male'),
+          other: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Other')
+        }
+      })
+      .then(<span class="fstat-no" title="function not covered" >fu</span>nction() {
+        var user = <span class="cstat-no" title="statement not covered" >{</span>
+          userID: context.state.userID,
+          userName: context.state.userName,
+          age: parseInt(context.state.age, 10),
+          gender: context.state.gender,
+          preferences: {
+            ageMin: parseInt(context.state.prefAgeMin, 10),
+            ageMax: parseInt(context.state.prefAgeMax, 10),
+            proximity: parseInt(context.state.prefProximity, 10),
+            female: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Female'),
+            male: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Male'),
+            other: context.state.preferredGenders.map(<span class="fstat-no" title="function not covered" >en</span>try =&gt; <span class="cstat-no" title="statement not covered" >entry.label)</span>.includes('Other')
+          }
+        }
+<span class="cstat-no" title="statement not covered" >        store.user = user;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        navigator.geolocation.getCurrentPosition(</span>
+<span class="fstat-no" title="function not covered" >          (p</span>osition) =&gt; {
+            var latitude = <span class="cstat-no" title="statement not covered" >position.coords.latitude;</span>
+            var longitude = <span class="cstat-no" title="statement not covered" >position.coords.longitude;</span>
+<span class="cstat-no" title="statement not covered" >            geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >              context.setState({ loading: false });</span>
+<span class="cstat-no" title="statement not covered" >              context.props.navigation.navigate('Main');</span>
+<span class="cstat-no" title="statement not covered" >              console.log("Document successfully written!");</span>
+            }, <span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
+<span class="cstat-no" title="statement not covered" >              console.log('Error: ' + error);</span>
+            });
+          },
+<span class="fstat-no" title="function not covered" >          (e</span>rror) =&gt; <span class="cstat-no" title="statement not covered" >console.log(error),</span>
+          { enableHighAccuracy: true, maximumAge: 1000 },
+        );
+      })
+      .catch(<span class="fstat-no" title="function not covered" >fu</span>nction(error) {
+<span class="cstat-no" title="statement not covered" >        console.error("Error writing document: ", error);</span>
+      });  
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  re</span>nder() {
+    const { prefAgeMin, prefAgeMax, prefProximity, preferredGenders } = <span class="cstat-no" title="statement not covered" >this.state;</span>
+    const fieldsFilled =<span class="cstat-no" title="statement not covered" >(parseInt(prefAgeMin, 10) &gt; 0 ) &amp;&amp; </span>
+                        (parseInt(prefAgeMax, 10) &gt; 0) &amp;&amp;
+                        (parseInt(prefAgeMax, 10) &gt; parseInt(prefAgeMin, 10)) &amp;&amp; 
+                        (parseInt(prefProximity, 10) &gt; 0) &amp;&amp;
+                        (preferredGenders.length &gt; 0);
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;ScrollView&gt;
+          &lt;FormLabel&gt;Username&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="Username..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(u</span>serName) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ userName })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Age&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="Age..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(a</span>ge) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ age })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Gender&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="Gender..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(g</span>ender) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ gender })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Minimum Companion Age&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="18-50..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(p</span>refAgeMin) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ prefAgeMin })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Maximum Companion Age&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="18-50..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(p</span>refAgeMax) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ prefAgeMax })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Preferred Proximity&lt;/FormLabel&gt;
+          &lt;FormInput placeholder="In Kilometres..."
+            onChangeText={<span class="fstat-no" title="function not covered" >(p</span>refProximity) =&gt; <span class="cstat-no" title="statement not covered" >this.setState({ prefProximity })}</span>
+          /&gt;
+&nbsp;
+          &lt;FormLabel&gt;Preferred Genders&lt;/FormLabel&gt;
+          &lt;SelectMultiple
+            items={genders}
+            selectedItems={this.state.preferredGenders}
+            onSelectionsChange={this.onSelectionsChange}
+          /&gt;
+&nbsp;
+          &lt;Button
+            buttonStyle={{ marginTop: 20, marginBottom: 20 }}
+            backgroundColor="#03A9F4"
+            title="SIGN UP"
+            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this.createUser(this)}</span>
+            disabled={!fieldsFilled || this.state.loading}
+            loading={this.state.loading}
+          /&gt;
+      &lt;/ScrollView&gt;
+    );
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Nov 19 2018 22:42:18 GMT-0800 (Pacific Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

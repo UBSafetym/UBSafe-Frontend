@@ -120,35 +120,41 @@ export default class VirtualSafeWalkScreen extends React.Component {
           <FormInput placeholder="18-50..."
             defaultValue={this.state.prefAgeMin}
             onChangeText={(prefAgeMin) => this.setState({ prefAgeMin })}
+            className="ageMin"
           />
 
         <FormLabel>Maximum Companion Age</FormLabel>
         <FormInput placeholder="18-50..."
           defaultValue={this.state.prefAgeMax}
           onChangeText={(prefAgeMax) => this.setState({ prefAgeMax })}
+          className="ageMax"
         />
 
         <FormLabel>Preferred Companion Proximity</FormLabel>
         <FormInput placeholder=""
           defaultValue={this.state.prefProximity}
           onChangeText={(prefProximity) => this.setState({ prefProximity })}
+          className="proximity"
         />
 
         <FormLabel>Preferred Genders</FormLabel>
-          <SelectMultiple
-            items={genders}
-            selectedItems={this.state.preferredGenders}
-            onSelectionsChange={this.onSelectionsChange}
-          />
+        <SelectMultiple
+          className="genders"
+          items={genders}
+          selectedItems={this.state.preferredGenders}
+          onSelectionsChange={this.props.onSelectionsChange}
+        />
 
         <Button
           full
           rounded
           primary
           style={styles.button}
+          className="savePrefButton"
           backgroundColor="#189ad3"
           title="Save Preferences"
-          onPress={()=> this.savePreferences(this)}
+          disabled={!fieldsFilled}
+          onPress={()=> this.props.savePreferences}
           disabled={this.state.loading || !fieldsFilled}
           loading={this.state.prefLoad}
         />
@@ -158,9 +164,10 @@ export default class VirtualSafeWalkScreen extends React.Component {
           rounded
           primary
           style={styles.button}
+          className="findCompanionsButton"
           backgroundColor="#005073"
           title="Find Virtual Companion"
-          onPress={()=> this.findCompanions(this)}
+          onPress={()=> this.props.findCompanions}
           disabled={this.state.loading}
           loading={this.state.findSessionLoad}
         />

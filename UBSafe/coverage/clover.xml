@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1542698218803" clover="3.2.0">
+  <project timestamp="1542698218803" name="All files">
+    <metrics statements="12" coveredstatements="12" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6" elements="25" coveredelements="25" complexity="0" loc="12" ncloc="12" packages="2" files="3" classes="3">
+      <package name="UBSafe">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <file name="setupTest.js" path="/Users/cormacmollitor/Desktop/UBSafe/UBSafe-Frontend/UBSafe/setupTest.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="4" count="1" type="stmt"/>
+        </file>
+        <file name="store.js" path="/Users/cormacmollitor/Desktop/UBSafe/UBSafe-Frontend/UBSafe/store.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+          <line num="1" count="1" type="stmt"/>
+        </file>
+      </package>
+      <package name="UBSafe.screens">
+        <metrics statements="10" coveredstatements="10" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6"/>
+        <file name="VirtualSafeWalkScreen.js" path="/Users/cormacmollitor/Desktop/UBSafe/UBSafe-Frontend/UBSafe/screens/VirtualSafeWalkScreen.js">
+          <metrics statements="10" coveredstatements="10" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6"/>
+          <line num="7" count="1" type="stmt"/>
+          <line num="24" count="13" type="stmt"/>
+          <line num="25" count="13" type="cond" truecount="5" falsecount="0"/>
+          <line num="31" count="13" type="stmt"/>
+          <line num="35" count="3" type="stmt"/>
+          <line num="41" count="3" type="stmt"/>
+          <line num="47" count="1" type="stmt"/>
+          <line num="65" count="1" type="stmt"/>
+          <line num="75" count="1" type="stmt"/>
+          <line num="84" count="1" type="stmt"/>
+        </file>
+      </package>
+    </metrics>
+  </project>
+</coverage>

@@ -7,17 +7,24 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "jest"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupTestFrameworkScriptFile": "./setupTest.js"
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "chai": "^4.2.0",
+    "chai-enzyme": "^1.0.0-beta.1",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
     "expo": "^30.0.1",
     "firebase": "^5.5.5",
     "firebase-admin": "^6.1.0",
     "geofirestore": "^2.2.3",
+    "jest-cli": "^23.6.0",
+    "mock-async-storage": "^2.0.3",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
@@ -31,6 +38,8 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "jest-expo": "30.0.0"
+    "jest": "^23.6.0",
+    "jest-expo": "30.0.0",
+    "react-dom": "^16.6.0"
   }
 }
