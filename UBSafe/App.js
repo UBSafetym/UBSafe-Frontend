@@ -25,6 +25,76 @@ async function getToken() {
   store.deviceToken = value;
 }
 
+function savePreferences(context) {
+  context.setState({ loading: true, prefLoad: true });
+  // GOTTA CHANGE THIS
+  if(context.state.prefProximity == null)
+  {
+    context.setState({prefProximity: 100});
+  }
+
+  var user = store.user;//
+  var user_id = user.userID;
+  fetch(store.api_base + 'users/' +user_id, {
+    method: 'PUT',
+    headers:{
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "preferences.ageMin": parseInt(context.state.prefAgeMin, 10),
+      "preferences.ageMax": parseInt(context.state.prefAgeMax, 10),
+      "preferences.proximity": parseInt(context.state.prefProximity, 10),
+      "preferences.female": context.state.preferredGenders.map(entry => entry.label).includes('Female'),
+      "preferences.male": context.state.preferredGenders.map(entry => entry.label).includes('Male'),
+      "preferences.other": context.state.preferredGenders.map(entry => entry.label).includes('Other')
+    }),
+  }).then( response => {
+    context.setState({ loading: false, prefLoad: false });
+    if(response.status === 200) {
+      Alert.alert(
+        'Preferences Updated',
+        '',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+      console.log("yay!");
+    }
+    else {
+      console.log("Error saving preferences");
+      console.log(response);
+    }
+  });
+}
+
+function findCompanions(context) {
+    var user = store.user;
+    var user_id = user.userID;
+    context.setState({ loading: true, findSessionLoad: true });
+    fetch(store.api_base + 'recommendations/' + user_id)
+      .then((responseJson) => responseJson.json())
+      .then( (response) => {
+        context.setState({ loading: false, findSessionLoad: false });
+        if(response.responseData.length > 0)
+        {
+          context.props.navigation.navigate('ShowRecommendedCompanions', {companions: response.responseData })
+        }
+        else
+        {
+          Alert.alert(
+            'No Recommended Companions found',
+            'Please change your preferences',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+        }
+      });
+}
+
 
 export default class App extends React.Component {
   state = {
@@ -161,7 +231,10 @@ export default class App extends React.Component {
       return(
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator ref={nav => { this.navigator = nav; }} />
+          <AppNavigator 
+            ref={nav => { this.navigator = nav; }} 
+            screenProps={{savePreferences: savePreferences, findCompanions: findCompanions}}
+          />
         </View>
       );
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1542698218803" clover="3.2.0">
-  <project timestamp="1542698218803" name="All files">
-    <metrics statements="12" coveredstatements="12" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6" elements="25" coveredelements="25" complexity="0" loc="12" ncloc="12" packages="2" files="3" classes="3">
+<coverage generated="1543299630056" clover="3.2.0">
+  <project timestamp="1543299630056" name="All files">
+    <metrics statements="18" coveredstatements="15" conditionals="13" coveredconditionals="10" methods="8" coveredmethods="5" elements="39" coveredelements="30" complexity="0" loc="18" ncloc="18" packages="2" files="3" classes="3">
       <package name="UBSafe">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <file name="setupTest.js" path="/Users/cormacmollitor/Desktop/UBSafe/UBSafe-Frontend/UBSafe/setupTest.js">
@@ -14,19 +14,25 @@
         </file>
       </package>
       <package name="UBSafe.screens">
-        <metrics statements="10" coveredstatements="10" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6"/>
+        <metrics statements="16" coveredstatements="13" conditionals="13" coveredconditionals="10" methods="8" coveredmethods="5"/>
         <file name="VirtualSafeWalkScreen.js" path="/Users/cormacmollitor/Desktop/UBSafe/UBSafe-Frontend/UBSafe/screens/VirtualSafeWalkScreen.js">
-          <metrics statements="10" coveredstatements="10" conditionals="7" coveredconditionals="7" methods="6" coveredmethods="6"/>
+          <metrics statements="16" coveredstatements="13" conditionals="13" coveredconditionals="10" methods="8" coveredmethods="5"/>
           <line num="7" count="1" type="stmt"/>
-          <line num="24" count="13" type="stmt"/>
-          <line num="25" count="13" type="cond" truecount="5" falsecount="0"/>
-          <line num="31" count="13" type="stmt"/>
-          <line num="35" count="3" type="stmt"/>
-          <line num="41" count="3" type="stmt"/>
-          <line num="47" count="1" type="stmt"/>
-          <line num="65" count="1" type="stmt"/>
-          <line num="75" count="1" type="stmt"/>
-          <line num="84" count="1" type="stmt"/>
+          <line num="22" count="0" type="stmt"/>
+          <line num="26" count="5" type="stmt"/>
+          <line num="27" count="5" type="cond" truecount="1" falsecount="1"/>
+          <line num="28" count="5" type="cond" truecount="1" falsecount="1"/>
+          <line num="29" count="5" type="cond" truecount="1" falsecount="1"/>
+          <line num="31" count="5" type="stmt"/>
+          <line num="40" count="16" type="stmt"/>
+          <line num="41" count="16" type="cond" truecount="5" falsecount="0"/>
+          <line num="47" count="16" type="stmt"/>
+          <line num="52" count="4" type="stmt"/>
+          <line num="59" count="4" type="stmt"/>
+          <line num="66" count="1" type="stmt"/>
+          <line num="87" count="0" type="stmt"/>
+          <line num="100" count="0" type="stmt"/>
+          <line num="109" count="1" type="stmt"/>
         </file>
       </package>
     </metrics>

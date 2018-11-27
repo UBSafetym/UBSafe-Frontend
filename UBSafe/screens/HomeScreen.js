@@ -58,7 +58,7 @@ export default class HomeScreen extends React.Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: false, maximumAge: 1000 },
     );
-/*
+
     var deviceToken = store.deviceToken;
 
     db.collection('users').doc(authentication.currentUser.providerData[0].uid).update({ deviceToken: deviceToken }).then(function(data){
@@ -68,7 +68,7 @@ export default class HomeScreen extends React.Component {
       console.log("heck");
       console.log(error);
     })
-*/
+    console.log(store.user);
   }
 
   render() {

@@ -6,14 +6,28 @@ import SelectMultiple from 'react-native-select-multiple';
 import getCompanions from '../__mocks__/VirtualCompanionSessionMocks';
 import savePreferences from '../__mocks__/VirtualCompanionSessionMocks';
 import onSelectionsChange from '../__mocks__/VirtualCompanionSessionMocks';
+import store from '../../store.js';
 
 describe('VirtualSafeWalkScreen', () => {
+  store.user = {
+    "age": 21,
+    "deviceToken": "ExponentPushToken[Z6NnYfK2C1vtqH-TsDkWT1]",
+    "gender": "Male",
+    "preferences": {
+      "ageMax": 50,
+      "ageMin": 1,
+      "female": true,
+      "male": true,
+      "other": true,
+      "proximity": 100,
+    },
+    "userID": "10215891348511047",
+    "userName": "Anus McDick",
+  }
   it('Renders properly', () => {
     const wrapper = shallow( 
-                            <VirtualSafeWalkScreen 
-                              findCompanions={getCompanions}
-                              savePreferences={savePreferences}
-                              onSelectionsChange={onSelectionsChange}
+                            <VirtualSafeWalkScreen
+                              screenProps={{findCompanions: getCompanions, savePreferences: savePreferences}}
                             /> );
 
     expect(wrapper.find(FormLabel).length).toBe(4);
@@ -24,21 +38,22 @@ describe('VirtualSafeWalkScreen', () => {
 
   it('correctly updates the state parameters in the component', () => {
     const wrapper = shallow( 
-                            <VirtualSafeWalkScreen 
-                              findCompanions={getCompanions}
-                              savePreferences={savePreferences}
-                              onSelectionsChange={onSelectionsChange}
-                            /> );
+                            <VirtualSafeWalkScreen
+                            screenProps={{findCompanions: getCompanions, savePreferences: savePreferences}}
+                          /> );
 
     // Store user data for Cormac's account because we aren't testing signup/login
     // so we have to hardcode this
     
     // Check that the component's state is initally null for all fields
     expect(wrapper.state().user_id).toEqual(null);
-    expect(wrapper.state().prefAgeMin).toEqual(null);
-    expect(wrapper.state().prefAgeMax).toEqual(null);
-    expect(wrapper.state().prefProximity).toEqual(null);
-    expect(wrapper.state().preferredGenders).toEqual([]);
+    expect(wrapper.state().prefAgeMin).toEqual("1");
+    expect(wrapper.state().prefAgeMax).toEqual("50");
+    expect(wrapper.state().prefProximity).toEqual("100");
+    expect(wrapper.state().preferredGenders).toEqual([{label: "Male", value: "Male"}, 
+                                                      {label: "Female", value: "Female"},
+                                                      {label: "Other", value: "Other"}
+                                                    ]);
 
     
     // Get the form input elements, define the inputs we want to make, and trigger a changeText
@@ -66,22 +81,23 @@ describe('VirtualSafeWalkScreen', () => {
 
   it('Allows you to update your age preferences (valid minAge and maxAge)', () => {
     const wrapper = shallow( 
-                            <VirtualSafeWalkScreen 
-                              findCompanions={getCompanions}
-                              savePreferences={savePreferences}
-                              onSelectionsChange={onSelectionsChange}
-                            /> );
+                            <VirtualSafeWalkScreen
+                            screenProps={{findCompanions: getCompanions, savePreferences: savePreferences}}
+                          /> );
 
     // Check that the button is disabled before any data is input into the form fields
-    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true);
+    expect(wrapper.find('.savePrefButton').props().disabled).toBe(false);
 
     // Check that the component's state is initally null for all fields
     expect(wrapper.state().user_id).toEqual(null);
-    expect(wrapper.state().prefAgeMin).toEqual(null);
-    expect(wrapper.state().prefAgeMax).toEqual(null);
-    expect(wrapper.state().prefProximity).toEqual(null);
-    expect(wrapper.state().preferredGenders).toEqual([]);
-    wrapper.setState({user_id: 1, prefProximity: 100, preferredGenders: ['blah']});
+    expect(wrapper.state().prefAgeMin).toEqual("1");
+    expect(wrapper.state().prefAgeMax).toEqual("50");
+    expect(wrapper.state().prefProximity).toEqual("100");
+    expect(wrapper.state().preferredGenders).toEqual([{label: "Male", value: "Male"}, 
+                                                      {label: "Female", value: "Female"},
+                                                      {label: "Other", value: "Other"}
+                                                    ]);
+    wrapper.setState({ preferredGenders: ['blah']});
 
     // Get the form input elements, define the inputs we want to make, and trigger a changeText
     const ageMinElement = wrapper.find('.ageMin');
@@ -98,27 +114,28 @@ describe('VirtualSafeWalkScreen', () => {
     // Save preference button should be enabled since min and max age inputs are valid
     expect(wrapper.find('.savePrefButton').props().disabled).toBe(false); 
     
-    wrapper.find('.savePrefButton').props().onPress();
-    wrapper.find('.findCompanionsButton').props().onPress();
+    // wrapper.find('.savePrefButton').props().onPress();
+    // wrapper.find('.findCompanionsButton').props().onPress();
   });
 
   it('Does not allow you to update your age preferences (invalid minAge and maxAge)', () => {
     const wrapper = shallow( 
-                            <VirtualSafeWalkScreen 
-                              findCompanions={getCompanions}
-                              savePreferences={savePreferences}
-                              onSelectionsChange={onSelectionsChange}
-                            /> );
+      <VirtualSafeWalkScreen
+      screenProps={{findCompanions: getCompanions, savePreferences: savePreferences}}
+    /> );
 
     // Check that the button is disabled before any data is input into the form fields
-    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true);
+    expect(wrapper.find('.savePrefButton').props().disabled).toBe(false);
 
     // Check that the component's state is initally null for all fields
     expect(wrapper.state().user_id).toEqual(null);
-    expect(wrapper.state().prefAgeMin).toEqual(null);
-    expect(wrapper.state().prefAgeMax).toEqual(null);
-    expect(wrapper.state().prefProximity).toEqual(null);
-    expect(wrapper.state().preferredGenders).toEqual([]);
+    expect(wrapper.state().prefAgeMin).toEqual("1");
+    expect(wrapper.state().prefAgeMax).toEqual("50");
+    expect(wrapper.state().prefProximity).toEqual("100");
+    expect(wrapper.state().preferredGenders).toEqual([{label: "Male", value: "Male"}, 
+                                                      {label: "Female", value: "Female"},
+                                                      {label: "Other", value: "Other"}
+                                                    ]);
 
     // Get the form input elements, define the inputs we want to make, and trigger a changeText
     const ageMinElement = wrapper.find('.ageMin');
@@ -139,22 +156,33 @@ describe('VirtualSafeWalkScreen', () => {
 
   it('Does not allow you to save preferences with empty form', () => {
     const wrapper = shallow( 
-                            <VirtualSafeWalkScreen 
-                              findCompanions={getCompanions}
-                              savePreferences={savePreferences}
-                              onSelectionsChange={onSelectionsChange}
-                            /> );
+                            <VirtualSafeWalkScreen
+                            screenProps={{findCompanions: getCompanions, savePreferences: savePreferences}}
+                          /> );
 
     // Check that the button is disabled before any data is input into the form fields
-    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true);
+    expect(wrapper.find('.savePrefButton').props().disabled).toBe(false);
 
     // Check that the component's state is initally null for all fields
     expect(wrapper.state().user_id).toEqual(null);
-    expect(wrapper.state().prefAgeMin).toEqual(null);
-    expect(wrapper.state().prefAgeMax).toEqual(null);
-    expect(wrapper.state().prefProximity).toEqual(null);
-    expect(wrapper.state().preferredGenders).toEqual([]);
+    expect(wrapper.state().prefAgeMin).toEqual("1");
+    expect(wrapper.state().prefAgeMax).toEqual("50");
+    expect(wrapper.state().prefProximity).toEqual("100");
+    expect(wrapper.state().preferredGenders).toEqual([{label: "Male", value: "Male"}, 
+                                                      {label: "Female", value: "Female"},
+                                                      {label: "Other", value: "Other"}
+                                                    ]);
 
+    // Get the form input elements, define the inputs we want to make, and trigger a changeText
+    const ageMinElement = wrapper.find('.ageMin');
+    const ageMaxElement = wrapper.find('.ageMax');
+
+    const minAgeInput = "";
+    const maxAgeInput = "";
+
+    ageMinElement.simulate('changeText', minAgeInput);
+    ageMaxElement.simulate('changeText', maxAgeInput);
+    wrapper.setState({ prefProximity: null, preferredGenders: []});
     // Should still be disabled because no fields were updated
     expect(wrapper.find('.savePrefButton').props().disabled).toBe(true); 
     
