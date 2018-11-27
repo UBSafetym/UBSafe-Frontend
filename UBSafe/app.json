@@ -5,7 +5,10 @@
     "slug": "UBSafe",
     "privacy": "public",
     "sdkVersion": "30.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "splash": {
@@ -28,7 +31,9 @@
     "android": {
       "package": "com.ubsafetym.ubsafe",
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyBAWE0w_CLUNt7y2ydT5Gp3f1fCdZSIv_Y" }   
+        "googleMaps": {
+          "apiKey": "AIzaSyBAWE0w_CLUNt7y2ydT5Gp3f1fCdZSIv_Y"
+        }
       }
     }
   }

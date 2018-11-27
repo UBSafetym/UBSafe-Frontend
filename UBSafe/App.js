@@ -41,6 +41,9 @@ export default class App extends React.Component {
     ));
   }
 
+  navigateToHomeScreen() {
+    this.navigator.dispatch(NavigationActions.navigate( { routeName: 'Main', action: NavigationActions.navigate({ routeName: 'HomeStack' }) }));
+  }
 
   // Write case statement here for handling each of the types of push notifications
   handleNotification = ({ origin, data }) => {
@@ -66,7 +69,7 @@ export default class App extends React.Component {
           'Traveller Has Reached Their Destination',
           'Thank you for being safe!',
           [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'OK', onPress: () => this.navigateToHomeScreen()},
           ],
           { cancelable: false }
         )
@@ -123,7 +126,16 @@ export default class App extends React.Component {
       
       case('JOINED_SESSION'):
         break;
-
+      case('NEAR_DESTINATION'):
+        Alert.alert(
+          'Traveller is Near Their Destination',
+          '',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+        break;
       default:
 
     }

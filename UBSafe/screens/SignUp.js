@@ -75,7 +75,7 @@ export default class SignUp extends React.Component {
           (position) => {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
-            geoFirestore.set(user.userID, { coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
+            geoFirestore.set(user.userID, { last_updated: new Date(), coordinates: new firebase.firestore.GeoPoint(latitude, longitude)}).then(() => {
               context.setState({ loading: false });
               context.props.navigation.navigate('Main');
               console.log("Document successfully written!");

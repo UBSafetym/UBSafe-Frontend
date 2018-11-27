@@ -37,7 +37,9 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     active: true,
     unsubscribe: null,
     loading: false,
-    radius: 5
+    radius: 5,
+    nearBySent: false,
+    reachedSent: false
   }
 
   getMagnitude(curLat, curLong) {
@@ -59,10 +61,10 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   checkReachedOrNearDestination() {
     console.log("Check near or reached destination");
     var distanceFromDestination = this.getMagnitude(this.state.destinationLat, this.state.destinationLong);
-    if(distanceFromDestination < 40.0){
+    if(distanceFromDestination < 300.0){
       return "reached";
     }
-    else if(distanceFromDestination < 200.0){
+    else if(distanceFromDestination < 600.0){
       return "near";
     }
 
@@ -177,6 +179,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         }).then(function(){
           context.setState({loading: false});
           context.state.unsubscribe();
+          context.setState({ nearBySent: false, reachedSent: false });
           context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
         })
     });
@@ -220,10 +223,14 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         // Maybe will handle this in changeInPosition instead
         
         var status = this.checkReachedOrNearDestination(travellerLat, travellerLong);
-        if(status === "reached") {
+        console.log(status);
+        if(status === "reached" && !this.state.reachedSent) {
+          this.setState({ reachedSent: true });
+          console.log(this.state.reachedSent);
           this.alertReachedDestination();
         }
-        else if(status === "near") {
+        else if(status === "near" && !this.state.nearBySent) {
+          this.setState({ nearBySent: true });
           this.alertNearDestination();
         }
         
