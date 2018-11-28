@@ -5,7 +5,6 @@ import { FormLabel, FormInput, Button } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
 import getCompanions from '../__mocks__/VirtualCompanionSessionMocks';
 import savePreferences from '../__mocks__/VirtualCompanionSessionMocks';
-import onSelectionsChange from '../__mocks__/VirtualCompanionSessionMocks';
 import store from '../../store.js';
 
 describe('VirtualSafeWalkScreen', () => {
@@ -55,17 +54,14 @@ describe('VirtualSafeWalkScreen', () => {
                                                       {label: "Other", value: "Other"}
                                                     ]);
 
-    
     // Get the form input elements, define the inputs we want to make, and trigger a changeText
     const ageMinElement = wrapper.find('.ageMin');
     const ageMaxElement = wrapper.find('.ageMax');
     const prefProximityElement = wrapper.find('.proximity');
-    //const prefGendersElement = wrapper.find('.genders');
 
     const minAgeInput = "18";
     const maxAgeInput = "44";
     const prefProximityInput = "-1";
-    //const prefGendersInput = [{ label: 'female' }, { label: 'male' }];
 
     ageMinElement.simulate('changeText', minAgeInput);
     ageMaxElement.simulate('changeText', maxAgeInput);
@@ -76,7 +72,6 @@ describe('VirtualSafeWalkScreen', () => {
     expect(wrapper.state().prefAgeMin).toEqual(minAgeInput);
     expect(wrapper.state().prefAgeMax).toEqual(maxAgeInput);
     expect(wrapper.state().prefProximity).toEqual(prefProximityInput);
-    //expect(wrapper.state().preferredGenders).toEqual(prefGendersInput);
   });
 
   it('Allows you to update your age preferences (valid minAge and maxAge)', () => {
@@ -113,9 +108,6 @@ describe('VirtualSafeWalkScreen', () => {
     expect(wrapper.state().prefAgeMax).toEqual(maxAgeInput);
     // Save preference button should be enabled since min and max age inputs are valid
     expect(wrapper.find('.savePrefButton').props().disabled).toBe(false); 
-    
-    // wrapper.find('.savePrefButton').props().onPress();
-    // wrapper.find('.findCompanionsButton').props().onPress();
   });
 
   it('Does not allow you to update your age preferences (invalid minAge and maxAge)', () => {
@@ -150,8 +142,7 @@ describe('VirtualSafeWalkScreen', () => {
     expect(wrapper.state().prefAgeMin).toEqual(minAgeInput);
     expect(wrapper.state().prefAgeMax).toEqual(maxAgeInput);
     // Save preference button should be enabled since min and max age inputs are valid
-    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true); 
-
+    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true);
   });
 
   it('Does not allow you to save preferences with empty form', () => {
@@ -184,7 +175,6 @@ describe('VirtualSafeWalkScreen', () => {
     ageMaxElement.simulate('changeText', maxAgeInput);
     wrapper.setState({ prefProximity: null, preferredGenders: []});
     // Should still be disabled because no fields were updated
-    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true); 
-    
+    expect(wrapper.find('.savePrefButton').props().disabled).toBe(true);
   });
 });

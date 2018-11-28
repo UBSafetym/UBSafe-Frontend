@@ -6,6 +6,7 @@ import { List, ListItem, Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import { Firebase } from '../firebaseConfig.js';
 import store from '../store.js';
+import call from "react-native-phone-call";
 
 db = Firebase.firestore();
 db.settings({
@@ -41,6 +42,10 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     nearBySent: false,
     reachedSent: false
   }
+
+  callTU = (receiver) => {
+    call(receiver).catch(console.error);
+  };
 
   getMagnitude(curLat, curLong) {
     var latSquared = Math.pow(Math.abs(this.state.travellerLat - curLat), 2);
@@ -335,16 +340,10 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
 
   renderItem = ({ item }) => {
     return (
-      <ListItem 
+      <ListItem
         title={ item.name }
         hideChevron={ true } />
     );
-  }
-
-  renderMarkers() {
-    return this.props.places.map((place, i) => (
-      <Marker key={i} title={place.name} coordinate={place.coords} />
-    ))
   }
 
   updateRegion(region) {
@@ -359,9 +358,34 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
 
   render() {
     if(!store.session || store.session.traveller.id == store.user.userID) {
+      const emergencyNumbers = [
+        { name: "911 Emergency", number: { number: '7783200245', prompt: true } },
+        { name: "Campus Security", number: { number: '7783200245', prompt: true } }      
+      ];
       return(
         <View style={styles.rootContainer}>
           <View style={styles.buttonsContainer}>
+            <Button
+              style={styles.button}
+              full
+              rounded
+              primary         
+              backgroundColor="#005073"
+              icon={{name: 'call', type: 'material-icons'}}
+              title='Call 911' 
+              onPress={()=> this.callTU(emergencyNumbers[0].number)}
+            />
+       
+            <Button
+              style={styles.button}
+              full
+              rounded
+              primary         
+              backgroundColor="#005073"
+              icon={{name: 'security', type: 'material-icons'}}
+              title='Campus Security' 
+              onPress={()=> this.callTU(emergencyNumbers[1].number)}
+            />
             <Button
               full
               rounded
@@ -392,7 +416,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
                 data={this.state.joinedWatchers}
                 renderItem={this.renderItem}
                 extraData={this.state.joinedWatchers}
-                keyExtractor={item => item.userName}
+                keyExtractor={item => item.id}
               />
             </List>
           </View>
@@ -418,8 +442,8 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             onRegionChangeComplete={(region) => this.updateRegion(region)}
             pitchEnabled={false}
           >
-            <Marker key={1} title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />
-            <Marker key={2} title={"Destination"} coordinate={{longitude: this.state.destinationLong, latitude: this.state.destinationLat}} />
+            <Marker key={1} pinColor='#00ff00' title={"Source"} coordinate={{longitude: this.state.sourceLong, latitude: this.state.sourceLat}} />
+            <Marker key={2} pinColor='#ff0000' title={"Destination"} coordinate={{longitude: this.state.destinationLong, latitude: this.state.destinationLat}} />
             <Circle
               radius={this.state.radius}
               center={{ latitude: this.state.travellerLat, longitude: this.state.travellerLong }}

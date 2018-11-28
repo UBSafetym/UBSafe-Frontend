@@ -11,7 +11,7 @@ const users = {
       Proximity: 100
     },
     UserID: 1,
-    UserName: "Liberal Female"
+    UserName: "Female 1"
   },
   2: {
     Age: 22,
@@ -25,7 +25,7 @@ const users = {
       Proximity: 100
     },
     UserID: 1,
-    UserName: "Conservative Male"
+    UserName: "Male 1"
   },
   3: {
     Age: 22,
@@ -39,7 +39,7 @@ const users = {
       Proximity: 100
     },
     UserID: 1,
-    UserName: "Love Shy Male"
+    UserName: "Male 2"
   },
   4: {
     Age: 22,
@@ -53,7 +53,7 @@ const users = {
       Proximity: 100
     },
     UserID: 1,
-    UserName: "Why even use the app?"
+    UserName: "Other 1"
   },
   5: {
     Age: 22,
@@ -67,7 +67,7 @@ const users = {
       Proximity: 100
     },
     UserID: 1,
-    UserName: "Female seeking strange dong"
+    UserName: "Other 2"
   }
 };
 
@@ -106,8 +106,4 @@ export const savePreferences = function savePreferences(userID) {
           }),
     );
   });
-}
-
-export const onSelectionsChange = function onSelectionsChange(){
-
 }
