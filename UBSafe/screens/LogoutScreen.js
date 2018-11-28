@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import store from '../store.js';
 
@@ -14,10 +14,16 @@ export default class LogoutScreen extends React.Component {
     this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().dangerouslyGetParent().navigate('Auth');
   }
 
+  cancel(){
+  this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().navigate('HomeStack');
+  }    
+    
   render(){
     return(
-      <View style={styles.loginButtonSection}>
-        <Button
+      <View style={styles.container}>
+        <Text style={styles.confirmation}>Are you sure you want to log out?
+        </Text>
+        <Button style={styles.logoutButton}
           loading={this.state.loading}
           disabled={this.state.loading}
           full
@@ -27,16 +33,41 @@ export default class LogoutScreen extends React.Component {
           title='Logout'
           onPress = {() => this.logout()}
         />
+        <Button style={styles.cancelButton}
+          loading={this.state.loading}
+          disabled={this.state.loading}
+          full
+          rounded
+          primary
+          backgroundColor="#23297A"
+          title='Cancel'
+          onPress = {() => this.cancel()}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  loginButtonSection: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
- }
+    container: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    logoutButton: {
+        position: 'absolute',
+        top: 260,
+        right: 10
+    },
+    cancelButton: {
+        position: 'absolute',
+        top: 260,
+        left: 10
+    },
+    confirmation: {
+        position: 'absolute',
+        fontSize: 20,
+        fontWeight: 'bold',
+        top: 160
+    }
 });
