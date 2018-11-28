@@ -113,6 +113,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
       '',
       [
         {text: 'Send Alert', onPress: () => this.sendEmergencyAlert()},
+        {text: 'Cancel', onPress: () => console.log("canceled")}
       ],
       { cancelable: true }
     )

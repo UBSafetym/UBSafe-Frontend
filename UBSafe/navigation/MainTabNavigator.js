@@ -105,7 +105,7 @@ VirtualSafewalkStack.navigationOptions = ({ navigation }) => {
                 (navigation.state.routes[navigation.state.index].routeName === 'RatingsScreen');
 
   let navigationOptions = {
-                          tabBarLabel: 'Virtual Safewalk', 
+                          tabBarLabel: 'Travel', 
                           tabBarIcon: ({ focused }) => (
                             <TabBarIcon
                               focused={focused}
