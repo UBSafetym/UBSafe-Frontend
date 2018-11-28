@@ -3,9 +3,15 @@ import VirtualSafeWalkScreen from '../VirtualSafeWalkScreen.js'
 import { shallow } from 'enzyme';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import SelectMultiple from 'react-native-select-multiple';
-import getCompanions from '../__mocks__/VirtualCompanionSessionMocks';
-import savePreferences from '../__mocks__/VirtualCompanionSessionMocks';
 import store from '../../store.js';
+
+function getCompanions(context) {
+  return 1;
+}
+
+function savePreferences(context) {
+  return 1;
+}
 
 describe('VirtualSafeWalkScreen', () => {
   store.user = {
@@ -72,6 +78,9 @@ describe('VirtualSafeWalkScreen', () => {
     expect(wrapper.state().prefAgeMin).toEqual(minAgeInput);
     expect(wrapper.state().prefAgeMax).toEqual(maxAgeInput);
     expect(wrapper.state().prefProximity).toEqual(prefProximityInput);
+
+    wrapper.find('.savePrefButton').props().onPress();
+    wrapper.find('.findCompanionsButton').props().onPress();
   });
 
   it('Allows you to update your age preferences (valid minAge and maxAge)', () => {
