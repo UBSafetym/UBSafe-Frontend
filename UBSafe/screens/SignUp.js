@@ -89,7 +89,7 @@ export default class SignUp extends React.Component {
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);
-      });  
+      });
   }
 
   render() {

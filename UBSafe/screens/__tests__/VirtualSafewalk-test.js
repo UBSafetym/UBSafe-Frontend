@@ -22,7 +22,7 @@ describe('VirtualSafeWalkScreen', () => {
       "proximity": 100,
     },
     "userID": "10215891348511047",
-    "userName": "Anus McDick",
+    "userName": "John Smith",
   }
   it('Renders properly', () => {
     const wrapper = shallow( 

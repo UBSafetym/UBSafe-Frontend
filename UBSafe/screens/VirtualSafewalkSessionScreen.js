@@ -13,9 +13,9 @@ db.settings({
 });
 authentication = Firebase.auth();
 
-const nice = 69.0; // nice
+const milesPerDegree = 69.0;
 const feetPerMile = 5280.0;
-const feetPerDegree = nice * feetPerMile; // nice
+const feetPerDegree = milesPerDegree * feetPerMile;
 const metersPerDegree = 110000;
 export default class VirtualSafewalkSessionScreen extends React.Component {
   state = {
@@ -113,20 +113,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     )
   }
 
-  sendReachedDestinationAlert(){
-    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
-      method: 'POST',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionID: this.props.navigation.getParam('session').id,
-        alertCode: store.alertsToCodes['REACHED_DESTINATION']
-      }),
-    });
-  }
-
   sendEmergencyAlert() {
     fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
       method: 'POST',
@@ -163,40 +149,33 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
     clearInterval(this.state.timer);
     this.state.unsubscribe();
     var context = this;
-    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
-      method: 'POST',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionID: context.props.navigation.getParam('session').id,
-        alertCode: store.alertsToCodes['REACHED_DESTINATION']
-      }),
-    }).then(response => {
-        db.collection("companion_sessions").doc(context.props.navigation.getParam('session').id).update({
-          active: false
-        }).then(function(){
-          context.setState({loading: false});
-          context.state.unsubscribe();
-          context.setState({ nearBySent: false, reachedSent: false });
-          context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
-        })
-    });
+    db.collection("companion_sessions").doc(context.props.navigation.getParam('session').id).update({
+      active: false
+    }).then(function(){
+      context.setState({loading: false});
+      context.state.unsubscribe();
+      context.setState({ nearBySent: false, reachedSent: false });
+      context.props.navigation.navigate('RatingsScreen', { companions: context.state.joinedWatchers, sessionID: context.state.sessionID });
+    })
   }
 
   alertReachedDestination() {
-    fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
-      method: 'POST',
-      headers:{
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionID: this.props.navigation.getParam('session').id,
-        alertCode: store.alertsToCodes['REACHED_DESTINATION']
-      }),
-    });
+    var context = this;
+    if(this.state.reachedSent) {
+      fetch(store.api_base + 'alert/' + this.props.navigation.getParam('session').id, {
+        method: 'POST',
+        headers:{
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionID: this.props.navigation.getParam('session').id,
+          alertCode: store.alertsToCodes['REACHED_DESTINATION']
+        }),
+      }).then(function(response){
+        context.endSession();
+      });
+    }
   }
 
   alertNearDestination() {
@@ -227,7 +206,15 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
         if(status === "reached" && !this.state.reachedSent) {
           this.setState({ reachedSent: true });
           console.log(this.state.reachedSent);
-          this.alertReachedDestination();
+          Alert.alert(
+            'You Have Reached Your Destination',
+            'Do you want to end your session?',
+            [
+              {text: 'Yes', onPress: () => this.alertReachedDestination()},
+              {text: 'No', onPress: () => this.setState({ reachedSent: false })}
+            ],
+            { cancelable: true }
+          )
         }
         else if(status === "near" && !this.state.nearBySent) {
           this.setState({ nearBySent: true });
@@ -296,7 +283,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
           var data = doc.data();
           var latitudeDelta = Math.abs(data.travellerSource._lat - data.travellerDest._lat) * 2.0;
           var longitudeDelta = Math.abs(data.travellerSource._long - data.travellerDest._long) * 2.0;
-          // var radius = Math.sqrt(latitudeDelta * longitudeDelta * Math.pow(metersPerDegree, 2) / (200.0 * 3.14));
           var radius = Math.sqrt(latitudeDelta*longitudeDelta/200.0);
           context.setState({
             regionLat: (data.travellerSource._lat + data.travellerDest._lat)/2.0,
@@ -311,10 +297,16 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
             longitudeDelta: longitudeDelta,
             radius: radius
           });
-          var watchers = doc.data().joinedWatchers;
-          watchers.push(store.user);
-          docRef.update({
-            joinedWatchers: watchers
+          fetch(store.api_base + 'companionsession/join', {
+            method: 'PUT',
+            headers:{
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sessionID: store.session.id,
+              watcherID: store.user.userID
+            }),
           });
         }
         else{
@@ -344,7 +336,7 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   renderItem = ({ item }) => {
     return (
       <ListItem 
-        title={ item.userName + ', ' + item.gender + ', ' + item.age }
+        title={ item.name }
         hideChevron={ true } />
     );
   }
@@ -356,7 +348,6 @@ export default class VirtualSafewalkSessionScreen extends React.Component {
   }
 
   updateRegion(region) {
-    // var newRadius = Math.sqrt(region.latitudeDelta * region.longitudeDelta * Math.pow(metersPerDegree, 2) / (200.0 * 3.14));
     var newRadius = Math.sqrt(region.latitudeDelta*region.longitudeDelta/(3.14*200.0)) * (metersPerDegree/3.0);
     this.setState({ regionLat: region.latitude,
                     regionLong: region.longitude,

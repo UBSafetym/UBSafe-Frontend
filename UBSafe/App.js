@@ -195,6 +195,14 @@ export default class App extends React.Component {
         break;
       
       case('JOINED_SESSION'):
+        Alert.alert(
+          'You Have One New Watcher',
+          '',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
         break;
       case('NEAR_DESTINATION'):
         Alert.alert(
