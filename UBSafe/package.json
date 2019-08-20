@@ -17,14 +17,14 @@
     "@expo/samples": "2.1.1",
     "chai": "^4.2.0",
     "chai-enzyme": "^1.0.0-beta.1",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
-    "expo": "^30.0.1",
-    "firebase": "^5.5.5",
-    "firebase-admin": "^6.1.0",
-    "geofirestore": "^2.2.3",
-    "jest-cli": "^23.6.0",
-    "mock-async-storage": "^2.0.3",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "expo": "^30.0.2",
+    "firebase": "^5.11.1",
+    "firebase-admin": "^6.5.1",
+    "geofirestore": "^2.4.0",
+    "jest-cli": "^24.9.0",
+    "mock-async-storage": "^2.2.0",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
@@ -32,14 +32,14 @@
     "react-native-google-places-autocomplete": "^1.3.9",
     "react-native-phone-call": "^1.0.9",
     "react-native-select-multiple": "^1.2.0",
-    "react-navigation": "^2.16.0",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
+    "react-navigation": "^2.18.3",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
-    "jest-expo": "30.0.0",
-    "react-dom": "^16.6.0"
+    "jest": "^24.9.0",
+    "jest-expo": "^34.0.1",
+    "react-dom": "^16.9.0"
   }
 }
